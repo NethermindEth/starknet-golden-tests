@@ -39,12 +39,12 @@ while IFS= read -r -d '' input_file; do
 
     # Run diff (use absolute path to be safe)
     abs_input_file="$repo_root/$input_file"
-    printf "Running diff for: %-100s" "$rel_input_file"
+    printf "🧪 %-80s" "$rel_input_file"
     if "${script_dir}/diff.sh" "$rpc_url" "$abs_input_file" >/dev/null 2>&1; then
-        echo -e "${GREEN}✓ PASSED${NC}"
+        echo -e "${GREEN}✅ PASSED${NC}"
         ((passed++))
     else
-        echo -e "${RED}✗ FAILED${NC}"
+        echo -e "${RED}❌ FAILED${NC}"
         ((failed++))
         # Show the actual diff
         "${script_dir}/diff.sh" "$rpc_url" "$abs_input_file"
@@ -54,10 +54,10 @@ done < <(find "$tests_folder" -type f -name "*.input.json" -print0 2>/dev/null)
 
 # Summary
 echo "========================================="
-echo "Summary:"
-echo "  Total tests: $total"
-echo "  Passed: $passed"
-echo "  Failed: $failed"
+echo "📊 Summary:"
+echo "  📈 Total tests: $total"
+echo "  ✅ Passed: $passed"
+echo "  ❌ Failed: $failed"
 echo "========================================="
 
 # Exit with non-zero if there were failures

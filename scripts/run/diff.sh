@@ -26,6 +26,6 @@ fi
 
 # Compare live response (already normalized by query-rpc.sh) with expected output (already normalized)
 # Pretty-print both sides for better diff readability
-diff -u \
+diff --color=auto -u \
     <("${script_dir}/query-rpc.sh" "$rpc_url" <"$input_file" | jq '.') \
     <(jq '.' "$output_file")
