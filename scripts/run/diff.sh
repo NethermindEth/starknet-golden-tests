@@ -1,24 +1,31 @@
 #!/bin/bash
 
-network="$1"
-method="$2"
-test_name="$3"
-rpc_url="$4"
+# Usage: diff.sh <rpc_url> <input_file> [output_file]
+#   If output_file is not provided, it's derived from input_file by replacing .input.json with .output.json
 
-if [ -z "$network" ] || [ -z "$method" ] || [ -z "$test_name" ] || [ -z "$rpc_url" ]; then
-    echo "Usage: $0 <network> <method> <test_name> <rpc_url>" >&2
+script_dir="$(dirname "$0")"
+
+rpc_url="$1"
+input_file="$2"
+output_file="${3:-${input_file%.input.json}.output.json}"
+
+if [ -z "$rpc_url" ] || [ -z "$input_file" ]; then
+    echo "Usage: $0 <rpc_url> <input_file> [output_file]" >&2
     exit 1
 fi
 
-script_dir="$(dirname "$0")"
-output_file="tests/${network}/${method}/${test_name}.output.json"
+if [ ! -f "$input_file" ]; then
+    echo "Error: Input file '$input_file' does not exist" >&2
+    exit 1
+fi
 
 if [ ! -f "$output_file" ]; then
     echo "Error: Output file '$output_file' does not exist" >&2
     exit 1
 fi
 
-# Compare live response (already normalized by run.sh) with expected output (already normalized)
+# Compare live response (already normalized by query-rpc.sh) with expected output (already normalized)
+# Pretty-print both sides for better diff readability
 diff -u \
-    <("${script_dir}/run.sh" "$network" "$method" "$test_name" "$rpc_url") \
-    "$output_file"
+    <("${script_dir}/query-rpc.sh" "$rpc_url" <"$input_file" | jq '.') \
+    <(jq '.' "$output_file")

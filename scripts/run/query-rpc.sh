@@ -7,9 +7,30 @@ if [ -z "$url" ]; then
     exit 1
 fi
 
-curl --silent --show-error --location --fail-with-body --compressed \
+# Read JSON from stdin and store it (we need to use it twice)
+json_input=$(cat)
+
+# Extract method from JSON
+method=$(echo "$json_input" | jq -r '.method // empty')
+
+if [ -z "$method" ]; then
+    echo "Error: JSON input must contain a 'method' field" >&2
+    exit 1
+fi
+
+script_dir="$(dirname "$0")"
+
+# Determine which normalization script to use: method-specific if exists, otherwise default
+if [ -f "${script_dir}/../normalize/${method}.sh" ]; then
+    normalize_script="${script_dir}/../normalize/${method}.sh"
+else
+    normalize_script="${script_dir}/../normalize/default.sh"
+fi
+
+# Make curl request and pipe through normalization script
+echo "$json_input" | curl --silent --show-error --location --fail-with-body --compressed \
     --header 'Content-Type: application/json' \
     --header 'Accept: application/json' \
     --header 'Accept-Encoding: gzip' \
     --data @- \
-    "$url"
+    "$url" | "$normalize_script"
