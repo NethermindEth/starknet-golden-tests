@@ -34,7 +34,7 @@ for method in "${methods[@]}"; do
         >"$input_file"
 
     # Run write-output.sh for this method
-    echo "Processing $method..."
+    echo "Processing $method with block number..."
     "${script_dir}/../run/write-output.sh" "$network" "$method" "$block_number" "$rpc_url"
 done
 
@@ -62,6 +62,21 @@ for method in "${methods[@]}"; do
 
     echo "Processing $method with block hash..."
     "${script_dir}/../run/write-output.sh" "$network" "$method" "$test_name" "$rpc_url"
+done
+
+# Diff outputs from block number vs block hash queries
+echo "Comparing block number vs block hash outputs..."
+for method in "${methods[@]}"; do
+    block_number_output="tests/${network}/${method}/${block_number}.output.json"
+    block_hash_output="tests/${network}/${method}/${block_number}-${block_hash}.output.json"
+
+    if ! diff --color=auto -u \
+        <(jq '.' "$block_number_output") \
+        <(jq '.' "$block_hash_output"); then
+        echo "  ❌ $method outputs differ" >&2
+        exit 1
+    fi
+    echo "  ✅ $method outputs match"
 done
 
 echo "Done processing all methods for block $block_number"
