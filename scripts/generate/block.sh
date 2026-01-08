@@ -38,4 +38,30 @@ for method in "${methods[@]}"; do
     "${script_dir}/../run/write-output.sh" "$network" "$method" "$block_number" "$rpc_url"
 done
 
+# Extract block hash from starknet_getBlockWithTxHashes output
+block_hash=$(jq -r '.result.block_hash' "tests/${network}/starknet_getBlockWithTxHashes/${block_number}.output.json")
+
+if [ -z "$block_hash" ] || [ "$block_hash" = "null" ]; then
+    echo "Error: Could not extract block_hash from starknet_getBlockWithTxHashes output" >&2
+    exit 1
+fi
+
+echo "Extracted block hash: $block_hash"
+
+# Generate tests with block hash input
+for method in "${methods[@]}"; do
+    test_name="${block_number}-${block_hash}"
+    input_file="tests/${network}/${method}/${test_name}.input.json"
+
+    # Generate input JSON with block_hash
+    jq -nc \
+        --arg method "$method" \
+        --arg block_hash "$block_hash" \
+        '{id: 1, jsonrpc: "2.0", method: $method, params: {block_id: {block_hash: $block_hash}}}' \
+        >"$input_file"
+
+    echo "Processing $method with block hash..."
+    "${script_dir}/../run/write-output.sh" "$network" "$method" "$test_name" "$rpc_url"
+done
+
 echo "Done processing all methods for block $block_number"
