@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Usage: run-all-diffs.sh <rpc_url> [tests_folder]
-#   tests_folder: Optional folder path to search for tests (default: "tests")
+#   tests_folder: Optional folder path to search for tests (default: auto-detect by chain ID)
 
 rpc_url="$1"
-tests_folder="${2:-tests}"
+tests_folder="$2"
 
 if [ -z "$rpc_url" ]; then
     echo "Usage: $0 <rpc_url> [tests_folder]" >&2
@@ -20,6 +20,15 @@ script_dir="$(cd "$(dirname "$0")" && pwd)"
 repo_root="$(cd "$script_dir/../.." && pwd)"
 # Change to repo root to ensure paths are consistent
 cd "$repo_root" || exit 1
+
+# Auto-detect test folder by chain ID if not specified
+if [ -z "$tests_folder" ]; then
+    echo "🔍 Auto-detecting network by querying starknet_chainId..."
+    if ! tests_folder=$("${script_dir}/detect-network.sh" "$rpc_url") || [ -z "$tests_folder" ]; then
+        exit 1
+    fi
+    echo "✅ Using: $tests_folder"
+fi
 
 # Create timestamped results folder
 timestamp=$(date +"%Y%m%d-%H%M%S")
