@@ -38,7 +38,7 @@ for method in "${methods[@]}"; do
 
     # Run write-output.sh for this method
     echo "Processing $method with block number..."
-    "${script_dir}/../run/write-output.sh" "$network" "$method" "$block_number" "$rpc_url"
+    "${script_dir}/write-output.sh" "$network" "$method" "$block_number" "$rpc_url"
 done
 
 # Extract block hash from starknet_getBlockWithTxHashes output
@@ -64,7 +64,7 @@ for method in "${methods[@]}"; do
         >"$input_file"
 
     echo "Processing $method with block hash..."
-    "${script_dir}/../run/write-output.sh" "$network" "$method" "$test_name" "$rpc_url"
+    "${script_dir}/write-output.sh" "$network" "$method" "$test_name" "$rpc_url"
 done
 
 # Diff outputs from block number vs block hash queries

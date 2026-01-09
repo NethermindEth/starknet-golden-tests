@@ -24,4 +24,4 @@ output_dir="$(dirname "$output_file")"
 mkdir -p "$output_dir"
 
 # Run the test (output is already normalized by query-rpc.sh) and write to file
-"${script_dir}/query-rpc.sh" "$rpc_url" <"$input_file" >"$output_file"
+"${script_dir}/../run/query-rpc.sh" "$rpc_url" <"$input_file" >"$output_file"
