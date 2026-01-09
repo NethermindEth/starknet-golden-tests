@@ -36,7 +36,7 @@ for method in "${methods[@]}"; do
 
     # Run write-output.sh for this method
     echo "Processing $method..."
-    "${script_dir}/../run/write-output.sh" "$network" "$method" "$transaction_hash" "$rpc_url"
+    "${script_dir}/write-output.sh" "$network" "$method" "$transaction_hash" "$rpc_url"
 done
 
 # Extract block info from starknet_getTransactionReceipt output
@@ -89,7 +89,7 @@ jq -nc \
     >"$input_file"
 
 echo "Processing $index_method with block number..."
-"${script_dir}/../run/write-output.sh" "$network" "$index_method" "$test_name_block_number" "$rpc_url"
+"${script_dir}/write-output.sh" "$network" "$index_method" "$test_name_block_number" "$rpc_url"
 
 # Test 2: by block_hash
 test_name_block_hash="${transaction_hash}-block-hash"
@@ -102,7 +102,7 @@ jq -nc \
     >"$input_file"
 
 echo "Processing $index_method with block hash..."
-"${script_dir}/../run/write-output.sh" "$network" "$index_method" "$test_name_block_hash" "$rpc_url"
+"${script_dir}/write-output.sh" "$network" "$index_method" "$test_name_block_hash" "$rpc_url"
 
 # Verify outputs match starknet_getTransactionByHash
 echo "Comparing starknet_getTransactionByBlockIdAndIndex outputs with starknet_getTransactionByHash..."
