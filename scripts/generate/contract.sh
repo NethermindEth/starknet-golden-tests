@@ -15,10 +15,10 @@ if [ -z "$contract_address" ] || [ -z "$rpc_url" ]; then
     echo "block_id is optional: if starts with 0x, uses block_hash; if numeric, uses block_number; defaults to 'latest'." >&2
     echo "" >&2
     echo "Examples:" >&2
-    echo "  $0 --rpc-url http://localhost:6060 0x1234..." >&2
-    echo "  $0 --rpc-url http://localhost:6060 0x1234... 100" >&2
-    echo "  $0 --rpc-url http://localhost:6060 0x1234... 0xabc..." >&2
-    echo "  STARKNET_RPC=http://localhost:6060 $0 0x1234..." >&2
+    echo "  $0 --rpc-url http://localhost:6060 0x4f1cb86e5067045d8264cc542da0517b9afcc4219575a184a76265423e8a213" >&2
+    echo "  $0 --rpc-url http://localhost:6060 0x4f1cb86e5067045d8264cc542da0517b9afcc4219575a184a76265423e8a213 100" >&2
+    echo "  $0 --rpc-url http://localhost:6060 0x4f1cb86e5067045d8264cc542da0517b9afcc4219575a184a76265423e8a213 0x4223f3e4f2d1e6c9753b04974acdf045e602ccfe784ea6d3722697bda0fc4d2" >&2
+    echo "  STARKNET_RPC=http://localhost:6060 $0 0x4f1cb86e5067045d8264cc542da0517b9afcc4219575a184a76265423e8a213" >&2
     exit 1
 fi
 

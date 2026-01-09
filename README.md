@@ -66,11 +66,11 @@ Generate golden test cases from a trusted RPC endpoint:
 # Using STARKNET_RPC env var
 export STARKNET_RPC=http://localhost:6060
 ./golden.sh generate block 100
-./golden.sh generate class 0x1234... # uses "latest" block
-./golden.sh generate class 0x1234... 100 # uses block_number
-./golden.sh generate class 0x1234... 0xabc... # uses block_hash
-./golden.sh generate contract 0x5678... # uses "latest" block
-./golden.sh generate contract 0x5678... 100 # uses block_number (also generates getNonce)
+./golden.sh generate class 0x1efa8f84fd4dff9e2902ec88717cf0dafc8c188f80c3450615944a469428f7f # uses "latest" block
+./golden.sh generate class 0x1efa8f84fd4dff9e2902ec88717cf0dafc8c188f80c3450615944a469428f7f 100 # uses block_number
+./golden.sh generate class 0x1efa8f84fd4dff9e2902ec88717cf0dafc8c188f80c3450615944a469428f7f 0x4223f3e4f2d1e6c9753b04974acdf045e602ccfe784ea6d3722697bda0fc4d2 # uses block_hash
+./golden.sh generate contract 0x4f1cb86e5067045d8264cc542da0517b9afcc4219575a184a76265423e8a213 # uses "latest" block
+./golden.sh generate contract 0x4f1cb86e5067045d8264cc542da0517b9afcc4219575a184a76265423e8a213 100 # uses block_number (also generates getNonce)
 ./golden.sh generate transaction 0x1b4d9f09276629d496af1af8ff00173c11ff146affacb1b5c858d7aa89001ae
 
 # Or using --rpc-url flag
