@@ -17,6 +17,7 @@ generate_usage() {
     echo "Commands:"
     echo "  block        Generate tests for a block"
     echo "  transaction  Generate tests for a transaction"
+    echo "  version      Generate tests for version methods (specVersion, chainId)"
 }
 
 case "${1:-}" in
@@ -34,6 +35,10 @@ case "${1:-}" in
             transaction)
                 shift
                 "$script_dir/scripts/generate/transaction.sh" "$@"
+                ;;
+            version)
+                shift
+                "$script_dir/scripts/generate/version.sh" "$@"
                 ;;
             "")
                 generate_usage
