@@ -10,6 +10,7 @@ usage() {
     echo ""
     echo "Commands:"
     echo "  test                  Run all golden test diffs"
+    echo "  regen                 Regenerate all golden test outputs"
     echo "  generate              Generate golden tests"
 }
 
@@ -24,6 +25,10 @@ case "${1:-}" in
     test)
         shift
         "$script_dir/scripts/run/test.sh" "$@"
+        ;;
+    regen)
+        shift
+        "$script_dir/scripts/generate/regen.sh" "$@"
         ;;
     generate)
         shift
