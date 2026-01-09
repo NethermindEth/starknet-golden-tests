@@ -1,0 +1,1 @@
+{"id":1,"jsonrpc":"2.0","method":"starknet_getCompiledCasm","params":{"class_hash":"0x1efa8f84fd4dff9e2902ec88717cf0dafc8c188f80c3450615944a469428f7f"}}

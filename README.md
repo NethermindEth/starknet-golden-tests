@@ -47,6 +47,9 @@ Generate golden test cases from a trusted RPC endpoint:
 # Generate tests for a block (by block number)
 ./golden.sh generate block [--rpc-url <url>] <network> <block_number>
 
+# Generate tests for a class (by class hash)
+./golden.sh generate class [--rpc-url <url>] <network> <class_hash> [block_id]
+
 # Generate tests for a transaction (by hash)
 ./golden.sh generate transaction [--rpc-url <url>] <network> <transaction_hash>
 
@@ -60,6 +63,9 @@ Generate golden test cases from a trusted RPC endpoint:
 # Using STARKNET_RPC env var
 export STARKNET_RPC=http://localhost:6060
 ./golden.sh generate block mainnet 100
+./golden.sh generate class mainnet 0x1234... # uses "latest" block
+./golden.sh generate class mainnet 0x1234... 100 # uses block_number
+./golden.sh generate class mainnet 0x1234... 0xabc... # uses block_hash
 ./golden.sh generate transaction mainnet 0x1b4d9f09276629d496af1af8ff00173c11ff146affacb1b5c858d7aa89001ae
 
 # Or using --rpc-url flag
