@@ -6,6 +6,9 @@ rpc_url="$3"
 
 if [ -z "$network" ] || [ -z "$transaction_hash" ] || [ -z "$rpc_url" ]; then
     echo "Usage: $0 <network> <transaction_hash> <rpc_url>" >&2
+    echo "" >&2
+    echo "Examples:" >&2
+    echo "  $0 mainnet 0x1b4d9f09276629d496af1af8ff00173c11ff146affacb1b5c858d7aa89001ae http://localhost:6060" >&2
     exit 1
 fi
 

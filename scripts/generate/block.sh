@@ -6,6 +6,9 @@ rpc_url="$3"
 
 if [ -z "$network" ] || [ -z "$block_number" ] || [ -z "$rpc_url" ]; then
     echo "Usage: $0 <network> <block_number> <rpc_url>" >&2
+    echo "" >&2
+    echo "Examples:" >&2
+    echo "  $0 mainnet 100 http://localhost:6060" >&2
     exit 1
 fi
 
