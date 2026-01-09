@@ -21,9 +21,15 @@ repo_root="$(cd "$script_dir/../.." && pwd)"
 # Change to repo root to ensure paths are consistent
 cd "$repo_root" || exit 1
 
+# Create timestamped results folder
+timestamp=$(date +"%Y%m%d-%H%M%S")
+results_dir="$repo_root/results/${timestamp}"
+mkdir -p "$results_dir"
+
 total=0
 passed=0
-failed=0
+failed_tests=()
+failed_diffs=()
 
 # Color codes
 GREEN='\033[0;32m'
@@ -40,14 +46,23 @@ while IFS= read -r -d '' input_file; do
     # Run diff (use absolute path to be safe)
     abs_input_file="$repo_root/$input_file"
     printf "🧪 %-140s" "$rel_input_file"
-    if "${script_dir}/diff.sh" "$rpc_url" "$abs_input_file" >/dev/null 2>&1; then
+
+    # Flatten path: tests/mainnet/method/100.input.json -> mainnet.method.100.diff
+    rel_path="${rel_input_file#tests/}"
+    rel_path="${rel_path%.input.json}"
+    flat_name="${rel_path//\//.}"
+    diff_file="$results_dir/${flat_name}.diff"
+
+    # Run diff, tee to file and stderr
+    "${script_dir}/diff.sh" "$rpc_url" "$abs_input_file" 2>&1 | tee "$diff_file" >&2
+    if [ "${PIPESTATUS[0]}" -eq 0 ]; then
         echo -e "${GREEN}✅ PASSED${NC}"
         ((passed++))
+        rm -f "$diff_file"  # Remove empty/passed diff file
     else
         echo -e "${RED}❌ FAILED${NC}"
-        ((failed++))
-        # Show the actual diff
-        "${script_dir}/diff.sh" "$rpc_url" "$abs_input_file"
+        failed_tests+=("$rel_input_file")
+        failed_diffs+=("$diff_file")
     fi
 
 done < <(find "$tests_folder" -type f -name "*.input.json" -print0 2>/dev/null)
@@ -57,11 +72,21 @@ echo "========================================="
 echo "📊 Summary:"
 echo "  📈 Total tests: $total"
 echo "  ✅ Passed: $passed"
-echo "  ❌ Failed: $failed"
+echo "  ❌ Failed: ${#failed_tests[@]}"
+if [ ${#failed_tests[@]} -gt 0 ]; then
+    echo ""
+    echo "📁 Results saved to: $results_dir"
+    echo ""
+    echo "📋 Failed tests:"
+    for i in "${!failed_tests[@]}"; do
+        echo "  ❌ ${failed_tests[$i]}"
+        echo "    📄 ${failed_diffs[$i]}"
+    done
+fi
 echo "========================================="
 
 # Exit with non-zero if there were failures
-if [ $failed -gt 0 ]; then
+if [ ${#failed_tests[@]} -gt 0 ]; then
     exit 1
 fi
 
