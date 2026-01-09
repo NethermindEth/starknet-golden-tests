@@ -71,6 +71,57 @@ The generators automatically:
 - Test both block number and block hash variants
 - Verify that different query methods return consistent results
 
+### Regenerating Outputs
+
+Regenerate all golden test outputs from a trusted RPC endpoint running the latest spec version:
+
+```bash
+./golden.sh regen [--rpc-url <url>] [tests_folder]
+```
+
+- `--rpc-url` — Your Starknet RPC endpoint (optional if `STARKNET_RPC` env var is set)
+- `tests_folder` — Folder containing tests to regenerate (default: auto-detect by chain ID)
+
+**Examples:**
+
+```bash
+# Regenerate all outputs for auto-detected network
+./golden.sh regen --rpc-url http://localhost:6060
+
+# Regenerate outputs for a specific test folder
+./golden.sh regen --rpc-url http://localhost:6060 tests/mainnet
+```
+
+Use this when you need to update all expected outputs after changes to the RPC implementation. This regenerates the default `.output.json` files (not version-specific variants).
+
+### Creating Version Variants
+
+Create version-specific output variants for older node versions:
+
+```bash
+./golden.sh variant [--rpc-url <url>] [tests_folder]
+```
+
+- `--rpc-url` — Your Starknet RPC endpoint for the older node version
+- `tests_folder` — Folder containing tests (default: auto-detect by chain ID)
+
+**Examples:**
+
+```bash
+# Create variants from an older node version
+./golden.sh variant --rpc-url http://old-node:6060
+
+# Create variants for a specific test folder
+./golden.sh variant --rpc-url http://old-node:6060 tests/mainnet
+```
+
+This command:
+- Queries `starknet_specVersion` to detect the node's spec version
+- Creates variant files (e.g., `100.output.0.8.0.json`) only when outputs differ from the default
+- Skips creating variants when the output matches the resolved output for that version
+
+Variant files allow tests to pass against multiple RPC implementation versions.
+
 ## How It Works
 
 1. **Test Structure**: Each test is a pair of `.input.json` (RPC request) and `.output.json` (expected response) files.

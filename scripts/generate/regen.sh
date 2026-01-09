@@ -3,6 +3,9 @@
 # Usage: regen.sh [--rpc-url <url>] [tests_folder]
 #   --rpc-url: RPC URL (default: $STARKNET_RPC env var)
 #   tests_folder: Optional folder path to search for tests (default: auto-detect by chain ID)
+#
+# Regenerates default .output.json files from the latest spec version.
+# For older versions, use variant.sh to create version-specific outputs.
 
 rpc_url="$STARKNET_RPC"
 if [[ "$1" == "--rpc-url" ]]; then
