@@ -1,17 +1,25 @@
 #!/bin/bash
 
-# Usage: run-all-diffs.sh <rpc_url> [tests_folder]
+# Usage: test.sh [--rpc-url <url>] [tests_folder]
+#   --rpc-url: RPC URL (default: $STARKNET_RPC env var)
 #   tests_folder: Optional folder path to search for tests (default: auto-detect by chain ID)
 
-rpc_url="$1"
-tests_folder="$2"
+rpc_url="$STARKNET_RPC"
+if [[ "$1" == "--rpc-url" ]]; then
+    rpc_url="$2"
+    shift 2
+fi
+tests_folder="$1"
 
 if [ -z "$rpc_url" ]; then
-    echo "Usage: $0 <rpc_url> [tests_folder]" >&2
+    echo "Usage: $0 [--rpc-url <url>] [tests_folder]" >&2
+    echo "" >&2
+    echo "RPC URL can be provided via --rpc-url flag or STARKNET_RPC env var." >&2
     echo "" >&2
     echo "Examples:" >&2
-    echo "  $0 http://localhost:6060" >&2
-    echo "  $0 http://localhost:6060 tests/mainnet" >&2
+    echo "  $0 --rpc-url http://localhost:6060" >&2
+    echo "  $0 --rpc-url http://localhost:6060 tests/mainnet" >&2
+    echo "  STARKNET_RPC=http://localhost:6060 $0" >&2
     exit 1
 fi
 
@@ -24,7 +32,7 @@ cd "$repo_root" || exit 1
 # Auto-detect test folder by chain ID if not specified
 if [ -z "$tests_folder" ]; then
     echo "🔍 Auto-detecting network by querying starknet_chainId..."
-    if ! tests_folder=$("${script_dir}/detect-network.sh" "$rpc_url") || [ -z "$tests_folder" ]; then
+    if ! tests_folder=$(STARKNET_RPC="$rpc_url" "${script_dir}/detect-network.sh") || [ -z "$tests_folder" ]; then
         exit 1
     fi
     echo "✅ Using: $tests_folder"
@@ -63,7 +71,7 @@ while IFS= read -r -d '' input_file; do
     diff_file="$results_dir/${flat_name}.diff"
 
     # Run diff, tee to file and stderr
-    "${script_dir}/diff.sh" "$rpc_url" "$abs_input_file" 2>&1 | tee "$diff_file" >&2
+    STARKNET_RPC="$rpc_url" "${script_dir}/diff.sh" "$abs_input_file" 2>&1 | tee "$diff_file" >&2
     if [ "${PIPESTATUS[0]}" -eq 0 ]; then
         echo -e "${GREEN}✅ PASSED${NC}"
         ((passed++))

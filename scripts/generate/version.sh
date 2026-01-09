@@ -1,13 +1,20 @@
 #!/bin/bash
 
+rpc_url="$STARKNET_RPC"
+if [[ "$1" == "--rpc-url" ]]; then
+    rpc_url="$2"
+    shift 2
+fi
 network="$1"
-rpc_url="$2"
 
 if [ -z "$network" ] || [ -z "$rpc_url" ]; then
-    echo "Usage: $0 <network> <rpc_url>" >&2
+    echo "Usage: $0 [--rpc-url <url>] <network>" >&2
+    echo "" >&2
+    echo "RPC URL can be provided via --rpc-url flag or STARKNET_RPC env var." >&2
     echo "" >&2
     echo "Examples:" >&2
-    echo "  $0 mainnet http://localhost:6060" >&2
+    echo "  $0 --rpc-url http://localhost:6060 mainnet" >&2
+    echo "  STARKNET_RPC=http://localhost:6060 $0 mainnet" >&2
     exit 1
 fi
 
@@ -33,7 +40,7 @@ for method in "${methods[@]}"; do
 
     # Run write-output.sh for this method
     echo "Processing $method..."
-    "${script_dir}/write-output.sh" "$network" "$method" "$test_name" "$rpc_url"
+    STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$method" "$test_name"
 done
 
 echo "Done processing version methods"

@@ -11,11 +11,17 @@ A golden testing framework for validating Starknet JSON-RPC implementations. Com
 ## Quick Start
 
 ```bash
-# Run all tests against your RPC endpoint
-./golden.sh test http://localhost:6060
+# Set your RPC endpoint (or use --rpc-url flag)
+export STARKNET_RPC=http://localhost:6060
+
+# Run all tests
+./golden.sh test
 
 # Run tests for a specific network/folder
-./golden.sh test http://localhost:6060 tests/mainnet
+./golden.sh test tests/mainnet
+
+# Or use --rpc-url flag directly
+./golden.sh test --rpc-url http://localhost:6060
 ```
 
 ## CLI Usage
@@ -23,13 +29,13 @@ A golden testing framework for validating Starknet JSON-RPC implementations. Com
 ### Running Tests
 
 ```bash
-./golden.sh test <rpc_url> [tests_folder]
+./golden.sh test [--rpc-url <url>] [tests_folder]
 ```
 
 Runs all golden tests by comparing live RPC responses against expected outputs.
 
-- `rpc_url` — Your Starknet RPC endpoint (required)
-- `tests_folder` — Folder containing tests to run (default: `tests`)
+- `--rpc-url` — Your Starknet RPC endpoint (optional if `STARKNET_RPC` env var is set)
+- `tests_folder` — Folder containing tests to run (default: auto-detect by chain ID)
 
 Results are saved to a timestamped folder in `results/`. Only failed tests produce diff files.
 
@@ -39,20 +45,25 @@ Generate golden test cases from a trusted RPC endpoint:
 
 ```bash
 # Generate tests for a block (by block number)
-./golden.sh generate block <network> <block_number> <rpc_url>
+./golden.sh generate block [--rpc-url <url>] <network> <block_number>
 
 # Generate tests for a transaction (by hash)
-./golden.sh generate transaction <network> <transaction_hash> <rpc_url>
+./golden.sh generate transaction [--rpc-url <url>] <network> <transaction_hash>
+
+# Generate version/chainId tests
+./golden.sh generate version [--rpc-url <url>] <network>
 ```
 
 **Examples:**
 
 ```bash
-# Generate block 100 tests for mainnet
-./golden.sh generate block mainnet 100 http://localhost:6060
+# Using STARKNET_RPC env var
+export STARKNET_RPC=http://localhost:6060
+./golden.sh generate block mainnet 100
+./golden.sh generate transaction mainnet 0x1b4d9f09276629d496af1af8ff00173c11ff146affacb1b5c858d7aa89001ae
 
-# Generate transaction tests
-./golden.sh generate transaction mainnet 0x1b4d9f09276629d496af1af8ff00173c11ff146affacb1b5c858d7aa89001ae http://localhost:6060
+# Or using --rpc-url flag
+./golden.sh generate block --rpc-url http://localhost:6060 mainnet 100
 ```
 
 The generators automatically:

@@ -1,9 +1,17 @@
 #!/bin/bash
 
-url="$1"
+url="$STARKNET_RPC"
+if [[ "$1" == "--rpc-url" ]]; then
+    url="$2"
+    shift 2
+elif [[ -n "$1" ]]; then
+    url="$1"
+fi
 
 if [ -z "$url" ]; then
-    echo "Usage: $0 <url>" >&2
+    echo "Usage: $0 [--rpc-url <url>] or $0 <url>" >&2
+    echo "" >&2
+    echo "RPC URL can be provided via --rpc-url flag, positional arg, or STARKNET_RPC env var." >&2
     exit 1
 fi
 
