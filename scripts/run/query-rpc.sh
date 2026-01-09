@@ -29,8 +29,9 @@ fi
 
 # Make curl request and pipe through normalization script
 echo "$json_input" | curl --silent --show-error --location --fail-with-body --compressed \
+    --retry 5 --retry-delay 2 \
     --header 'Content-Type: application/json' \
     --header 'Accept: application/json' \
     --header 'Accept-Encoding: gzip' \
     --data @- \
-    "$url" | "$normalize_script"
+    "$url" | jq -s '.[-1]' | "$normalize_script"

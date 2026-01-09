@@ -39,7 +39,7 @@ while IFS= read -r -d '' input_file; do
 
     # Run diff (use absolute path to be safe)
     abs_input_file="$repo_root/$input_file"
-    printf "🧪 %-80s" "$rel_input_file"
+    printf "🧪 %-140s" "$rel_input_file"
     if "${script_dir}/diff.sh" "$rpc_url" "$abs_input_file" >/dev/null 2>&1; then
         echo -e "${GREEN}✅ PASSED${NC}"
         ((passed++))
