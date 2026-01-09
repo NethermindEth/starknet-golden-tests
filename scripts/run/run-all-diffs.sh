@@ -58,7 +58,7 @@ while IFS= read -r -d '' input_file; do
     if [ "${PIPESTATUS[0]}" -eq 0 ]; then
         echo -e "${GREEN}✅ PASSED${NC}"
         ((passed++))
-        rm -f "$diff_file"  # Remove empty/passed diff file
+        rm -f "$diff_file" # Remove empty/passed diff file
     else
         echo -e "${RED}❌ FAILED${NC}"
         failed_tests+=("$rel_input_file")

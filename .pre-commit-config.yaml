@@ -1,0 +1,14 @@
+repos:
+  - repo: local
+    hooks:
+      - id: shfmt
+        name: shfmt
+        entry: shfmt -w -i 4 -ci -bn
+        language: system
+        types: [shell]
+
+      - id: shellcheck
+        name: shellcheck
+        entry: shellcheck
+        language: system
+        types: [shell]
