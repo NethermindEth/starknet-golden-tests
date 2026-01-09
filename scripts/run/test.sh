@@ -38,6 +38,15 @@ if [ -z "$tests_folder" ]; then
     echo "✅ Using: $tests_folder"
 fi
 
+# Detect spec version for variant resolution
+echo "🔍 Detecting spec version..."
+if ! spec_version=$(STARKNET_RPC="$rpc_url" "${script_dir}/detect-version.sh") || [ -z "$spec_version" ]; then
+    echo "⚠️  Warning: Could not detect spec version, using default outputs" >&2
+    spec_version=""
+else
+    echo "✅ Spec version: $spec_version"
+fi
+
 # Create timestamped results folder
 timestamp=$(date +"%Y%m%d-%H%M%S")
 results_dir="$repo_root/results/${timestamp}"
@@ -70,8 +79,15 @@ while IFS= read -r -d '' input_file; do
     flat_name="${rel_path//\//.}"
     diff_file="$results_dir/${flat_name}.diff"
 
+    # Resolve output file based on spec version
+    if [ -n "$spec_version" ]; then
+        output_file=$("${script_dir}/resolve-output.sh" "$abs_input_file" "$spec_version")
+    else
+        output_file="${abs_input_file%.input.json}.output.json"
+    fi
+
     # Run diff, tee to file and stderr
-    STARKNET_RPC="$rpc_url" "${script_dir}/diff.sh" "$abs_input_file" 2>&1 | tee "$diff_file" >&2
+    STARKNET_RPC="$rpc_url" "${script_dir}/diff.sh" "$abs_input_file" "$output_file" 2>&1 | tee "$diff_file" >&2
     if [ "${PIPESTATUS[0]}" -eq 0 ]; then
         echo -e "${GREEN}✅ PASSED${NC}"
         ((passed++))
