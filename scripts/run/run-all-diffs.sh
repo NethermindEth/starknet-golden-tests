@@ -45,7 +45,7 @@ while IFS= read -r -d '' input_file; do
 
     # Run diff (use absolute path to be safe)
     abs_input_file="$repo_root/$input_file"
-    printf "🧪 %-140s" "$rel_input_file"
+    printf "🧪 %-160s" "$rel_input_file"
 
     # Flatten path: tests/mainnet/method/100.input.json -> mainnet.method.100.diff
     rel_path="${rel_input_file#tests/}"
@@ -65,7 +65,7 @@ while IFS= read -r -d '' input_file; do
         failed_diffs+=("$diff_file")
     fi
 
-done < <(find "$tests_folder" -type f -name "*.input.json" -print0 2>/dev/null)
+done < <(find "$tests_folder" -type f -name "*.input.json" -print0 2>/dev/null | sort -z)
 
 # Summary
 echo "========================================="
