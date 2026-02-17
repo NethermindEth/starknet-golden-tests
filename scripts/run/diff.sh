@@ -31,8 +31,27 @@ if [ ! -f "$output_file" ]; then
     exit 1
 fi
 
-# Compare live response (already normalized by query-rpc.sh) with expected output (already normalized)
-# Pretty-print both sides for better diff readability
-diff --color=always -u \
-    <(STARKNET_RPC="$rpc_url" "${script_dir}/query-rpc.sh" <"$input_file" | jq '.') \
-    <(jq '.' "$output_file")
+# Query RPC and store in temp files to properly capture errors
+temp_actual=$(mktemp)
+temp_expected=$(mktemp)
+trap 'rm -f "$temp_actual" "$temp_expected"' EXIT
+
+# Run query and capture exit code - if this fails, the test should fail
+if ! STARKNET_RPC="$rpc_url" "${script_dir}/query-rpc.sh" <"$input_file" >"$temp_actual"; then
+    exit 1
+fi
+
+# Normalize and pretty-print actual response
+if ! jq -S -f "${script_dir}/normalize-json.jq" "$temp_actual" >"${temp_actual}.pretty"; then
+    echo "Error: Failed to parse RPC response as JSON" >&2
+    exit 1
+fi
+
+# Normalize and pretty-print expected output
+if ! jq -S -f "${script_dir}/normalize-json.jq" "$output_file" >"$temp_expected"; then
+    echo "Error: Failed to parse expected output as JSON" >&2
+    exit 1
+fi
+
+# Compare the results
+diff --color=always -u "${temp_actual}.pretty" "$temp_expected"

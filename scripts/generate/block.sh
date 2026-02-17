@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
+trap 'echo "Error on line $LINENO: $BASH_COMMAND"; exit 1' ERR
 
 rpc_url="$STARKNET_RPC"
 if [[ "$1" == "--rpc-url" ]]; then
@@ -7,7 +9,20 @@ if [[ "$1" == "--rpc-url" ]]; then
 fi
 block_number="$1"
 
-if [ -z "$block_number" ] || [ -z "$rpc_url" ]; then
+if [ -z "$block_number" ]; then
+    missing="block_number"
+fi
+if [ -z "$rpc_url" ]; then
+    if [ -n "$missing" ]; then
+        missing="$missing and rpc_url"
+    else
+        missing="rpc_url"
+    fi
+fi
+
+if [ -n "$missing" ]; then
+    echo "Error: Missing $missing argument(s)." >&2
+    echo "" >&2
     echo "Usage: $0 [--rpc-url <url>] <block_number>" >&2
     echo "" >&2
     echo "RPC URL can be provided via --rpc-url flag or STARKNET_RPC env var." >&2
@@ -27,6 +42,13 @@ if ! tests_folder=$(STARKNET_RPC="$rpc_url" "${script_dir}/../run/detect-network
 fi
 network=$(basename "$tests_folder")
 echo "✅ Using network: $network"
+
+if [[ "$block_number" == "latest" ]]; then
+    echo "Getting latest block number"
+    latest_block_request='{"id":1,"jsonrpc":"2.0","method":"starknet_blockNumber","params":[]}'
+    block_number=$(echo "$latest_block_request" | STARKNET_RPC="$rpc_url" "${script_dir}/../run/query-rpc.sh" 2>/dev/null | jq -r '.result // empty')
+    echo "Latest block is: $block_number"
+fi
 
 methods=(
     "starknet_getBlockTransactionCount"

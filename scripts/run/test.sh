@@ -86,9 +86,16 @@ while IFS= read -r -d '' input_file; do
         output_file="${abs_input_file%.input.json}.output.json"
     fi
 
-    # Run diff, tee to file and stderr
-    STARKNET_RPC="$rpc_url" "${script_dir}/diff.sh" "$abs_input_file" "$output_file" 2>&1 | tee "$diff_file" >&2
-    if [ "${PIPESTATUS[0]}" -eq 0 ]; then
+    # Run diff, capture output and exit code
+    set +e
+    diff_output=$(STARKNET_RPC="$rpc_url" "${script_dir}/diff.sh" "$abs_input_file" "$output_file" 2>&1)
+    diff_exit_code=$?
+    set -e
+    
+    # Save output to diff file and print to stderr
+    echo "$diff_output" | tee "$diff_file" >&2
+    
+    if [ "$diff_exit_code" -eq 0 ]; then
         echo -e "${GREEN}✅ PASSED${NC}"
         ((passed++))
         rm -f "$diff_file" # Remove empty/passed diff file
