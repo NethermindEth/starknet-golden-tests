@@ -67,7 +67,7 @@ while IFS= read -r -d '' input_file; do
     # input_file is relative to current directory (repo root)
     rel_input_file="$input_file"
 
-    ((total++))
+    total=$((total + 1))
 
     # Run diff (use absolute path to be safe)
     abs_input_file="$repo_root/$input_file"
@@ -87,17 +87,14 @@ while IFS= read -r -d '' input_file; do
     fi
 
     # Run diff, capture output and exit code
-    set +e
-    diff_output=$(STARKNET_RPC="$rpc_url" "${script_dir}/diff.sh" "$abs_input_file" "$output_file" 2>&1)
-    diff_exit_code=$?
-    set -e
+    diff_output=$(STARKNET_RPC="$rpc_url" "${script_dir}/diff.sh" "$abs_input_file" "$output_file" 2>&1) && diff_exit_code=0 || diff_exit_code=$?
     
     # Save output to diff file and print to stderr
     echo "$diff_output" | tee "$diff_file" >&2
     
     if [ "$diff_exit_code" -eq 0 ]; then
         echo -e "${GREEN}✅ PASSED${NC}"
-        ((passed++))
+        passed=$((passed + 1))
         rm -f "$diff_file" # Remove empty/passed diff file
     else
         echo -e "${RED}❌ FAILED${NC}"
