@@ -42,12 +42,11 @@ if [ -n "$missing" ]; then
     echo "" >&2
     echo "Examples:" >&2
     echo "  $0 --rpc-url http://localhost:6060 100" >&2
-    echo "  $0 --rpc-url http://localhost:6060 --with-initial-reads 100" >&2
+    echo "  $0 --rpc-url http://localhost:6060 --response-flags '[\"INCLUDE_PROOF_FACTS\"]' 100" >&2
+    echo "  $0 --rpc-url http://localhost:6060 --trace-flags '[\"RETURN_INITIAL_READS\"]' 100" >&2
     echo "  STARKNET_RPC=http://localhost:6060 $0 100" >&2
     exit 1
 fi
-
-script_dir="$(dirname "$0")"
 
 # Auto-detect network
 echo "🔍 Auto-detecting network by querying starknet_chainId..."
@@ -93,6 +92,7 @@ for method in "${methods[@]}"; do
         --arg method "$method" \
         --argjson block_number "$block_number" \
         '{id: 1, jsonrpc: "2.0", method: $method, params: {block_id: {block_number: $block_number}}}' \
+        | add_method_params "$method" \
         >"$input_file"
 
     # Run write-output.sh for this method
@@ -120,6 +120,7 @@ for method in "${methods[@]}"; do
         --arg method "$method" \
         --arg block_hash "$block_hash" \
         '{id: 1, jsonrpc: "2.0", method: $method, params: {block_id: {block_hash: $block_hash}}}' \
+        | add_method_params "$method" \
         >"$input_file"
 
     echo "Processing $method with block hash..."
@@ -140,41 +141,5 @@ for method in "${methods[@]}"; do
     fi
     echo "  ✅ $method outputs match"
 done
-
-if [[ "$with_initial_reads" == "true" ]]; then
-    method="starknet_traceBlockTransactions"
-
-    input_file="tests/${network}/${method}/${block_number}-initial-reads.input.json"
-    mkdir -p "$(dirname "$input_file")"
-
-    jq -nc --argjson block_number "$block_number" \
-        '{id: 1, jsonrpc: "2.0", method: "starknet_traceBlockTransactions", params: {block_id: {block_number: $block_number}, trace_flags: ["RETURN_INITIAL_READS"]}}' \
-        >"$input_file"
-
-    echo "Processing $method with block number (initial reads)..."
-    STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$method" "${block_number}-initial-reads"
-
-    test_name="${block_number}-${block_hash}-initial-reads"
-    input_file="tests/${network}/${method}/${test_name}.input.json"
-
-    jq -nc --arg block_hash "$block_hash" \
-        '{id: 1, jsonrpc: "2.0", method: "starknet_traceBlockTransactions", params: {block_id: {block_hash: $block_hash}, trace_flags: ["RETURN_INITIAL_READS"]}}' \
-        >"$input_file"
-
-    echo "Processing $method with block hash (initial reads)..."
-    STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$method" "$test_name"
-
-    echo "Comparing initial reads variants (block number vs block hash outputs)..."
-    block_number_output="tests/${network}/${method}/${block_number}-initial-reads.output.json"
-    block_hash_output="tests/${network}/${method}/${test_name}.output.json"
-
-    if ! diff --color=auto -u \
-        <(jq '.' "$block_number_output") \
-        <(jq '.' "$block_hash_output"); then
-        echo "  ❌ $method initial reads outputs differ" >&2
-        exit 1
-    fi
-    echo "  ✅ $method initial reads outputs match"
-fi
 
 echo "Done processing all methods for block $block_number"

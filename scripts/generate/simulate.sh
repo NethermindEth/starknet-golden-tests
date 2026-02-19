@@ -1,39 +1,24 @@
 #!/bin/bash
 
-rpc_url="$STARKNET_RPC"
-with_initial_reads=false
+script_dir="$(dirname "$0")"
+source "${script_dir}/parse-args.sh"
+parse_args "$@"
 
-while [[ $# -gt 1 ]]; do
-    case "$1" in
-        --rpc-url)
-            rpc_url="$2"
-            shift 2
-            ;;
-        --with-initial-reads)
-            with_initial_reads=true
-            shift
-            ;;
-        *)
-            break
-            ;;
-    esac
-done
-block_number="$1"
+block_number="${REMAINING_ARGS[0]}"
+rpc_url="$RPC_URL"
 
 if [ -z "$block_number" ] || [ -z "$rpc_url" ]; then
-    echo "Usage: $0 [--rpc-url <url>] [--with-initial-reads] <block_number>" >&2
+    echo "Usage: $0 [--rpc-url <url>] [--simulation-flags <json>] <block_number>" >&2
     echo "" >&2
     echo "RPC URL can be provided via --rpc-url flag or STARKNET_RPC env var." >&2
     echo "Requires 'generate block' to have been run first for this block number." >&2
     echo "" >&2
     echo "Examples:" >&2
     echo "  $0 --rpc-url http://localhost:6060 100" >&2
-    echo "  $0 --rpc-url http://localhost:6060 --with-initial-reads 100" >&2
+    echo "  $0 --rpc-url http://localhost:6060 --simulation-flags '[\"RETURN_INITIAL_READS\"]' 100" >&2
     echo "  STARKNET_RPC=http://localhost:6060 $0 100" >&2
     exit 1
 fi
-
-script_dir="$(dirname "$0")"
 
 # Auto-detect network
 echo "🔍 Auto-detecting network by querying starknet_chainId..."
@@ -94,7 +79,8 @@ for method in "${methods[@]}"; do
     jq -nc \
         --argjson block_number "$block_number" \
         --argjson tx "$tx_json" \
-        '{id: 1, jsonrpc: "2.0", method: "starknet_simulateTransactions", params: {block_id: {block_number: $block_number}, transactions: [$tx], simulation_flags: []}}' \
+        '{id: 1, jsonrpc: "2.0", method: "starknet_simulateTransactions", params: {block_id: {block_number: $block_number}, transactions: [$tx]}}' \
+        | add_method_params "$method" \
         >"$input_file"
 
     echo "Processing $method with block number..."
@@ -109,7 +95,8 @@ for method in "${methods[@]}"; do
     jq -nc \
         --arg block_hash "$block_hash" \
         --argjson tx "$tx_json" \
-        '{id: 1, jsonrpc: "2.0", method: "starknet_simulateTransactions", params: {block_id: {block_hash: $block_hash}, transactions: [$tx], simulation_flags: []}}' \
+        '{id: 1, jsonrpc: "2.0", method: "starknet_simulateTransactions", params: {block_id: {block_hash: $block_hash}, transactions: [$tx]}}' \
+        | add_method_params "$method" \
         >"$input_file"
 
     echo "Processing $method with block hash..."
@@ -130,51 +117,5 @@ for method in "${methods[@]}"; do
     fi
     echo "  ✅ $method outputs match"
 done
-
-if [[ "$with_initial_reads" == "true" ]]; then
-    # Generate initial reads variants with block number
-    for method in "${methods[@]}"; do
-        input_file="tests/${network}/${method}/${block_number}-initial-reads.input.json"
-
-        jq -nc \
-            --argjson block_number "$block_number" \
-            --argjson tx "$tx_json" \
-            '{id: 1, jsonrpc: "2.0", method: "starknet_simulateTransactions", params: {block_id: {block_number: $block_number}, transactions: [$tx], simulation_flags: ["RETURN_INITIAL_READS"]}}' \
-            >"$input_file"
-
-        echo "Processing $method with block number (initial reads)..."
-        STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$method" "${block_number}-initial-reads"
-    done
-
-    # Generate initial reads variants with block hash
-    for method in "${methods[@]}"; do
-        test_name="${block_number}-${block_hash}-initial-reads"
-        input_file="tests/${network}/${method}/${test_name}.input.json"
-
-        jq -nc \
-            --arg block_hash "$block_hash" \
-            --argjson tx "$tx_json" \
-            '{id: 1, jsonrpc: "2.0", method: "starknet_simulateTransactions", params: {block_id: {block_hash: $block_hash}, transactions: [$tx], simulation_flags: ["RETURN_INITIAL_READS"]}}' \
-            >"$input_file"
-
-        echo "Processing $method with block hash (initial reads)..."
-        STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$method" "$test_name"
-    done
-
-    # Diff initial reads outputs
-    echo "Comparing initial reads variants (block number vs block hash outputs)..."
-    for method in "${methods[@]}"; do
-        block_number_output="tests/${network}/${method}/${block_number}-initial-reads.output.json"
-        block_hash_output="tests/${network}/${method}/${block_number}-${block_hash}-initial-reads.output.json"
-
-        if ! diff --color=auto -u \
-            <(jq '.' "$block_number_output") \
-            <(jq '.' "$block_hash_output"); then
-            echo "  ❌ $method initial reads outputs differ" >&2
-            exit 1
-        fi
-        echo "  ✅ $method initial reads outputs match"
-    done
-fi
 
 echo "Done processing all simulate methods for block $block_number"
