@@ -1,8 +1,6 @@
 #!/bin/bash
 
-# Normalize starknet_traceBlockTransactions output for stable golden tests.
-# Sorts non-deterministic arrays at arbitrary depth within trace call stacks.
-
+# Normalize .result[].trace_root.state_diff.storage_diffs by sorting by .address
 script_dir="$(dirname "$0")"
 "$script_dir/walk-sort-array.sh" 'state_diff' '.storage_diffs' '.address' \
     | "$script_dir/walk-sort-array.sh" 'state_diff' '.storage_diffs[].storage_entries' '.key' \

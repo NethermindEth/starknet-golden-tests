@@ -1,24 +1,23 @@
 #!/bin/bash
 
-rpc_url="$STARKNET_RPC"
-if [[ "$1" == "--rpc-url" ]]; then
-    rpc_url="$2"
-    shift 2
-fi
-transaction_hash="$1"
+script_dir="$(dirname "$0")"
+source "${script_dir}/parse-args.sh"
+parse_args "$@"
+
+transaction_hash="${REMAINING_ARGS[0]}"
+rpc_url="$RPC_URL"
 
 if [ -z "$transaction_hash" ] || [ -z "$rpc_url" ]; then
-    echo "Usage: $0 [--rpc-url <url>] <transaction_hash>" >&2
+    echo "Usage: $0 [--rpc-url <url>] [--response-flags <json>] <transaction_hash>" >&2
     echo "" >&2
     echo "RPC URL can be provided via --rpc-url flag or STARKNET_RPC env var." >&2
     echo "" >&2
     echo "Examples:" >&2
     echo "  $0 --rpc-url http://localhost:6060 0x1b4d9f09276629d496af1af8ff00173c11ff146affacb1b5c858d7aa89001ae" >&2
+    echo "  $0 --rpc-url http://localhost:6060 --response-flags '[\"INCLUDE_PROOF_FACTS\"]' 0x1b4d9f09276629d496af1af8ff00173c11ff146affacb1b5c858d7aa89001ae" >&2
     echo "  STARKNET_RPC=http://localhost:6060 $0 0x1b4d9f09276629d496af1af8ff00173c11ff146affacb1b5c858d7aa89001ae" >&2
     exit 1
 fi
-
-script_dir="$(dirname "$0")"
 
 # Auto-detect network
 echo "🔍 Auto-detecting network by querying starknet_chainId..."
@@ -47,6 +46,7 @@ for method in "${methods[@]}"; do
         --arg method "$method" \
         --arg transaction_hash "$transaction_hash" \
         '{id: 1, jsonrpc: "2.0", method: $method, params: {transaction_hash: $transaction_hash}}' \
+        | add_method_params "$method" \
         >"$input_file"
 
     # Run write-output.sh for this method
@@ -101,6 +101,7 @@ jq -nc \
     --argjson block_number "$block_number" \
     --argjson index "$tx_index" \
     '{id: 1, jsonrpc: "2.0", method: "starknet_getTransactionByBlockIdAndIndex", params: {block_id: {block_number: $block_number}, index: $index}}' \
+    | add_method_params "$index_method" \
     >"$input_file"
 
 echo "Processing $index_method with block number..."
@@ -114,6 +115,7 @@ jq -nc \
     --arg block_hash "$block_hash" \
     --argjson index "$tx_index" \
     '{id: 1, jsonrpc: "2.0", method: "starknet_getTransactionByBlockIdAndIndex", params: {block_id: {block_hash: $block_hash}, index: $index}}' \
+    | add_method_params "$index_method" \
     >"$input_file"
 
 echo "Processing $index_method with block hash..."
