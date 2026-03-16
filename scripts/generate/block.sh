@@ -43,6 +43,14 @@ fi
 network=$(basename "$tests_folder")
 echo "✅ Using network: $network"
 
+# Detect spec version
+echo "🔍 Detecting spec version..."
+if ! spec_version=$(STARKNET_RPC="$rpc_url" "${script_dir}/../run/detect-version.sh") || [ -z "$spec_version" ]; then
+    echo "Error: Could not detect spec version" >&2
+    exit 1
+fi
+echo "✅ Spec version: $spec_version"
+
 if [[ "$block_number" == "latest" ]]; then
     echo "Getting latest block number"
     latest_block_request='{"id":1,"jsonrpc":"2.0","method":"starknet_blockNumber","params":[]}'
@@ -60,7 +68,7 @@ methods=(
 )
 
 for method in "${methods[@]}"; do
-    input_file="tests/${network}/${method}/${block_number}.input.json"
+    input_file="tests/${network}/v${spec_version}/${method}/${block_number}.input.json"
     input_dir="$(dirname "$input_file")"
 
     # Create input directory if it doesn't exist
@@ -75,11 +83,11 @@ for method in "${methods[@]}"; do
 
     # Run write-output.sh for this method
     echo "Processing $method with block number..."
-    STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$method" "$block_number"
+    STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$spec_version" "$method" "$block_number"
 done
 
 # Extract block hash from starknet_getBlockWithTxHashes output
-block_hash=$(jq -r '.result.block_hash' "tests/${network}/starknet_getBlockWithTxHashes/${block_number}.output.json")
+block_hash=$(jq -r '.result.block_hash' "tests/${network}/v${spec_version}/starknet_getBlockWithTxHashes/${block_number}.output.json")
 
 if [ -z "$block_hash" ] || [ "$block_hash" = "null" ]; then
     echo "Error: Could not extract block_hash from starknet_getBlockWithTxHashes output" >&2
@@ -91,7 +99,7 @@ echo "Extracted block hash: $block_hash"
 # Generate tests with block hash input
 for method in "${methods[@]}"; do
     test_name="${block_number}-${block_hash}"
-    input_file="tests/${network}/${method}/${test_name}.input.json"
+    input_file="tests/${network}/v${spec_version}/${method}/${test_name}.input.json"
 
     # Generate input JSON with block_hash
     jq -nc \
@@ -101,14 +109,14 @@ for method in "${methods[@]}"; do
         >"$input_file"
 
     echo "Processing $method with block hash..."
-    STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$method" "$test_name"
+    STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$spec_version" "$method" "$test_name"
 done
 
 # Diff outputs from block number vs block hash queries
 echo "Comparing block number vs block hash outputs..."
 for method in "${methods[@]}"; do
-    block_number_output="tests/${network}/${method}/${block_number}.output.json"
-    block_hash_output="tests/${network}/${method}/${block_number}-${block_hash}.output.json"
+    block_number_output="tests/${network}/v${spec_version}/${method}/${block_number}.output.json"
+    block_hash_output="tests/${network}/v${spec_version}/${method}/${block_number}-${block_hash}.output.json"
 
     if ! diff --color=auto -u \
         <(jq '.' "$block_number_output") \

@@ -6,19 +6,20 @@ if [[ "$1" == "--rpc-url" ]]; then
     shift 2
 fi
 network="$1"
-method="$2"
-test_name="$3"
+rpc_version="$2"
+method="$3"
+test_name="$4"
 
-if [ -z "$network" ] || [ -z "$method" ] || [ -z "$test_name" ] || [ -z "$rpc_url" ]; then
-    echo "Usage: $0 [--rpc-url <url>] <network> <method> <test_name>" >&2
+if [ -z "$network" ] || [ -z "$rpc_version" ] || [ -z "$method" ] || [ -z "$test_name" ] || [ -z "$rpc_url" ]; then
+    echo "Usage: $0 [--rpc-url <url>] <network> <rpc_version> <method> <test_name>" >&2
     echo "" >&2
     echo "RPC URL can be provided via --rpc-url flag or STARKNET_RPC env var." >&2
     exit 1
 fi
 
 script_dir="$(dirname "$0")"
-input_file="tests/${network}/${method}/${test_name}.input.json"
-output_file="tests/${network}/${method}/${test_name}.output.json"
+input_file="tests/${network}/v${rpc_version}/${method}/${test_name}.input.json"
+output_file="tests/${network}/v${rpc_version}/${method}/${test_name}.output.json"
 
 if [ ! -f "$input_file" ]; then
     echo "Error: Input file '$input_file' does not exist" >&2

@@ -4,8 +4,7 @@
 #   --rpc-url: RPC URL (default: $STARKNET_RPC env var)
 #   tests_folder: Optional folder path to search for tests (default: auto-detect by chain ID)
 #
-# Regenerates default .output.json files from the latest spec version.
-# For older versions, use variant.sh to create version-specific outputs.
+# Regenerates .output.json files for the detected spec version.
 
 rpc_url="$STARKNET_RPC"
 if [[ "$1" == "--rpc-url" ]]; then
@@ -32,12 +31,22 @@ repo_root="$(cd "$script_dir/../.." && pwd)"
 # Change to repo root to ensure paths are consistent
 cd "$repo_root" || exit 1
 
-# Auto-detect test folder by chain ID if not specified
+# Auto-detect test folder by chain ID and spec version if not specified
 if [ -z "$tests_folder" ]; then
     echo "🔍 Auto-detecting network by querying starknet_chainId..."
-    if ! tests_folder=$(STARKNET_RPC="$rpc_url" "${script_dir}/../run/detect-network.sh") || [ -z "$tests_folder" ]; then
+    if ! network_folder=$(STARKNET_RPC="$rpc_url" "${script_dir}/../run/detect-network.sh") || [ -z "$network_folder" ]; then
         exit 1
     fi
+    echo "✅ Network: $network_folder"
+
+    echo "🔍 Detecting spec version..."
+    if ! spec_version=$(STARKNET_RPC="$rpc_url" "${script_dir}/../run/detect-version.sh") || [ -z "$spec_version" ]; then
+        echo "Error: Could not detect spec version" >&2
+        exit 1
+    fi
+    echo "✅ Spec version: $spec_version"
+
+    tests_folder="${network_folder}/v${spec_version}"
     echo "✅ Using: $tests_folder"
 fi
 
