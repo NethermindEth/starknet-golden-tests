@@ -1,19 +1,25 @@
 #!/bin/bash
 
 rpc_url="$STARKNET_RPC"
-if [[ "$1" == "--rpc-url" ]]; then
-    rpc_url="$2"
-    shift 2
-fi
+variants=""
+while [[ "${1:-}" == --* ]]; do
+    case "$1" in
+        --rpc-url) rpc_url="$2"; shift 2 ;;
+        --variants) variants="$2"; shift 2 ;;
+        *) echo "Unknown option: $1" >&2; exit 1 ;;
+    esac
+done
 transaction_hash="$1"
 
 if [ -z "$transaction_hash" ] || [ -z "$rpc_url" ]; then
-    echo "Usage: $0 [--rpc-url <url>] <transaction_hash>" >&2
+    echo "Usage: $0 [--rpc-url <url>] [--variants <variant,...>] <transaction_hash>" >&2
     echo "" >&2
     echo "RPC URL can be provided via --rpc-url flag or STARKNET_RPC env var." >&2
+    echo "Available variants: include-proof-facts" >&2
     echo "" >&2
     echo "Examples:" >&2
     echo "  $0 --rpc-url http://localhost:6060 0x1b4d9f09276629d496af1af8ff00173c11ff146affacb1b5c858d7aa89001ae" >&2
+    echo "  $0 --variants include-proof-facts 0x1b4d9f09276629d496af1af8ff00173c11ff146affacb1b5c858d7aa89001ae" >&2
     echo "  STARKNET_RPC=http://localhost:6060 $0 0x1b4d9f09276629d496af1af8ff00173c11ff146affacb1b5c858d7aa89001ae" >&2
     exit 1
 fi
@@ -53,6 +59,22 @@ for method in "${methods[@]}"; do
     echo "Processing $method..."
     STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$method" "$transaction_hash"
 done
+
+# Generate INCLUDE_PROOF_FACTS variant if requested
+if [[ ",$variants," == *",include-proof-facts,"* ]]; then
+    proof_facts_method="starknet_getTransactionByHash"
+    proof_facts_test_name="${transaction_hash}-include-proof-facts"
+    proof_facts_input="tests/${network}/${proof_facts_method}/${proof_facts_test_name}.input.json"
+
+    jq -nc \
+        --arg method "$proof_facts_method" \
+        --arg transaction_hash "$transaction_hash" \
+        '{id: 1, jsonrpc: "2.0", method: $method, params: {transaction_hash: $transaction_hash, response_flags: ["INCLUDE_PROOF_FACTS"]}}' \
+        >"$proof_facts_input"
+
+    echo "Processing $proof_facts_method with INCLUDE_PROOF_FACTS flag..."
+    STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$proof_facts_method" "$proof_facts_test_name"
+fi
 
 # Extract block info from starknet_getTransactionReceipt output
 receipt_output="tests/${network}/starknet_getTransactionReceipt/${transaction_hash}.output.json"

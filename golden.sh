@@ -20,8 +20,16 @@ generate_usage() {
     echo "  block        Generate tests for a block"
     echo "  class        Generate tests for a class"
     echo "  contract     Generate tests for a contract"
+    echo "  storage      Generate tests for storage (starknet_getStorageAt)"
     echo "  transaction  Generate tests for a transaction"
     echo "  version      Generate tests for version methods (specVersion, chainId)"
+    echo ""
+    echo "Options (for block, transaction, storage):"
+    echo "  --variants <variant,...>  Comma-separated list of extra variants to generate"
+    echo ""
+    echo "Available variants:"
+    echo "  include-proof-facts         For block, transaction commands"
+    echo "  include-last-update-block   For storage command"
 }
 
 case "${1:-}" in
@@ -51,6 +59,10 @@ case "${1:-}" in
             contract)
                 shift
                 "$script_dir/scripts/generate/contract.sh" "$@"
+                ;;
+            storage)
+                shift
+                "$script_dir/scripts/generate/storage.sh" "$@"
                 ;;
             transaction)
                 shift

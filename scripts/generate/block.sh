@@ -3,10 +3,14 @@ set -e
 trap 'echo "Error on line $LINENO: $BASH_COMMAND"; exit 1' ERR
 
 rpc_url="$STARKNET_RPC"
-if [[ "$1" == "--rpc-url" ]]; then
-    rpc_url="$2"
-    shift 2
-fi
+variants=""
+while [[ "${1:-}" == --* ]]; do
+    case "$1" in
+        --rpc-url) rpc_url="$2"; shift 2 ;;
+        --variants) variants="$2"; shift 2 ;;
+        *) echo "Unknown option: $1" >&2; exit 1 ;;
+    esac
+done
 block_number="$1"
 
 if [ -z "$block_number" ]; then
@@ -23,12 +27,14 @@ fi
 if [ -n "$missing" ]; then
     echo "Error: Missing $missing argument(s)." >&2
     echo "" >&2
-    echo "Usage: $0 [--rpc-url <url>] <block_number>" >&2
+    echo "Usage: $0 [--rpc-url <url>] [--variants <variant,...>] <block_number>" >&2
     echo "" >&2
     echo "RPC URL can be provided via --rpc-url flag or STARKNET_RPC env var." >&2
+    echo "Available variants: include-proof-facts" >&2
     echo "" >&2
     echo "Examples:" >&2
     echo "  $0 --rpc-url http://localhost:6060 100" >&2
+    echo "  $0 --variants include-proof-facts 100" >&2
     echo "  STARKNET_RPC=http://localhost:6060 $0 100" >&2
     exit 1
 fi
@@ -77,6 +83,28 @@ for method in "${methods[@]}"; do
     echo "Processing $method with block number..."
     STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$method" "$block_number"
 done
+
+# Generate INCLUDE_PROOF_FACTS variants if requested
+if [[ ",$variants," == *",include-proof-facts,"* ]]; then
+    proof_facts_methods=(
+        "starknet_getBlockWithTxs"
+        "starknet_getBlockWithReceipts"
+    )
+
+    for method in "${proof_facts_methods[@]}"; do
+        test_name="${block_number}-include-proof-facts"
+        input_file="tests/${network}/${method}/${test_name}.input.json"
+
+        jq -nc \
+            --arg method "$method" \
+            --argjson block_number "$block_number" \
+            '{id: 1, jsonrpc: "2.0", method: $method, params: {block_id: {block_number: $block_number}, response_flags: ["INCLUDE_PROOF_FACTS"]}}' \
+            >"$input_file"
+
+        echo "Processing $method with INCLUDE_PROOF_FACTS flag..."
+        STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$method" "$test_name"
+    done
+fi
 
 # Extract block hash from starknet_getBlockWithTxHashes output
 block_hash=$(jq -r '.result.block_hash' "tests/${network}/starknet_getBlockWithTxHashes/${block_number}.output.json")
