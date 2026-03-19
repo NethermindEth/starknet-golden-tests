@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
+trap 'echo "Error on line $LINENO: $BASH_COMMAND"; exit 1' ERR
 
 script_dir="$(dirname "$0")"
 source "${script_dir}/parse-args.sh"
@@ -80,9 +82,10 @@ for method in "${methods[@]}"; do
     mkdir -p "$input_dir"
 
     jq -nc \
+        --arg method "$method" \
         --argjson block_number "$block_number" \
         --argjson tx "$tx_json" \
-        '{id: 1, jsonrpc: "2.0", method: "starknet_simulateTransactions", params: {block_id: {block_number: $block_number}, transactions: [$tx]}}' \
+        '{id: 1, jsonrpc: "2.0", method: $method, params: {block_id: {block_number: $block_number}, transactions: [$tx]}}' \
         | add_method_params "$method" \
         >"$input_file"
 
@@ -98,9 +101,10 @@ for method in "${methods[@]}"; do
     input_file="tests/${network}/${method}/${test_name}.input.json"
 
     jq -nc \
+        --arg method "$method" \
         --arg block_hash "$block_hash" \
         --argjson tx "$tx_json" \
-        '{id: 1, jsonrpc: "2.0", method: "starknet_simulateTransactions", params: {block_id: {block_hash: $block_hash}, transactions: [$tx]}}' \
+        '{id: 1, jsonrpc: "2.0", method: $method, params: {block_id: {block_hash: $block_hash}, transactions: [$tx]}}' \
         | add_method_params "$method" \
         >"$input_file"
 

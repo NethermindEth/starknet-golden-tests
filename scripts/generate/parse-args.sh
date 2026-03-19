@@ -2,12 +2,6 @@
 # Shared library for CLI arg parsing and RPC method param handling.
 # Source this file, then use parse_args and add_method_params.
 
-RESPONSE_FLAGS=""
-TRACE_FLAGS=""
-SIMULATION_FLAGS=""
-RPC_URL="${STARKNET_RPC:-}"
-REMAINING_ARGS=()
-
 # Parse all CLI args. Sets RPC_URL, flag variables, and REMAINING_ARGS.
 parse_args() {
     RPC_URL="${STARKNET_RPC:-}"
