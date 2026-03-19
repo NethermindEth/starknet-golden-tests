@@ -2,25 +2,12 @@
 set -e
 trap 'echo "Error on line $LINENO: $BASH_COMMAND"; exit 1' ERR
 
-rpc_url="$STARKNET_RPC"
-with_initial_reads=false
+script_dir="$(dirname "$0")"
+source "${script_dir}/parse-args.sh"
+parse_args "$@"
 
-while [[ $# -gt 1 ]]; do
-    case "$1" in
-        --rpc-url)
-            rpc_url="$2"
-            shift 2
-            ;;
-        --with-initial-reads)
-            with_initial_reads=true
-            shift
-            ;;
-        *)
-            break
-            ;;
-    esac
-done
-block_number="$1"
+block_number="${REMAINING_ARGS[0]}"
+rpc_url="$RPC_URL"
 
 if [ -z "$block_number" ]; then
     missing="block_number"
@@ -36,7 +23,7 @@ fi
 if [ -n "$missing" ]; then
     echo "Error: Missing $missing argument(s)." >&2
     echo "" >&2
-    echo "Usage: $0 [--rpc-url <url>] <block_number>" >&2
+    echo "Usage: $0 [--rpc-url <url>] [--response-flags <json>] [--trace-flags <json>] <block_number>" >&2
     echo "" >&2
     echo "RPC URL can be provided via --rpc-url flag or STARKNET_RPC env var." >&2
     echo "" >&2

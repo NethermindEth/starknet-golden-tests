@@ -70,12 +70,11 @@ methods=(
     "starknet_simulateTransactions"
 )
 
-sim_flag_key=$(get_flag_key "starknet_simulateTransactions")
-sim_flag_subdir=$(flags_to_subdir "$sim_flag_key" "$(get_flag_value "$sim_flag_key")")
-
 # Generate tests with block number
 for method in "${methods[@]}"; do
-    test_id="${sim_flag_subdir:+${sim_flag_subdir}/}${block_number}"
+    flag_key=$(get_flag_key "$method")
+    flag_subdir=$(flags_to_subdir "$flag_key" "$(get_flag_value "$flag_key")")
+    test_id="${flag_subdir:+${flag_subdir}/}${block_number}"
     input_file="tests/${network}/${method}/${test_id}.input.json"
     input_dir="$(dirname "$input_file")"
     mkdir -p "$input_dir"
@@ -93,7 +92,9 @@ done
 
 # Generate tests with block hash
 for method in "${methods[@]}"; do
-    test_name="${sim_flag_subdir:+${sim_flag_subdir}/}${block_number}-${block_hash}"
+    flag_key=$(get_flag_key "$method")
+    flag_subdir=$(flags_to_subdir "$flag_key" "$(get_flag_value "$flag_key")")
+    test_name="${flag_subdir:+${flag_subdir}/}${block_number}-${block_hash}"
     input_file="tests/${network}/${method}/${test_name}.input.json"
 
     jq -nc \
@@ -110,8 +111,10 @@ done
 # Diff outputs from block number vs block hash queries
 echo "Comparing block number vs block hash outputs..."
 for method in "${methods[@]}"; do
-    block_number_output="tests/${network}/${method}/${sim_flag_subdir:+${sim_flag_subdir}/}${block_number}.output.json"
-    block_hash_output="tests/${network}/${method}/${sim_flag_subdir:+${sim_flag_subdir}/}${block_number}-${block_hash}.output.json"
+    flag_key=$(get_flag_key "$method")
+    flag_subdir=$(flags_to_subdir "$flag_key" "$(get_flag_value "$flag_key")")
+    block_number_output="tests/${network}/${method}/${flag_subdir:+${flag_subdir}/}${block_number}.output.json"
+    block_hash_output="tests/${network}/${method}/${flag_subdir:+${flag_subdir}/}${block_number}-${block_hash}.output.json"
 
     if ! diff --color=auto -u \
         <(jq '.' "$block_number_output") \
