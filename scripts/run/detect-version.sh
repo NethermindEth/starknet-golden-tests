@@ -31,4 +31,7 @@ if [ -z "$spec_version" ]; then
     exit 1
 fi
 
-echo "$spec_version"
+# Extract major.minor (drop patch) for folder matching
+major_minor=$(echo "$spec_version" | cut -d. -f1,2)
+
+echo "$major_minor"

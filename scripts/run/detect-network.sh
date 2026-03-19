@@ -34,14 +34,14 @@ fi
 
 echo "Chain ID from RPC: $rpc_chain_id" >&2
 
-# Find matching network folder
+# Find matching network folder using metadata.json
 for network_dir in "$repo_root/tests"/*/; do
     [ -d "$network_dir" ] || continue
     network_name=$(basename "$network_dir")
-    chain_id_file="$network_dir/starknet_chainId/default.output.json"
+    metadata_file="$network_dir/metadata.json"
 
-    if [ -f "$chain_id_file" ]; then
-        expected_chain_id=$(jq -r '.result // empty' "$chain_id_file")
+    if [ -f "$metadata_file" ]; then
+        expected_chain_id=$(jq -r '.chain_id // empty' "$metadata_file")
         if [ "$rpc_chain_id" = "$expected_chain_id" ]; then
             echo "Matched network: $network_name" >&2
             echo "tests/$network_name"
@@ -56,9 +56,9 @@ echo "Available networks:" >&2
 for network_dir in "$repo_root/tests"/*/; do
     [ -d "$network_dir" ] || continue
     network_name=$(basename "$network_dir")
-    chain_id_file="$network_dir/starknet_chainId/default.output.json"
-    if [ -f "$chain_id_file" ]; then
-        expected_chain_id=$(jq -r '.result // empty' "$chain_id_file")
+    metadata_file="$network_dir/metadata.json"
+    if [ -f "$metadata_file" ]; then
+        expected_chain_id=$(jq -r '.chain_id // empty' "$metadata_file")
         echo "  - $network_name (chain ID: $expected_chain_id)" >&2
     else
         echo "  - $network_name (no chain ID configured)" >&2

@@ -28,6 +28,14 @@ fi
 network=$(basename "$tests_folder")
 echo "✅ Using network: $network"
 
+# Detect spec version
+echo "🔍 Detecting spec version..."
+if ! spec_version=$(STARKNET_RPC="$rpc_url" "${script_dir}/../run/detect-version.sh") || [ -z "$spec_version" ]; then
+    echo "Error: Could not detect spec version" >&2
+    exit 1
+fi
+echo "✅ Spec version: $spec_version"
+
 methods=(
     "starknet_getTransactionByHash"
     "starknet_getTransactionReceipt"
@@ -36,7 +44,7 @@ methods=(
 
 # Generate tests for basic transaction methods
 for method in "${methods[@]}"; do
-    input_file="tests/${network}/${method}/${transaction_hash}.input.json"
+    input_file="tests/${network}/v${spec_version}/${method}/${transaction_hash}.input.json"
     input_dir="$(dirname "$input_file")"
 
     # Create input directory if it doesn't exist
@@ -51,11 +59,11 @@ for method in "${methods[@]}"; do
 
     # Run write-output.sh for this method
     echo "Processing $method..."
-    STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$method" "$transaction_hash"
+    STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$spec_version" "$method" "$transaction_hash"
 done
 
 # Extract block info from starknet_getTransactionReceipt output
-receipt_output="tests/${network}/starknet_getTransactionReceipt/${transaction_hash}.output.json"
+receipt_output="tests/${network}/v${spec_version}/starknet_getTransactionReceipt/${transaction_hash}.output.json"
 block_number=$(jq -r '.result.block_number' "$receipt_output")
 block_hash=$(jq -r '.result.block_hash' "$receipt_output")
 
@@ -90,7 +98,7 @@ echo "Found transaction at index: $tx_index"
 
 # Generate starknet_getTransactionByBlockIdAndIndex tests
 index_method="starknet_getTransactionByBlockIdAndIndex"
-index_method_dir="tests/${network}/${index_method}"
+index_method_dir="tests/${network}/v${spec_version}/${index_method}"
 mkdir -p "$index_method_dir"
 
 # Test 1: by block_number
@@ -104,7 +112,7 @@ jq -nc \
     >"$input_file"
 
 echo "Processing $index_method with block number..."
-STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$index_method" "$test_name_block_number"
+STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$spec_version" "$index_method" "$test_name_block_number"
 
 # Test 2: by block_hash
 test_name_block_hash="${transaction_hash}-block-hash"
@@ -117,11 +125,11 @@ jq -nc \
     >"$input_file"
 
 echo "Processing $index_method with block hash..."
-STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$index_method" "$test_name_block_hash"
+STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$spec_version" "$index_method" "$test_name_block_hash"
 
 # Verify outputs match starknet_getTransactionByHash
 echo "Comparing starknet_getTransactionByBlockIdAndIndex outputs with starknet_getTransactionByHash..."
-tx_by_hash_output="tests/${network}/starknet_getTransactionByHash/${transaction_hash}.output.json"
+tx_by_hash_output="tests/${network}/v${spec_version}/starknet_getTransactionByHash/${transaction_hash}.output.json"
 
 # Compare block number variant
 block_number_output="${index_method_dir}/${test_name_block_number}.output.json"

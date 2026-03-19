@@ -11,7 +11,6 @@ usage() {
     echo "Commands:"
     echo "  test                  Run all golden test diffs"
     echo "  regen                 Regenerate all golden test outputs"
-    echo "  variant               Create version-specific variant outputs (for older nodes)"
     echo "  generate              Generate golden tests"
 }
 
@@ -32,10 +31,6 @@ case "${1:-}" in
     regen)
         shift
         "$script_dir/scripts/generate/regen.sh" "$@"
-        ;;
-    variant)
-        shift
-        "$script_dir/scripts/generate/variant.sh" "$@"
         ;;
     generate)
         shift
