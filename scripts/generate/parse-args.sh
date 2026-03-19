@@ -69,6 +69,21 @@ get_flag_value() {
     esac
 }
 
+# Returns "with_<flag_key>/<sorted+joined values>" or "" if key or flags are empty/absent.
+# $1: flag key (e.g. "trace_flags", "simulation_flags", "response_flags")
+# $2: flag values JSON array (e.g. '["RETURN_INITIAL_READS"]')
+flags_to_subdir() {
+    local flag_key="$1"
+    local flags="$2"
+    if [[ -z "$flag_key" || -z "$flags" || "$flags" == "[]" ]]; then
+        echo ""
+    else
+        local values
+        values=$(echo "$flags" | jq -r 'sort | join("+")')
+        echo "with_${flag_key}/${values}"
+    fi
+}
+
 # Reads full RPC JSON from stdin, merges appropriate flags into .params, writes to stdout.
 # Usage: echo '{"id":1,...}' | add_method_params "starknet_getBlockWithTxs"
 add_method_params() {

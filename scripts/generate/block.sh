@@ -81,7 +81,10 @@ methods=(
 )
 
 for method in "${methods[@]}"; do
-    input_file="tests/${network}/v${spec_version}/${method}/${block_number}.input.json"
+    flag_key=$(get_flag_key "$method")
+    flag_subdir=$(flags_to_subdir "$flag_key" "$(get_flag_value "$flag_key")")
+    test_name="${flag_subdir:+${flag_subdir}/}${block_number}"
+    input_file="tests/${network}/v${spec_version}/${method}/${test_name}.input.json"
     input_dir="$(dirname "$input_file")"
 
     # Create input directory if it doesn't exist
@@ -97,7 +100,7 @@ for method in "${methods[@]}"; do
 
     # Run write-output.sh for this method
     echo "Processing $method with block number..."
-    STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$spec_version" "$method" "$block_number"
+    STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$spec_version" "$method" "$test_id"
 done
 
 # Extract block hash from starknet_getBlockWithTxHashes output
@@ -112,7 +115,9 @@ echo "Extracted block hash: $block_hash"
 
 # Generate tests with block hash input
 for method in "${methods[@]}"; do
-    test_name="${block_number}-${block_hash}"
+    flag_key=$(get_flag_key "$method")
+    flag_subdir=$(flags_to_subdir "$flag_key" "$(get_flag_value "$flag_key")")
+    test_name="${flag_subdir:+${flag_subdir}/}${block_number}-${block_hash}"
     input_file="tests/${network}/v${spec_version}/${method}/${test_name}.input.json"
 
     # Generate input JSON with block_hash
@@ -130,8 +135,10 @@ done
 # Diff outputs from block number vs block hash queries
 echo "Comparing block number vs block hash outputs..."
 for method in "${methods[@]}"; do
-    block_number_output="tests/${network}/v${spec_version}/${method}/${block_number}.output.json"
-    block_hash_output="tests/${network}/v${spec_version}/${method}/${block_number}-${block_hash}.output.json"
+    flag_key=$(get_flag_key "$method")
+    flag_subdir=$(flags_to_subdir "$flag_key" "$(get_flag_value "$flag_key")")
+    block_number_output="tests/${network}/v${spec_version}/${method}/${flag_subdir:+${flag_subdir}/}${block_number}.output.json"
+    block_hash_output="tests/${network}/v${spec_version}/${method}/${flag_subdir:+${flag_subdir}/}${block_number}-${block_hash}.output.json"
 
     if ! diff --color=auto -u \
         <(jq '.' "$block_number_output") \
