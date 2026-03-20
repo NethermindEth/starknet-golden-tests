@@ -39,11 +39,11 @@ if [ -n "$missing" ]; then
     echo "Usage: $0 [--rpc-url <url>] [--variants <variant,...>] <contract_address> <block_number>" >&2
     echo "" >&2
     echo "RPC URL can be provided via --rpc-url flag or STARKNET_RPC env var." >&2
-    echo "Available variants: include-last-update-block" >&2
+    echo "Available variants: last-update-block" >&2
     echo "" >&2
     echo "Examples:" >&2
     echo "  $0 --rpc-url http://localhost:6060 0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7 100" >&2
-    echo "  $0 --variants include-last-update-block 0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7 100" >&2
+    echo "  $0 --variants last-update-block 0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7 100" >&2
     echo "  STARKNET_RPC=http://localhost:6060 $0 0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7 100" >&2
     exit 1
 fi
@@ -98,7 +98,7 @@ echo "Processing $method without flags..."
 STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$method" "$test_name"
 
 # Test 2: With INCLUDE_LAST_UPDATE_BLOCK flag (if requested)
-if [[ ",$variants," == *",include-last-update-block,"* ]]; then
+if [[ ",$variants," == *",last-update-block,"* ]]; then
     test_name_flagged="${contract_address}-${storage_key}-${block_number}-include-last-update-block"
     input_file_flagged="${method_dir}/${test_name_flagged}.input.json"
 

@@ -30,11 +30,11 @@ if [ -n "$missing" ]; then
     echo "Usage: $0 [--rpc-url <url>] [--variants <variant,...>] <block_number>" >&2
     echo "" >&2
     echo "RPC URL can be provided via --rpc-url flag or STARKNET_RPC env var." >&2
-    echo "Available variants: include-proof-facts" >&2
+    echo "Available variants: proof-facts" >&2
     echo "" >&2
     echo "Examples:" >&2
     echo "  $0 --rpc-url http://localhost:6060 100" >&2
-    echo "  $0 --variants include-proof-facts 100" >&2
+    echo "  $0 --variants proof-facts 100" >&2
     echo "  STARKNET_RPC=http://localhost:6060 $0 100" >&2
     exit 1
 fi
@@ -85,7 +85,7 @@ for method in "${methods[@]}"; do
 done
 
 # Generate INCLUDE_PROOF_FACTS variants if requested
-if [[ ",$variants," == *",include-proof-facts,"* ]]; then
+if [[ ",$variants," == *",proof-facts,"* ]]; then
     proof_facts_methods=(
         "starknet_getBlockWithTxs"
         "starknet_getBlockWithReceipts"

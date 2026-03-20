@@ -28,8 +28,8 @@ generate_usage() {
     echo "  --variants <variant,...>  Comma-separated list of extra variants to generate"
     echo ""
     echo "Available variants:"
-    echo "  include-proof-facts         For block, transaction commands"
-    echo "  include-last-update-block   For storage command"
+    echo "  proof-facts         For block, transaction commands"
+    echo "  last-update-block   For storage command"
 }
 
 case "${1:-}" in
