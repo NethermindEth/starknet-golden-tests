@@ -109,7 +109,7 @@ index_method_dir="tests/${network}/v${spec_version}/${index_method}"
 mkdir -p "${index_method_dir}${resp_flag_subdir:+/${resp_flag_subdir}}"
 
 # Test 1: by block_number
-test_name_block_number="${flag_subdir:+${flag_subdir}/}${transaction_hash}-block-number"
+test_name_block_number="${resp_flag_subdir:+${resp_flag_subdir}/}${transaction_hash}-block-number"
 input_file="${index_method_dir}/${test_name_block_number}.input.json"
 
 jq -nc \
@@ -124,7 +124,7 @@ echo "Processing $index_method with block number..."
 STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$spec_version" "$index_method" "$test_name_block_number"
 
 # Test 2: by block_hash
-test_name_block_hash="${flag_subdir:+${flag_subdir}/}${transaction_hash}-block-hash"
+test_name_block_hash="${resp_flag_subdir:+${resp_flag_subdir}/}${transaction_hash}-block-hash"
 input_file="${index_method_dir}/${test_name_block_hash}.input.json"
 
 jq -nc \
@@ -140,7 +140,7 @@ STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$spec_versio
 
 # Verify outputs match starknet_getTransactionByHash
 echo "Comparing starknet_getTransactionByBlockIdAndIndex outputs with starknet_getTransactionByHash..."
-tx_by_hash_output="tests/${network}/v${spec_version}/starknet_getTransactionByHash/${flag_subdir:+${flag_subdir}/}${transaction_hash}.output.json"
+tx_by_hash_output="tests/${network}/v${spec_version}/starknet_getTransactionByHash/${resp_flag_subdir:+${resp_flag_subdir}/}${transaction_hash}.output.json"
 
 # Compare block number variant
 block_number_output="${index_method_dir}/${test_name_block_number}.output.json"

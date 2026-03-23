@@ -30,9 +30,17 @@ fi
 network=$(basename "$tests_folder")
 echo "✅ Using network: $network"
 
+# Detect spec version
+echo "🔍 Detecting spec version..."
+if ! spec_version=$(STARKNET_RPC="$rpc_url" "${script_dir}/../run/detect-version.sh") || [ -z "$spec_version" ]; then
+    echo "Error: Could not detect spec version" >&2
+    exit 1
+fi
+echo "✅ Spec version: $spec_version"
+
 # Check that block test outputs exist (requires 'generate block' to have been run first)
-block_with_txs_output="tests/${network}/starknet_getBlockWithTxs/${block_number}.output.json"
-block_with_tx_hashes_output="tests/${network}/starknet_getBlockWithTxHashes/${block_number}.output.json"
+block_with_txs_output="tests/${network}/v${spec_version}/starknet_getBlockWithTxs/${block_number}.output.json"
+block_with_tx_hashes_output="tests/${network}/v${spec_version}/starknet_getBlockWithTxHashes/${block_number}.output.json"
 
 if [ ! -f "$block_with_txs_output" ]; then
     echo "Error: $block_with_txs_output not found." >&2
@@ -76,10 +84,9 @@ methods=(
 for method in "${methods[@]}"; do
     flag_key=$(get_flag_key "$method")
     flag_subdir=$(flags_to_subdir "$flag_key" "$(get_flag_value "$flag_key")")
-    test_id="${flag_subdir:+${flag_subdir}/}${block_number}"
-    input_file="tests/${network}/${method}/${test_id}.input.json"
-    input_dir="$(dirname "$input_file")"
-    mkdir -p "$input_dir"
+    test_name="${flag_subdir:+${flag_subdir}/}${block_number}"
+    input_file="tests/${network}/v${spec_version}/${method}/${test_name}.input.json"
+    mkdir -p "$(dirname "$input_file")"
 
     jq -nc \
         --arg method "$method" \
@@ -90,7 +97,7 @@ for method in "${methods[@]}"; do
         >"$input_file"
 
     echo "Processing $method with block number..."
-    STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$method" "$test_id"
+    STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$spec_version" "$method" "$test_name"
 done
 
 # Generate tests with block hash
@@ -98,7 +105,7 @@ for method in "${methods[@]}"; do
     flag_key=$(get_flag_key "$method")
     flag_subdir=$(flags_to_subdir "$flag_key" "$(get_flag_value "$flag_key")")
     test_name="${flag_subdir:+${flag_subdir}/}${block_number}-${block_hash}"
-    input_file="tests/${network}/${method}/${test_name}.input.json"
+    input_file="tests/${network}/v${spec_version}/${method}/${test_name}.input.json"
 
     jq -nc \
         --arg method "$method" \
@@ -109,7 +116,7 @@ for method in "${methods[@]}"; do
         >"$input_file"
 
     echo "Processing $method with block hash..."
-    STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$method" "$test_name"
+    STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$spec_version" "$method" "$test_name"
 done
 
 # Diff outputs from block number vs block hash queries
@@ -117,8 +124,8 @@ echo "Comparing block number vs block hash outputs..."
 for method in "${methods[@]}"; do
     flag_key=$(get_flag_key "$method")
     flag_subdir=$(flags_to_subdir "$flag_key" "$(get_flag_value "$flag_key")")
-    block_number_output="tests/${network}/${method}/${flag_subdir:+${flag_subdir}/}${block_number}.output.json"
-    block_hash_output="tests/${network}/${method}/${flag_subdir:+${flag_subdir}/}${block_number}-${block_hash}.output.json"
+    block_number_output="tests/${network}/v${spec_version}/${method}/${flag_subdir:+${flag_subdir}/}${block_number}.output.json"
+    block_hash_output="tests/${network}/v${spec_version}/${method}/${flag_subdir:+${flag_subdir}/}${block_number}-${block_hash}.output.json"
 
     if ! diff --color=auto -u \
         <(jq '.' "$block_number_output") \

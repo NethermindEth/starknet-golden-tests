@@ -72,10 +72,8 @@ for method in "${methods[@]}"; do
     flag_subdir=$(flags_to_subdir "$flag_key" "$(get_flag_value "$flag_key")")
     test_name="${flag_subdir:+${flag_subdir}/}${block_number}"
     input_file="tests/${network}/v${spec_version}/${method}/${test_name}.input.json"
-    input_dir="$(dirname "$input_file")"
-
     # Create input directory if it doesn't exist
-    mkdir -p "$input_dir"
+    mkdir -p "$(dirname "$input_file")"
 
     # Generate input JSON for this method
     jq -nc \
@@ -87,7 +85,7 @@ for method in "${methods[@]}"; do
 
     # Run write-output.sh for this method
     echo "Processing $method with block number..."
-    STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$spec_version" "$method" "$test_id"
+    STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$spec_version" "$method" "$test_name"
 done
 
 # Extract block hash from starknet_getBlockWithTxHashes output

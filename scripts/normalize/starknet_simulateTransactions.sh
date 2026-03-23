@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Normalize .result[].transaction_trace.state_diff.storage_diffs by sorting by .address
+# Normalize state_diff and initial_reads arrays wherever they appear in the response.
 script_dir="$(dirname "$0")"
 "$script_dir/walk-sort-array.sh" 'state_diff' '.storage_diffs' '.address' \
     | "$script_dir/walk-sort-array.sh" 'state_diff' '.storage_diffs[].storage_entries' '.key' \
