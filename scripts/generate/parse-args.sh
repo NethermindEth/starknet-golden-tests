@@ -12,22 +12,18 @@ parse_args() {
 
     while [[ $# -gt 0 ]]; do
         case "$1" in
-            --rpc-url)
-                RPC_URL="$2"
-                shift 2
-                ;;
-            --response-flags)
-                RESPONSE_FLAGS="$2"
-                shift 2
-                ;;
-            --trace-flags)
-                TRACE_FLAGS="$2"
-                shift 2
-                ;;
-            --simulation-flags)
-                SIMULATION_FLAGS="$2"
-                shift 2
-                ;;
+            --rpc-url|--response-flags|--trace-flags|--simulation-flags)
+                if [[ $# -lt 2 ]]; then
+                    echo "Error: $1 requires a value" >&2
+                    exit 1
+                fi
+                case "$1" in
+                    --rpc-url)          RPC_URL="$2" ;;
+                    --response-flags)   RESPONSE_FLAGS="$2" ;;
+                    --trace-flags)      TRACE_FLAGS="$2" ;;
+                    --simulation-flags) SIMULATION_FLAGS="$2" ;;
+                esac
+
             *)
                 REMAINING_ARGS+=("$1")
                 shift
