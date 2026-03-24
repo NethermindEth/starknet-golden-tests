@@ -32,6 +32,14 @@ fi
 network=$(basename "$tests_folder")
 echo "✅ Using network: $network"
 
+# Detect spec version
+echo "🔍 Detecting spec version..."
+if ! spec_version=$(STARKNET_RPC="$rpc_url" "${script_dir}/../run/detect-version.sh") || [ -z "$spec_version" ]; then
+    echo "Error: Could not detect spec version" >&2
+    exit 1
+fi
+echo "✅ Spec version: $spec_version"
+
 # Determine block_id format
 if [ -z "$block_id_arg" ] || [ "$block_id_arg" = "latest" ]; then
     block_id_json='"latest"'
@@ -60,7 +68,7 @@ if [ -n "$block_id_arg_for_class" ]; then
 fi
 
 for method in "${methods[@]}"; do
-    input_file="tests/${network}/${method}/${test_name}.input.json"
+    input_file="tests/${network}/v${spec_version}/${method}/${test_name}.input.json"
     input_dir="$(dirname "$input_file")"
 
     mkdir -p "$input_dir"
@@ -73,11 +81,11 @@ for method in "${methods[@]}"; do
         >"$input_file"
 
     echo "Processing $method..."
-    STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$method" "$test_name"
+    STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$spec_version" "$method" "$test_name"
 done
 
 # Extract class_hash from starknet_getClassHashAt output
-class_hash_output="tests/${network}/starknet_getClassHashAt/${test_name}.output.json"
+class_hash_output="tests/${network}/v${spec_version}/starknet_getClassHashAt/${test_name}.output.json"
 class_hash=$(jq -r '.result' "$class_hash_output")
 
 if [ -z "$class_hash" ] || [ "$class_hash" = "null" ]; then
@@ -93,8 +101,8 @@ STARKNET_RPC="$rpc_url" "${script_dir}/class.sh" "$class_hash" "$block_id_arg_fo
 
 # Compare starknet_getClassAt output with starknet_getClass output
 echo "Comparing starknet_getClassAt and starknet_getClass outputs..."
-class_at_output="tests/${network}/starknet_getClassAt/${test_name}.output.json"
-class_output="tests/${network}/starknet_getClass/${class_hash}${test_suffix}.output.json"
+class_at_output="tests/${network}/v${spec_version}/starknet_getClassAt/${test_name}.output.json"
+class_output="tests/${network}/v${spec_version}/starknet_getClass/${class_hash}${test_suffix}.output.json"
 
 if ! diff --color=auto -u \
     <(jq '.' "$class_at_output") \

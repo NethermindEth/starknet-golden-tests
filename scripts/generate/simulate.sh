@@ -9,28 +9,15 @@ parse_args "$@"
 block_number="${REMAINING_ARGS[0]}"
 rpc_url="$RPC_URL"
 
-if [ -z "$block_number" ]; then
-    missing="block_number"
-fi
-if [ -z "$rpc_url" ]; then
-    if [ -n "$missing" ]; then
-        missing="$missing and rpc_url"
-    else
-        missing="rpc_url"
-    fi
-fi
-
-if [ -n "$missing" ]; then
-    echo "Error: Missing $missing argument(s)." >&2
-    echo "" >&2
-    echo "Usage: $0 [--rpc-url <url>] [--response-flags <json>] [--trace-flags <json>] <block_number>" >&2
+if [ -z "$block_number" ] || [ -z "$rpc_url" ]; then
+    echo "Usage: $0 [--rpc-url <url>] [--simulation-flags <json>] <block_number>" >&2
     echo "" >&2
     echo "RPC URL can be provided via --rpc-url flag or STARKNET_RPC env var." >&2
+    echo "Requires 'generate block' to have been run first for this block number." >&2
     echo "" >&2
     echo "Examples:" >&2
     echo "  $0 --rpc-url http://localhost:6060 100" >&2
-    echo "  $0 --rpc-url http://localhost:6060 --response-flags '[\"INCLUDE_PROOF_FACTS\"]' 100" >&2
-    echo "  $0 --rpc-url http://localhost:6060 --trace-flags '[\"RETURN_INITIAL_READS\"]' 100" >&2
+    echo "  $0 --rpc-url http://localhost:6060 --simulation-flags '[\"RETURN_INITIAL_READS\"]' 100" >&2
     echo "  STARKNET_RPC=http://localhost:6060 $0 100" >&2
     exit 1
 fi
@@ -51,45 +38,24 @@ if ! spec_version=$(STARKNET_RPC="$rpc_url" "${script_dir}/../run/detect-version
 fi
 echo "✅ Spec version: $spec_version"
 
-if [[ "$block_number" == "latest" ]]; then
-    echo "Getting latest block number"
-    latest_block_request='{"id":1,"jsonrpc":"2.0","method":"starknet_blockNumber","params":[]}'
-    block_number=$(echo "$latest_block_request" | STARKNET_RPC="$rpc_url" "${script_dir}/../run/query-rpc.sh" 2>/dev/null | jq -r '.result // empty')
-    echo "Latest block is: $block_number"
+# Check that block test outputs exist (requires 'generate block' to have been run first)
+block_with_txs_output="tests/${network}/v${spec_version}/starknet_getBlockWithTxs/${block_number}.output.json"
+block_with_tx_hashes_output="tests/${network}/v${spec_version}/starknet_getBlockWithTxHashes/${block_number}.output.json"
+
+if [ ! -f "$block_with_txs_output" ]; then
+    echo "Error: $block_with_txs_output not found." >&2
+    echo "Please run 'generate block' first for block $block_number." >&2
+    exit 1
 fi
 
-methods=(
-    "starknet_getBlockTransactionCount"
-    "starknet_getBlockWithReceipts"
-    "starknet_getBlockWithTxHashes"
-    "starknet_getBlockWithTxs"
-    "starknet_getStateUpdate"
-    "starknet_traceBlockTransactions"
-)
-
-for method in "${methods[@]}"; do
-    flag_key=$(get_flag_key "$method")
-    flag_subdir=$(flags_to_subdir "$flag_key" "$(get_flag_value "$flag_key")")
-    test_name="${flag_subdir:+${flag_subdir}/}${block_number}"
-    input_file="tests/${network}/v${spec_version}/${method}/${test_name}.input.json"
-    # Create input directory if it doesn't exist
-    mkdir -p "$(dirname "$input_file")"
-
-    # Generate input JSON for this method
-    jq -nc \
-        --arg method "$method" \
-        --argjson block_number "$block_number" \
-        '{id: 1, jsonrpc: "2.0", method: $method, params: {block_id: {block_number: $block_number}}}' \
-        | add_method_params "$method" \
-        >"$input_file"
-
-    # Run write-output.sh for this method
-    echo "Processing $method with block number..."
-    STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$spec_version" "$method" "$test_name"
-done
+if [ ! -f "$block_with_tx_hashes_output" ]; then
+    echo "Error: $block_with_tx_hashes_output not found." >&2
+    echo "Please run 'generate block' first for block $block_number." >&2
+    exit 1
+fi
 
 # Extract block hash from starknet_getBlockWithTxHashes output
-block_hash=$(jq -r '.result.block_hash' "tests/${network}/v${spec_version}/starknet_getBlockWithTxHashes/${block_number}.output.json")
+block_hash=$(jq -r '.result.block_hash' "$block_with_tx_hashes_output")
 
 if [ -z "$block_hash" ] || [ "$block_hash" = "null" ]; then
     echo "Error: Could not extract block_hash from starknet_getBlockWithTxHashes output" >&2
@@ -98,18 +64,54 @@ fi
 
 echo "Extracted block hash: $block_hash"
 
-# Generate tests with block hash input
+# Extract a transaction from starknet_getBlockWithTxs output
+tx_json=$(jq -c '
+    .result.transactions
+    | (map(select(.type == "INVOKE"))[0] // .[0])
+    | del(.transaction_hash)
+' "$block_with_txs_output")
+
+if [ -z "$tx_json" ] || [ "$tx_json" = "null" ]; then
+    echo "Error: Could not extract a transaction from starknet_getBlockWithTxs output" >&2
+    exit 1
+fi
+
+methods=(
+    "starknet_simulateTransactions"
+)
+
+# Generate tests with block number
+for method in "${methods[@]}"; do
+    flag_key=$(get_flag_key "$method")
+    flag_subdir=$(flags_to_subdir "$flag_key" "$(get_flag_value "$flag_key")")
+    test_name="${flag_subdir:+${flag_subdir}/}${block_number}"
+    input_file="tests/${network}/v${spec_version}/${method}/${test_name}.input.json"
+    mkdir -p "$(dirname "$input_file")"
+
+    jq -nc \
+        --arg method "$method" \
+        --argjson block_number "$block_number" \
+        --argjson tx "$tx_json" \
+        '{id: 1, jsonrpc: "2.0", method: $method, params: {block_id: {block_number: $block_number}, transactions: [$tx]}}' \
+        | add_method_params "$method" \
+        >"$input_file"
+
+    echo "Processing $method with block number..."
+    STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$spec_version" "$method" "$test_name"
+done
+
+# Generate tests with block hash
 for method in "${methods[@]}"; do
     flag_key=$(get_flag_key "$method")
     flag_subdir=$(flags_to_subdir "$flag_key" "$(get_flag_value "$flag_key")")
     test_name="${flag_subdir:+${flag_subdir}/}${block_number}-${block_hash}"
     input_file="tests/${network}/v${spec_version}/${method}/${test_name}.input.json"
 
-    # Generate input JSON with block_hash
     jq -nc \
         --arg method "$method" \
         --arg block_hash "$block_hash" \
-        '{id: 1, jsonrpc: "2.0", method: $method, params: {block_id: {block_hash: $block_hash}}}' \
+        --argjson tx "$tx_json" \
+        '{id: 1, jsonrpc: "2.0", method: $method, params: {block_id: {block_hash: $block_hash}, transactions: [$tx]}}' \
         | add_method_params "$method" \
         >"$input_file"
 
@@ -134,4 +136,4 @@ for method in "${methods[@]}"; do
     echo "  ✅ $method outputs match"
 done
 
-echo "Done processing all methods for block $block_number"
+echo "Done processing all simulate methods for block $block_number"

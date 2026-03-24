@@ -27,6 +27,14 @@ fi
 network=$(basename "$tests_folder")
 echo "✅ Using network: $network"
 
+# Detect spec version
+echo "🔍 Detecting spec version..."
+if ! spec_version=$(STARKNET_RPC="$rpc_url" "${script_dir}/../run/detect-version.sh") || [ -z "$spec_version" ]; then
+    echo "Error: Could not detect spec version" >&2
+    exit 1
+fi
+echo "✅ Spec version: $spec_version"
+
 methods=(
     "starknet_specVersion"
     "starknet_chainId"
@@ -34,7 +42,7 @@ methods=(
 
 for method in "${methods[@]}"; do
     test_name="default"
-    input_file="tests/${network}/${method}/${test_name}.input.json"
+    input_file="tests/${network}/v${spec_version}/${method}/${test_name}.input.json"
     input_dir="$(dirname "$input_file")"
 
     # Create input directory if it doesn't exist
@@ -48,7 +56,7 @@ for method in "${methods[@]}"; do
 
     # Run write-output.sh for this method
     echo "Processing $method..."
-    STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$method" "$test_name"
+    STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$spec_version" "$method" "$test_name"
 done
 
 echo "Done processing version methods"

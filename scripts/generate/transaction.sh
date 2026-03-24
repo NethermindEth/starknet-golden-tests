@@ -1,30 +1,25 @@
 #!/bin/bash
+set -e
+trap 'echo "Error on line $LINENO: $BASH_COMMAND"; exit 1' ERR
 
-rpc_url="$STARKNET_RPC"
-variants=""
-while [[ "${1:-}" == --* ]]; do
-    case "$1" in
-        --rpc-url) rpc_url="$2"; shift 2 ;;
-        --variants) variants="$2"; shift 2 ;;
-        *) echo "Unknown option: $1" >&2; exit 1 ;;
-    esac
-done
-transaction_hash="$1"
+script_dir="$(dirname "$0")"
+source "${script_dir}/parse-args.sh"
+parse_args "$@"
+
+transaction_hash="${REMAINING_ARGS[0]}"
+rpc_url="$RPC_URL"
 
 if [ -z "$transaction_hash" ] || [ -z "$rpc_url" ]; then
-    echo "Usage: $0 [--rpc-url <url>] [--variants <variant,...>] <transaction_hash>" >&2
+    echo "Usage: $0 [--rpc-url <url>] [--response-flags <json>] <transaction_hash>" >&2
     echo "" >&2
     echo "RPC URL can be provided via --rpc-url flag or STARKNET_RPC env var." >&2
-    echo "Available variants: proof-facts" >&2
     echo "" >&2
     echo "Examples:" >&2
     echo "  $0 --rpc-url http://localhost:6060 0x1b4d9f09276629d496af1af8ff00173c11ff146affacb1b5c858d7aa89001ae" >&2
-    echo "  $0 --variants proof-facts 0x1b4d9f09276629d496af1af8ff00173c11ff146affacb1b5c858d7aa89001ae" >&2
+    echo "  $0 --rpc-url http://localhost:6060 --response-flags '[\"INCLUDE_PROOF_FACTS\"]' 0x1b4d9f09276629d496af1af8ff00173c11ff146affacb1b5c858d7aa89001ae" >&2
     echo "  STARKNET_RPC=http://localhost:6060 $0 0x1b4d9f09276629d496af1af8ff00173c11ff146affacb1b5c858d7aa89001ae" >&2
     exit 1
 fi
-
-script_dir="$(dirname "$0")"
 
 # Auto-detect network
 echo "🔍 Auto-detecting network by querying starknet_chainId..."
@@ -34,6 +29,14 @@ fi
 network=$(basename "$tests_folder")
 echo "✅ Using network: $network"
 
+# Detect spec version
+echo "🔍 Detecting spec version..."
+if ! spec_version=$(STARKNET_RPC="$rpc_url" "${script_dir}/../run/detect-version.sh") || [ -z "$spec_version" ]; then
+    echo "Error: Could not detect spec version" >&2
+    exit 1
+fi
+echo "✅ Spec version: $spec_version"
+
 methods=(
     "starknet_getTransactionByHash"
     "starknet_getTransactionReceipt"
@@ -42,7 +45,10 @@ methods=(
 
 # Generate tests for basic transaction methods
 for method in "${methods[@]}"; do
-    input_file="tests/${network}/${method}/${transaction_hash}.input.json"
+    flag_key=$(get_flag_key "$method")
+    flag_subdir=$(flags_to_subdir "$flag_key" "$(get_flag_value "$flag_key")")
+    test_name="${flag_subdir:+${flag_subdir}/}${transaction_hash}"
+    input_file="tests/${network}/v${spec_version}/${method}/${test_name}.input.json"
     input_dir="$(dirname "$input_file")"
 
     # Create input directory if it doesn't exist
@@ -53,31 +59,16 @@ for method in "${methods[@]}"; do
         --arg method "$method" \
         --arg transaction_hash "$transaction_hash" \
         '{id: 1, jsonrpc: "2.0", method: $method, params: {transaction_hash: $transaction_hash}}' \
+        | add_method_params "$method" \
         >"$input_file"
 
     # Run write-output.sh for this method
     echo "Processing $method..."
-    STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$method" "$transaction_hash"
+    STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$spec_version" "$method" "$test_name"
 done
 
-# Generate INCLUDE_PROOF_FACTS variant if requested
-if [[ ",$variants," == *",proof-facts,"* ]]; then
-    proof_facts_method="starknet_getTransactionByHash"
-    proof_facts_test_name="${transaction_hash}-include-proof-facts"
-    proof_facts_input="tests/${network}/${proof_facts_method}/${proof_facts_test_name}.input.json"
-
-    jq -nc \
-        --arg method "$proof_facts_method" \
-        --arg transaction_hash "$transaction_hash" \
-        '{id: 1, jsonrpc: "2.0", method: $method, params: {transaction_hash: $transaction_hash, response_flags: ["INCLUDE_PROOF_FACTS"]}}' \
-        >"$proof_facts_input"
-
-    echo "Processing $proof_facts_method with INCLUDE_PROOF_FACTS flag..."
-    STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$proof_facts_method" "$proof_facts_test_name"
-fi
-
 # Extract block info from starknet_getTransactionReceipt output
-receipt_output="tests/${network}/starknet_getTransactionReceipt/${transaction_hash}.output.json"
+receipt_output="tests/${network}/v${spec_version}/starknet_getTransactionReceipt/${transaction_hash}.output.json"
 block_number=$(jq -r '.result.block_number' "$receipt_output")
 block_hash=$(jq -r '.result.block_hash' "$receipt_output")
 
@@ -112,38 +103,44 @@ echo "Found transaction at index: $tx_index"
 
 # Generate starknet_getTransactionByBlockIdAndIndex tests
 index_method="starknet_getTransactionByBlockIdAndIndex"
-index_method_dir="tests/${network}/${index_method}"
-mkdir -p "$index_method_dir"
+resp_flag_key=$(get_flag_key "$index_method")
+resp_flag_subdir=$(flags_to_subdir "$resp_flag_key" "$(get_flag_value "$resp_flag_key")")
+index_method_dir="tests/${network}/v${spec_version}/${index_method}"
+mkdir -p "${index_method_dir}${resp_flag_subdir:+/${resp_flag_subdir}}"
 
 # Test 1: by block_number
-test_name_block_number="${transaction_hash}-block-number"
+test_name_block_number="${resp_flag_subdir:+${resp_flag_subdir}/}${transaction_hash}-block-number"
 input_file="${index_method_dir}/${test_name_block_number}.input.json"
 
 jq -nc \
+    --arg method "$index_method" \
     --argjson block_number "$block_number" \
     --argjson index "$tx_index" \
-    '{id: 1, jsonrpc: "2.0", method: "starknet_getTransactionByBlockIdAndIndex", params: {block_id: {block_number: $block_number}, index: $index}}' \
+    '{id: 1, jsonrpc: "2.0", method: $method, params: {block_id: {block_number: $block_number}, index: $index}}' \
+    | add_method_params "$index_method" \
     >"$input_file"
 
 echo "Processing $index_method with block number..."
-STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$index_method" "$test_name_block_number"
+STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$spec_version" "$index_method" "$test_name_block_number"
 
 # Test 2: by block_hash
-test_name_block_hash="${transaction_hash}-block-hash"
+test_name_block_hash="${resp_flag_subdir:+${resp_flag_subdir}/}${transaction_hash}-block-hash"
 input_file="${index_method_dir}/${test_name_block_hash}.input.json"
 
 jq -nc \
+    --arg method "$index_method" \
     --arg block_hash "$block_hash" \
     --argjson index "$tx_index" \
-    '{id: 1, jsonrpc: "2.0", method: "starknet_getTransactionByBlockIdAndIndex", params: {block_id: {block_hash: $block_hash}, index: $index}}' \
+    '{id: 1, jsonrpc: "2.0", method: $method, params: {block_id: {block_hash: $block_hash}, index: $index}}' \
+    | add_method_params "$index_method" \
     >"$input_file"
 
 echo "Processing $index_method with block hash..."
-STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$index_method" "$test_name_block_hash"
+STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$spec_version" "$index_method" "$test_name_block_hash"
 
 # Verify outputs match starknet_getTransactionByHash
 echo "Comparing starknet_getTransactionByBlockIdAndIndex outputs with starknet_getTransactionByHash..."
-tx_by_hash_output="tests/${network}/starknet_getTransactionByHash/${transaction_hash}.output.json"
+tx_by_hash_output="tests/${network}/v${spec_version}/starknet_getTransactionByHash/${resp_flag_subdir:+${resp_flag_subdir}/}${transaction_hash}.output.json"
 
 # Compare block number variant
 block_number_output="${index_method_dir}/${test_name_block_number}.output.json"
@@ -164,34 +161,5 @@ if ! diff --color=auto -u \
     exit 1
 fi
 echo "  ✅ starknet_getTransactionByBlockIdAndIndex (block-hash) matches starknet_getTransactionByHash"
-
-# Generate INCLUDE_PROOF_FACTS variants for starknet_getTransactionByBlockIdAndIndex if requested
-if [[ ",$variants," == *",proof-facts,"* ]]; then
-    # By block_number
-    pf_test_name_bn="${transaction_hash}-block-number-include-proof-facts"
-    pf_input_bn="${index_method_dir}/${pf_test_name_bn}.input.json"
-
-    jq -nc \
-        --argjson block_number "$block_number" \
-        --argjson index "$tx_index" \
-        '{id: 1, jsonrpc: "2.0", method: "starknet_getTransactionByBlockIdAndIndex", params: {block_id: {block_number: $block_number}, index: $index, response_flags: ["INCLUDE_PROOF_FACTS"]}}' \
-        >"$pf_input_bn"
-
-    echo "Processing $index_method with block number and INCLUDE_PROOF_FACTS flag..."
-    STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$index_method" "$pf_test_name_bn"
-
-    # By block_hash
-    pf_test_name_bh="${transaction_hash}-block-hash-include-proof-facts"
-    pf_input_bh="${index_method_dir}/${pf_test_name_bh}.input.json"
-
-    jq -nc \
-        --arg block_hash "$block_hash" \
-        --argjson index "$tx_index" \
-        '{id: 1, jsonrpc: "2.0", method: "starknet_getTransactionByBlockIdAndIndex", params: {block_id: {block_hash: $block_hash}, index: $index, response_flags: ["INCLUDE_PROOF_FACTS"]}}' \
-        >"$pf_input_bh"
-
-    echo "Processing $index_method with block hash and INCLUDE_PROOF_FACTS flag..."
-    STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$index_method" "$pf_test_name_bh"
-fi
 
 echo "Done processing all methods for transaction $transaction_hash"

@@ -11,7 +11,6 @@ usage() {
     echo "Commands:"
     echo "  test                  Run all golden test diffs"
     echo "  regen                 Regenerate all golden test outputs"
-    echo "  variant               Create version-specific variant outputs (for older nodes)"
     echo "  generate              Generate golden tests"
 }
 
@@ -20,16 +19,16 @@ generate_usage() {
     echo "  block        Generate tests for a block"
     echo "  class        Generate tests for a class"
     echo "  contract     Generate tests for a contract"
+    echo "  simulate     Generate tests for simulate transactions"
     echo "  storage      Generate tests for storage (starknet_getStorageAt)"
     echo "  transaction  Generate tests for a transaction"
     echo "  version      Generate tests for version methods (specVersion, chainId)"
     echo ""
-    echo "Options (for block, transaction, storage):"
-    echo "  --variants <variant,...>  Comma-separated list of extra variants to generate"
-    echo ""
-    echo "Available variants:"
-    echo "  proof-facts         For block, transaction commands"
-    echo "  last-update-block   For storage command"
+    echo "Options:"
+    echo "  --rpc-url <url>              RPC endpoint (or set STARKNET_RPC env var)"
+    echo "  --response-flags <json>      JSON array of response flags (e.g. '[\"INCLUDE_PROOF_FACTS\"]')"
+    echo "  --trace-flags <json>         JSON array of trace flags (e.g. '[\"RETURN_INITIAL_READS\"]')"
+    echo "  --simulation-flags <json>    JSON array of simulation flags"
 }
 
 case "${1:-}" in
@@ -40,10 +39,6 @@ case "${1:-}" in
     regen)
         shift
         "$script_dir/scripts/generate/regen.sh" "$@"
-        ;;
-    variant)
-        shift
-        "$script_dir/scripts/generate/variant.sh" "$@"
         ;;
     generate)
         shift
@@ -59,6 +54,10 @@ case "${1:-}" in
             contract)
                 shift
                 "$script_dir/scripts/generate/contract.sh" "$@"
+                ;;
+            simulate)
+                shift
+                "$script_dir/scripts/generate/simulate.sh" "$@"
                 ;;
             storage)
                 shift

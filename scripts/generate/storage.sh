@@ -2,17 +2,13 @@
 set -e
 trap 'echo "Error on line $LINENO: $BASH_COMMAND"; exit 1' ERR
 
-rpc_url="$STARKNET_RPC"
-variants=""
-while [[ "${1:-}" == --* ]]; do
-    case "$1" in
-        --rpc-url) rpc_url="$2"; shift 2 ;;
-        --variants) variants="$2"; shift 2 ;;
-        *) echo "Unknown option: $1" >&2; exit 1 ;;
-    esac
-done
-contract_address="$1"
-block_number="$2"
+script_dir="$(dirname "$0")"
+source "${script_dir}/parse-args.sh"
+parse_args "$@"
+
+contract_address="${REMAINING_ARGS[0]}"
+block_number="${REMAINING_ARGS[1]}"
+rpc_url="$RPC_URL"
 
 missing=""
 if [ -z "$contract_address" ]; then
@@ -36,19 +32,16 @@ fi
 if [ -n "$missing" ]; then
     echo "Error: Missing $missing argument(s)." >&2
     echo "" >&2
-    echo "Usage: $0 [--rpc-url <url>] [--variants <variant,...>] <contract_address> <block_number>" >&2
+    echo "Usage: $0 [--rpc-url <url>] [--response-flags <json>] <contract_address> <block_number>" >&2
     echo "" >&2
     echo "RPC URL can be provided via --rpc-url flag or STARKNET_RPC env var." >&2
-    echo "Available variants: last-update-block" >&2
     echo "" >&2
     echo "Examples:" >&2
     echo "  $0 --rpc-url http://localhost:6060 0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7 100" >&2
-    echo "  $0 --variants last-update-block 0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7 100" >&2
+    echo "  $0 --rpc-url http://localhost:6060 --response-flags '[\"INCLUDE_LAST_UPDATE_BLOCK\"]' 0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7 100" >&2
     echo "  STARKNET_RPC=http://localhost:6060 $0 0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7 100" >&2
     exit 1
 fi
-
-script_dir="$(dirname "$0")"
 
 # Auto-detect network
 echo "🔍 Auto-detecting network by querying starknet_chainId..."
@@ -57,6 +50,14 @@ if ! tests_folder=$(STARKNET_RPC="$rpc_url" "${script_dir}/../run/detect-network
 fi
 network=$(basename "$tests_folder")
 echo "✅ Using network: $network"
+
+# Detect spec version
+echo "🔍 Detecting spec version..."
+if ! spec_version=$(STARKNET_RPC="$rpc_url" "${script_dir}/../run/detect-version.sh") || [ -z "$spec_version" ]; then
+    echo "Error: Could not detect spec version" >&2
+    exit 1
+fi
+echo "✅ Spec version: $spec_version"
 
 # Query starknet_getStateUpdate to find storage diffs for the contract
 echo "🔍 Querying starknet_getStateUpdate for block $block_number..."
@@ -79,12 +80,12 @@ fi
 echo "✅ Found storage key: $storage_key"
 
 method="starknet_getStorageAt"
-method_dir="tests/${network}/${method}"
-mkdir -p "$method_dir"
-
-# Test 1: Without response flags
-test_name="${contract_address}-${storage_key}-${block_number}"
+flag_key=$(get_flag_key "$method")
+flag_subdir=$(flags_to_subdir "$flag_key" "$(get_flag_value "$flag_key")")
+test_name="${flag_subdir:+${flag_subdir}/}${contract_address}-${storage_key}-${block_number}"
+method_dir="tests/${network}/v${spec_version}/${method}"
 input_file="${method_dir}/${test_name}.input.json"
+mkdir -p "$(dirname "$input_file")"
 
 jq -nc \
     --arg method "$method" \
@@ -92,26 +93,10 @@ jq -nc \
     --arg key "$storage_key" \
     --argjson block_number "$block_number" \
     '{id: 1, jsonrpc: "2.0", method: $method, params: {contract_address: $contract_address, key: $key, block_id: {block_number: $block_number}}}' \
+    | add_method_params "$method" \
     >"$input_file"
 
-echo "Processing $method without flags..."
-STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$method" "$test_name"
-
-# Test 2: With INCLUDE_LAST_UPDATE_BLOCK flag (if requested)
-if [[ ",$variants," == *",last-update-block,"* ]]; then
-    test_name_flagged="${contract_address}-${storage_key}-${block_number}-include-last-update-block"
-    input_file_flagged="${method_dir}/${test_name_flagged}.input.json"
-
-    jq -nc \
-        --arg method "$method" \
-        --arg contract_address "$contract_address" \
-        --arg key "$storage_key" \
-        --argjson block_number "$block_number" \
-        '{id: 1, jsonrpc: "2.0", method: $method, params: {contract_address: $contract_address, key: $key, block_id: {block_number: $block_number}, response_flags: ["INCLUDE_LAST_UPDATE_BLOCK"]}}' \
-        >"$input_file_flagged"
-
-    echo "Processing $method with INCLUDE_LAST_UPDATE_BLOCK flag..."
-    STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$method" "$test_name_flagged"
-fi
+echo "Processing $method..."
+STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$spec_version" "$method" "$test_name"
 
 echo "Done processing storage tests for contract $contract_address at block $block_number"

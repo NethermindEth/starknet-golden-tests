@@ -29,22 +29,23 @@ repo_root="$(cd "$script_dir/../.." && pwd)"
 # Change to repo root to ensure paths are consistent
 cd "$repo_root" || exit 1
 
-# Auto-detect test folder by chain ID if not specified
+# Auto-detect test folder by chain ID and spec version if not specified
 if [ -z "$tests_folder" ]; then
     echo "🔍 Auto-detecting network by querying starknet_chainId..."
-    if ! tests_folder=$(STARKNET_RPC="$rpc_url" "${script_dir}/detect-network.sh") || [ -z "$tests_folder" ]; then
+    if ! network_folder=$(STARKNET_RPC="$rpc_url" "${script_dir}/detect-network.sh") || [ -z "$network_folder" ]; then
         exit 1
     fi
-    echo "✅ Using: $tests_folder"
-fi
+    echo "✅ Network: $network_folder"
 
-# Detect spec version for variant resolution
-echo "🔍 Detecting spec version..."
-if ! spec_version=$(STARKNET_RPC="$rpc_url" "${script_dir}/detect-version.sh") || [ -z "$spec_version" ]; then
-    echo "⚠️  Warning: Could not detect spec version, using default outputs" >&2
-    spec_version=""
-else
+    echo "🔍 Detecting spec version..."
+    if ! spec_version=$(STARKNET_RPC="$rpc_url" "${script_dir}/detect-version.sh") || [ -z "$spec_version" ]; then
+        echo "Error: Could not detect spec version" >&2
+        exit 1
+    fi
     echo "✅ Spec version: $spec_version"
+
+    tests_folder="${network_folder}/v${spec_version}"
+    echo "✅ Using: $tests_folder"
 fi
 
 # Create timestamped results folder
@@ -79,12 +80,8 @@ while IFS= read -r -d '' input_file; do
     flat_name="${rel_path//\//.}"
     diff_file="$results_dir/${flat_name}.diff"
 
-    # Resolve output file based on spec version
-    if [ -n "$spec_version" ]; then
-        output_file=$("${script_dir}/resolve-output.sh" "$abs_input_file" "$spec_version")
-    else
-        output_file="${abs_input_file%.input.json}.output.json"
-    fi
+    # Output file is alongside input file in the version folder
+    output_file="${abs_input_file%.input.json}.output.json"
 
     # Run diff, capture output and exit code
     diff_output=$(STARKNET_RPC="$rpc_url" "${script_dir}/diff.sh" "$abs_input_file" "$output_file" 2>&1) && diff_exit_code=0 || diff_exit_code=$?

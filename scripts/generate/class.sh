@@ -32,6 +32,14 @@ fi
 network=$(basename "$tests_folder")
 echo "✅ Using network: $network"
 
+# Detect spec version
+echo "🔍 Detecting spec version..."
+if ! spec_version=$(STARKNET_RPC="$rpc_url" "${script_dir}/../run/detect-version.sh") || [ -z "$spec_version" ]; then
+    echo "Error: Could not detect spec version" >&2
+    exit 1
+fi
+echo "✅ Spec version: $spec_version"
+
 # Determine block_id format
 if [ -z "$block_id_arg" ] || [ "$block_id_arg" = "latest" ]; then
     block_id_json='"latest"'
@@ -48,7 +56,7 @@ test_name="${class_hash}${test_suffix}"
 
 # starknet_getClass requires block_id
 method="starknet_getClass"
-input_file="tests/${network}/${method}/${test_name}.input.json"
+input_file="tests/${network}/v${spec_version}/${method}/${test_name}.input.json"
 input_dir="$(dirname "$input_file")"
 
 mkdir -p "$input_dir"
@@ -61,11 +69,11 @@ jq -nc \
     >"$input_file"
 
 echo "Processing $method..."
-STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$method" "$test_name"
+STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$spec_version" "$method" "$test_name"
 
 # starknet_getCompiledCasm only requires class_hash (no block_id)
 method="starknet_getCompiledCasm"
-input_file="tests/${network}/${method}/${class_hash}.input.json"
+input_file="tests/${network}/v${spec_version}/${method}/${class_hash}.input.json"
 input_dir="$(dirname "$input_file")"
 
 mkdir -p "$input_dir"
@@ -77,6 +85,6 @@ jq -nc \
     >"$input_file"
 
 echo "Processing $method..."
-STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$method" "$class_hash"
+STARKNET_RPC="$rpc_url" "${script_dir}/write-output.sh" "$network" "$spec_version" "$method" "$class_hash"
 
 echo "Done processing all methods for class $class_hash"
