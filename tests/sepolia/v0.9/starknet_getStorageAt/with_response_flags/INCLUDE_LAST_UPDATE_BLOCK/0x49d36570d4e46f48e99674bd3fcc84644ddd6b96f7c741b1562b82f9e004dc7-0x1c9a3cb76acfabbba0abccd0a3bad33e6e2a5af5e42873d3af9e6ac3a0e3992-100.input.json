@@ -1,0 +1,15 @@
+{
+  "id": 1,
+  "jsonrpc": "2.0",
+  "method": "starknet_getStorageAt",
+  "params": {
+    "contract_address": "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+    "key": "0x1c9a3cb76acfabbba0abccd0a3bad33e6e2a5af5e42873d3af9e6ac3a0e3992",
+    "block_id": {
+      "block_number": 100
+    },
+    "response_flags": [
+      "INCLUDE_LAST_UPDATE_BLOCK"
+    ]
+  }
+}

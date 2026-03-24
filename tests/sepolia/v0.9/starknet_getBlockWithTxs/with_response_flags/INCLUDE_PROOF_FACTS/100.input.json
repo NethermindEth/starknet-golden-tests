@@ -1,11 +1,13 @@
 {
   "id": 1,
   "jsonrpc": "2.0",
-  "method": "starknet_traceBlockTransactions",
+  "method": "starknet_getBlockWithTxs",
   "params": {
     "block_id": {
       "block_number": 100
     },
-    "trace_flags": []
+    "response_flags": [
+      "INCLUDE_PROOF_FACTS"
+    ]
   }
 }
