@@ -6,77 +6,88 @@ set -euo pipefail
 script_dir="$(cd "$(dirname "$0")" && pwd)"
 
 usage() {
-    echo "Starknet Golden Tests"
-    echo ""
-    echo "Commands:"
-    echo "  test                  Run all golden test diffs"
-    echo "  regen                 Regenerate all golden test outputs"
-    echo "  generate              Generate golden tests"
+  echo "Starknet Golden Tests"
+  echo ""
+  echo "Commands:"
+  echo "  test                  Run all golden test diffs"
+  echo "  regen                 Regenerate all golden test outputs"
+  echo "  generate              Generate golden tests"
 }
 
 generate_usage() {
-    echo "Commands:"
-    echo "  block        Generate tests for a block"
-    echo "  class        Generate tests for a class"
-    echo "  contract     Generate tests for a contract"
-    echo "  simulate     Generate tests for simulate transactions"
-    echo "  transaction  Generate tests for a transaction"
-    echo "  version      Generate tests for version methods (specVersion, chainId)"
+  echo "Commands:"
+  echo "  block        Generate tests for a block"
+  echo "  class        Generate tests for a class"
+  echo "  contract     Generate tests for a contract"
+  echo "  simulate     Generate tests for simulate transactions"
+  echo "  storage      Generate tests for storage (starknet_getStorageAt)"
+  echo "  transaction  Generate tests for a transaction"
+  echo "  version      Generate tests for version methods (specVersion, chainId)"
+  echo ""
+  echo "Options:"
+  echo "  --rpc-url <url>              RPC endpoint (or set STARKNET_RPC env var)"
+  echo "  --response-flags <json>      JSON array of response flags (e.g. '[\"INCLUDE_PROOF_FACTS\"]')"
+  echo "  --trace-flags <json>         JSON array of trace flags (e.g. '[\"RETURN_INITIAL_READS\"]')"
+  echo "  --simulation-flags <json>    JSON array of simulation flags (e.g. '[\"RETURN_INITIAL_READS\"]')"
 }
 
 case "${1:-}" in
-    test)
-        shift
-        "$script_dir/scripts/run/test.sh" "$@"
-        ;;
-    regen)
-        shift
-        "$script_dir/scripts/generate/regen.sh" "$@"
-        ;;
-    generate)
-        shift
-        case "${1:-}" in
-            block)
-                shift
-                "$script_dir/scripts/generate/block.sh" "$@"
-                ;;
-            class)
-                shift
-                "$script_dir/scripts/generate/class.sh" "$@"
-                ;;
-            contract)
-                shift
-                "$script_dir/scripts/generate/contract.sh" "$@"
-                ;;
-            simulate)
-                shift
-                "$script_dir/scripts/generate/simulate.sh" "$@"
-                ;;
-            transaction)
-                shift
-                "$script_dir/scripts/generate/transaction.sh" "$@"
-                ;;
-            version)
-                shift
-                "$script_dir/scripts/generate/version.sh" "$@"
-                ;;
-            "")
-                generate_usage
-                ;;
-            *)
-                echo "Unknown generate command: $1" >&2
-                generate_usage >&2
-                exit 1
-                ;;
-        esac
-        ;;
-    "")
-        usage
-        ;;
-    *)
-        echo "Unknown command: $1" >&2
-        echo "" >&2
-        usage >&2
-        exit 1
-        ;;
+test)
+  shift
+  "$script_dir/scripts/run/test.sh" "$@"
+  ;;
+regen)
+  shift
+  "$script_dir/scripts/generate/regen.sh" "$@"
+  ;;
+generate)
+  shift
+  case "${1:-}" in
+  block)
+    shift
+    "$script_dir/scripts/generate/block.sh" "$@"
+    ;;
+  class)
+    shift
+    "$script_dir/scripts/generate/class.sh" "$@"
+    ;;
+  contract)
+    shift
+    "$script_dir/scripts/generate/contract.sh" "$@"
+    ;;
+  simulate)
+    shift
+    "$script_dir/scripts/generate/simulate.sh" "$@"
+    ;;
+  storage)
+    shift
+    "$script_dir/scripts/generate/storage.sh" "$@"
+    ;;
+  transaction)
+    shift
+    "$script_dir/scripts/generate/transaction.sh" "$@"
+    ;;
+  version)
+    shift
+    "$script_dir/scripts/generate/version.sh" "$@"
+    ;;
+  "")
+    generate_usage
+    ;;
+  *)
+    echo "Unknown generate command: $1" >&2
+    generate_usage >&2
+    exit 1
+    ;;
+  esac
+  ;;
+"")
+  usage
+  ;;
+*)
+  echo "Unknown command: $1" >&2
+  echo "" >&2
+  usage >&2
+  exit 1
+  ;;
 esac

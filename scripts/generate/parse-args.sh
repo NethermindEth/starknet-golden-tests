@@ -37,7 +37,8 @@ parse_args() {
 get_flag_key() {
   case "$1" in
   starknet_getBlockWithReceipts | starknet_getBlockWithTxs | \
-    starknet_getTransactionByHash | starknet_getTransactionByBlockIdAndIndex)
+    starknet_getTransactionByHash | starknet_getTransactionByBlockIdAndIndex | \
+    starknet_getStorageAt)
     echo "response_flags"
     ;;
   starknet_traceBlockTransactions)
