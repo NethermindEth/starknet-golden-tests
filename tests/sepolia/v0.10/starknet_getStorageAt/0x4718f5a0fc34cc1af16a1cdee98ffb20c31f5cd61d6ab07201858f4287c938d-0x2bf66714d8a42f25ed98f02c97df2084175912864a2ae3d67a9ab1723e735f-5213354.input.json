@@ -1,0 +1,1 @@
+{"id":1,"jsonrpc":"2.0","method":"starknet_getStorageAt","params":{"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d","key":"0x2bf66714d8a42f25ed98f02c97df2084175912864a2ae3d67a9ab1723e735f","block_id":{"block_number":5213354}}}

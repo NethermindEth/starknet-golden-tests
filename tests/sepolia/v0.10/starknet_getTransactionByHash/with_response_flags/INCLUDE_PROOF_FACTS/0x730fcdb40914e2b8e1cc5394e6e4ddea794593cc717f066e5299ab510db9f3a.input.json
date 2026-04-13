@@ -1,0 +1,11 @@
+{
+  "id": 1,
+  "jsonrpc": "2.0",
+  "method": "starknet_getTransactionByHash",
+  "params": {
+    "transaction_hash": "0x730fcdb40914e2b8e1cc5394e6e4ddea794593cc717f066e5299ab510db9f3a",
+    "response_flags": [
+      "INCLUDE_PROOF_FACTS"
+    ]
+  }
+}

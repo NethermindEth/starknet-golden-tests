@@ -33,7 +33,7 @@ def walk(f):
 
 walk(
   if type == \"object\" and (.${PARENT_KEY}? | type == \"object\" or type == \"array\") then
-    .${PARENT_KEY}${ARRAY_PATH} |= sort_by(${SORT_EXPR})
+    .${PARENT_KEY}${ARRAY_PATH} |= (if . != null then sort_by(${SORT_EXPR}) else . end)
   else
     .
   end

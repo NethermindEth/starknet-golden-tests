@@ -1,0 +1,55 @@
+{
+  "id": 1,
+  "jsonrpc": "2.0",
+  "method": "starknet_simulateTransactions",
+  "params": {
+    "block_id": {
+      "block_hash": "0x398d7b0a9ec6c9bd91ffdc5fc13c7eafc581b42453715b46f12201f6826a6b2"
+    },
+    "transactions": [
+      {
+        "account_deployment_data": [],
+        "calldata": [
+          "0x1",
+          "0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
+          "0x83afd3f4caedc6eebf44246fe54e38c95e3179a5ec9ea81740eca5b482d12e",
+          "0x3",
+          "0x4d567630f8fe7915b7382ebfeb0c382e1cd1fa81622b4f768f71727d42d29e2",
+          "0x4bf33081c775aac0",
+          "0x0"
+        ],
+        "fee_data_availability_mode": "L1",
+        "nonce": "0x1",
+        "nonce_data_availability_mode": "L1",
+        "paymaster_data": [],
+        "resource_bounds": {
+          "l1_data_gas": {
+            "max_amount": "0x780",
+            "max_price_per_unit": "0x5e8ffb2"
+          },
+          "l1_gas": {
+            "max_amount": "0x0",
+            "max_price_per_unit": "0xecb29609805f"
+          },
+          "l2_gas": {
+            "max_amount": "0x95e700",
+            "max_price_per_unit": "0x6fc23ac00"
+          }
+        },
+        "sender_address": "0x13a2cfc6a3273b9da3aa44452eff4c93c6362700aa067f7440c91bcab52799f",
+        "signature": [
+          "0x126de859139de211ee6021b0aeb53ecc6546b06aa129f03cb5768028fcb2901",
+          "0x54a6f553c21ea1c9e39006601e8b732717ad9702a7231befd7d2f7468f293c1",
+          "0x3e29263ca0d5a75d9d0536f8af964eb0d7fc70aaff34ad1dfc1ec4bdfee6482",
+          "0x51de75dbc5404ae6b03632d98b4c0a33b77562b96a7a980f8e90e2f12195eb1",
+          "0x21f30c8516aad2aee01a15702e491a298c03c6afd37a1ea5e146f7399a783c1",
+          "0x588fd228a725bc22ae5554ef12afcc752757087673bcd51cdaea70afb7105f1"
+        ],
+        "tip": "0x0",
+        "type": "INVOKE",
+        "version": "0x3"
+      }
+    ],
+    "simulation_flags": []
+  }
+}
