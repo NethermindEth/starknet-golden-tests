@@ -22,6 +22,12 @@ if [ -z "$block_number" ] || [ -z "$rpc_url" ]; then
     exit 1
 fi
 
+if ! [[ "$block_number" =~ ^[0-9]+$ ]] || [ "$block_number" -lt 1 ]; then
+    echo "Error: block_number must be a positive integer >= 1 (got '$block_number')." >&2
+    echo "Simulation runs at block_number - 1, so block 0 has no valid parent." >&2
+    exit 1
+fi
+
 # Auto-detect network
 echo "🔍 Auto-detecting network by querying starknet_chainId..."
 if ! tests_folder=$(STARKNET_RPC="$rpc_url" "${script_dir}/../run/detect-network.sh") || [ -z "$tests_folder" ]; then
