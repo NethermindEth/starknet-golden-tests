@@ -54,4 +54,4 @@ if ! jq -S -f "${script_dir}/normalize-json.jq" "$output_file" >"$temp_expected"
 fi
 
 # Compare the results
-diff --color=always -u "${temp_actual}.pretty" "$temp_expected"
+diff --color=always -u "$temp_expected" "${temp_actual}.pretty"
