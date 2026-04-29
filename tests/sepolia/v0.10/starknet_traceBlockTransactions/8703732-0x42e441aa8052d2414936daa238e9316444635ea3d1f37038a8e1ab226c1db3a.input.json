@@ -1,0 +1,11 @@
+{
+  "id": 1,
+  "jsonrpc": "2.0",
+  "method": "starknet_traceBlockTransactions",
+  "params": {
+    "block_id": {
+      "block_hash": "0x42e441aa8052d2414936daa238e9316444635ea3d1f37038a8e1ab226c1db3a"
+    },
+    "trace_flags": []
+  }
+}

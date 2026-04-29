@@ -1,0 +1,1 @@
+{"id":1,"jsonrpc":"2.0","method":"starknet_getBlockTransactionCount","params":{"block_id":{"block_hash":"0x4319c6b8df1155b3684ccb2082fc58b0e55675b2a06363bb8a9fa6edab23842"}}}

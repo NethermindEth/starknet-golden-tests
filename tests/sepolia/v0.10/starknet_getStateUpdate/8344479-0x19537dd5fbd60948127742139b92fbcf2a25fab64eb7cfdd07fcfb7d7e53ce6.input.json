@@ -1,0 +1,1 @@
+{"id":1,"jsonrpc":"2.0","method":"starknet_getStateUpdate","params":{"block_id":{"block_hash":"0x19537dd5fbd60948127742139b92fbcf2a25fab64eb7cfdd07fcfb7d7e53ce6"}}}

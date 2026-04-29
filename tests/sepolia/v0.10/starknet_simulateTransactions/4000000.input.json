@@ -1,0 +1,111 @@
+{
+  "id": 1,
+  "jsonrpc": "2.0",
+  "method": "starknet_simulateTransactions",
+  "params": {
+    "block_id": {
+      "block_number": 3999999
+    },
+    "transactions": [
+      {
+        "account_deployment_data": [],
+        "calldata": [
+          "0x1",
+          "0x99b63f39f0cabb767361de3d8d3e97212351a51540e2687c2571f4da490dbe",
+          "0x3121266c49578e04471bc63ffe01c7c661957993e694c49fc9605e38feecae1",
+          "0x3f",
+          "0x1",
+          "0xff3f",
+          "0x61b21761",
+          "0xd87e4f10",
+          "0x920833f4",
+          "0x84c57baa",
+          "0x720fe044",
+          "0x42125575",
+          "0x78546c0d",
+          "0x0",
+          "0xf20c818e",
+          "0x88262938",
+          "0xfaabe13d",
+          "0x10e8f0fa",
+          "0x1682d801",
+          "0xddfbebfa",
+          "0x6e4c8979",
+          "0x8d36552b",
+          "0xcd2a3f69",
+          "0xffff001d",
+          "0x1d801510",
+          "0xe0ff3f",
+          "0xf652f164",
+          "0x27a9a5ae",
+          "0xc6e12f0a",
+          "0x402c98b",
+          "0xb92c2000",
+          "0x5e22f23f",
+          "0x3409d02",
+          "0x0",
+          "0x63004846",
+          "0xd512d273",
+          "0xd98928d",
+          "0x6744cc22",
+          "0x491febdb",
+          "0x42ec7d71",
+          "0x32146126",
+          "0xa45d5de5",
+          "0x1c263f69",
+          "0xffff001d",
+          "0x40c204f8",
+          "0x61b21761",
+          "0xd87e4f10",
+          "0x920833f4",
+          "0x84c57baa",
+          "0x720fe044",
+          "0x42125575",
+          "0x78546c0d",
+          "0x0",
+          "0x7f31ca2aeaa6268a9fa",
+          "0x0",
+          "0x1bb41",
+          "0x693924ae",
+          "0x693f1357",
+          "0x693f1808",
+          "0x693f1cb9",
+          "0x693f216a",
+          "0x693f09f6",
+          "0x693f0ea7",
+          "0x693f1358",
+          "0x693f1809",
+          "0x693f1cba",
+          "0x693f216b"
+        ],
+        "fee_data_availability_mode": "L1",
+        "nonce": "0x4991",
+        "nonce_data_availability_mode": "L1",
+        "paymaster_data": [],
+        "resource_bounds": {
+          "l1_data_gas": {
+            "max_amount": "0x258",
+            "max_price_per_unit": "0x938f"
+          },
+          "l1_gas": {
+            "max_amount": "0x0",
+            "max_price_per_unit": "0x225b3c9e42ae"
+          },
+          "l2_gas": {
+            "max_amount": "0x16e3600",
+            "max_price_per_unit": "0x2540be400"
+          }
+        },
+        "sender_address": "0x7dcce8b0d3d1d8f9636e78870f30a1ece8028792598a4b06b9ac5c1fd75ce43",
+        "signature": [
+          "0x7e757b788b9d27907f49b7269a6dc1f53d4bcc2db9cdcb45493918bbeb7cc8",
+          "0x254d044dae5b05d2b1e10ea73ef9ea7a741d601a309634134c379d2cc57d544"
+        ],
+        "tip": "0x0",
+        "type": "INVOKE",
+        "version": "0x3"
+      }
+    ],
+    "simulation_flags": []
+  }
+}
