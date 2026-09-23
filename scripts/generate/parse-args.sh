@@ -50,15 +50,71 @@ get_flag_key() {
   esac
 }
 
-# Returns the flag value for a given flag key.
-# trace_flags and simulation_flags default to [] when not explicitly set.
-# response_flags returns empty when not set (meaning: don't add to params).
-get_flag_value() {
+# Minimum spec minor version (major is always 0) in which a flag param exists.
+# response_flags and trace_flags were introduced in spec v0.10; simulation_flags predates v0.9.
+flag_min_minor() {
   case "$1" in
+  response_flags | trace_flags) echo 10 ;;
+  simulation_flags) echo 0 ;;
+  esac
+}
+
+# Allowed values for a flag key, given the method and the detected spec version (major.minor).
+flag_allowed_values() {
+  local flag_key="$1" method="$2" minor="${3#*.}"
+  case "$flag_key" in
+  response_flags)
+    if [[ "$method" == "starknet_getStorageAt" ]]; then echo "INCLUDE_LAST_UPDATE_BLOCK"; else echo "INCLUDE_PROOF_FACTS"; fi
+    ;;
+  trace_flags) echo "RETURN_INITIAL_READS" ;;
+  simulation_flags)
+    if ((minor >= 10)); then echo "SKIP_VALIDATE SKIP_FEE_CHARGE RETURN_INITIAL_READS"; else echo "SKIP_VALIDATE SKIP_FEE_CHARGE"; fi
+    ;;
+  esac
+}
+
+# Returns the flag value for a given flag key, honouring the detected spec version.
+# $1: flag key; $2: spec version (major.minor, e.g. "0.10"; defaults to $spec_version)
+# trace_flags and simulation_flags default to [] when not explicitly set, but only
+# in spec versions that know the param. response_flags is only added when explicitly set.
+get_flag_value() {
+  local flag_key="$1" version="${2:-${spec_version:-}}" minor
+  minor="${version#*.}"
+  if [[ -n "$version" ]] && ((minor < $(flag_min_minor "$flag_key"))); then
+    echo ""
+    return
+  fi
+  case "$flag_key" in
   response_flags) echo "$RESPONSE_FLAGS" ;;
   trace_flags) echo "${TRACE_FLAGS:-[]}" ;;
   simulation_flags) echo "${SIMULATION_FLAGS:-[]}" ;;
   esac
+}
+
+# Fails when explicitly requested flags are unknown to the spec version or to the method.
+# $1: method; $2: spec version (major.minor)
+validate_flags() {
+  local method="$1" version="$2" flag_key explicit minor allowed v
+  flag_key=$(get_flag_key "$method")
+  [ -z "$flag_key" ] && return
+  case "$flag_key" in
+  response_flags) explicit="$RESPONSE_FLAGS" ;;
+  trace_flags) explicit="$TRACE_FLAGS" ;;
+  simulation_flags) explicit="$SIMULATION_FLAGS" ;;
+  esac
+  [ -z "$explicit" ] && return
+  minor="${version#*.}"
+  if ((minor < $(flag_min_minor "$flag_key"))); then
+    echo "Error: $flag_key is not part of spec v${version} (introduced in v0.$(flag_min_minor "$flag_key"))" >&2
+    exit 1
+  fi
+  allowed=$(flag_allowed_values "$flag_key" "$method" "$version")
+  for v in $(echo "$explicit" | jq -r '.[]'); do
+    if [[ " $allowed " != *" $v "* ]]; then
+      echo "Error: unknown $flag_key value '$v' for $method in spec v${version} (allowed: ${allowed// /, })" >&2
+      exit 1
+    fi
+  done
 }
 
 # Returns "with_<flag_key>/<sorted+joined values>" or "" if key or flags are empty/absent.
@@ -77,6 +133,8 @@ flags_to_subdir() {
 }
 
 # Reads full RPC JSON from stdin, merges appropriate flags into .params, writes to stdout.
+# Reads the caller's $spec_version (major.minor, set by detect-version.sh) to skip flags the
+# spec version does not know and to reject invalid flag values.
 # Usage: echo '{"id":1,...}' | add_method_params "starknet_getBlockWithTxs"
 add_method_params() {
   local method="$1"
@@ -86,7 +144,8 @@ add_method_params() {
     cat
     return
   }
-  flag_value=$(get_flag_value "$flag_key")
+  validate_flags "$method" "${spec_version:-}"
+  flag_value=$(get_flag_value "$flag_key" "${spec_version:-}")
   [ -z "$flag_value" ] && {
     cat
     return

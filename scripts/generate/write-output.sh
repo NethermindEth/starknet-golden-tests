@@ -32,3 +32,8 @@ mkdir -p "$output_dir"
 
 # Run the test (output is already normalized by query-rpc.sh) and write to file
 STARKNET_RPC="$rpc_url" "${script_dir}/../run/query-rpc.sh" <"$input_file" >"$output_file"
+
+# A JSON-RPC error is a valid golden only when deliberate; make sure nobody misses it.
+if err=$(jq -e -c '.error' "$output_file" 2>/dev/null); then
+    echo "⚠️  $output_file is a JSON-RPC error response: $err" >&2
+fi
