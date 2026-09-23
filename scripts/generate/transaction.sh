@@ -40,6 +40,7 @@ echo "✅ Spec version: $spec_version"
 methods=(
     "starknet_getTransactionByHash"
     "starknet_getTransactionReceipt"
+    "starknet_getTransactionStatus"
     "starknet_traceTransaction"
 )
 
