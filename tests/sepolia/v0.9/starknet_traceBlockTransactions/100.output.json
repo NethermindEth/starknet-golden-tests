@@ -1,1 +1,1 @@
-{"error":{"code":-32602,"data":"unexpected params: trace_flags","message":"Invalid Params"},"id":1,"jsonrpc":"2.0"}
+{"error":{"code":63,"data":"400 Bad Request","message":"An unexpected error occurred"},"id":1,"jsonrpc":"2.0"}
