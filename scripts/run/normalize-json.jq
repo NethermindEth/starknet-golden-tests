@@ -6,7 +6,7 @@ def normalize:
     map(normalize) | sort_by(
       if type == "object" then
         # Sort objects by their key fields for deterministic ordering
-        (.address // .key // .contract_address // .transaction_hash // "")
+        (.address // .key // .contract_address // .class_hash // .transaction_hash // "")
       else
         .
       end
