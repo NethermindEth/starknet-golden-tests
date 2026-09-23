@@ -1,0 +1,1 @@
+{"id":1,"jsonrpc":"2.0","method":"starknet_getNonce","params":{"block_id":{"block_number":840000},"contract_address":"0x16fc169fb9b6c3f2b128d42903e50e7c7abb24a01340ee19c8c36a35a1770e1"}}
