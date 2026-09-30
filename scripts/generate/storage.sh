@@ -70,7 +70,8 @@ state_update_response=$(echo "$state_update_request" | STARKNET_RPC="$rpc_url" "
 # Extract the first storage key for the given contract
 storage_key=$(echo "$state_update_response" | jq -r \
     --arg addr "$contract_address" \
-    '.result.state_diff.storage_diffs[] | select(.address == $addr) | .storage_entries[0].key // empty')
+    'def canon: ascii_downcase | sub("^0x0*"; "0x");
+     .result.state_diff.storage_diffs[] | select((.address | canon) == ($addr | canon)) | .storage_entries[0].key // empty')
 
 if [ -z "$storage_key" ]; then
     echo "Error: No storage diffs found for contract $contract_address at block $block_number" >&2
