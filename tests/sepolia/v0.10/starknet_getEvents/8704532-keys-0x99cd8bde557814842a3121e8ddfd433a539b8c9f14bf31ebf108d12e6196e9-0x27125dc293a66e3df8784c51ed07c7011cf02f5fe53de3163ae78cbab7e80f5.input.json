@@ -1,0 +1,1 @@
+{"id":1,"jsonrpc":"2.0","method":"starknet_getEvents","params":{"filter":{"from_block":{"block_number":8704532},"to_block":{"block_number":8704532},"keys":[["0x99cd8bde557814842a3121e8ddfd433a539b8c9f14bf31ebf108d12e6196e9"],["0x27125dc293a66e3df8784c51ed07c7011cf02f5fe53de3163ae78cbab7e80f5"]],"chunk_size":1000}}}
