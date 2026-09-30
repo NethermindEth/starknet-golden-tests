@@ -19,6 +19,7 @@ generate_usage() {
   echo "  block        Generate tests for a block"
   echo "  class        Generate tests for a class"
   echo "  contract     Generate tests for a contract"
+  echo "  events       Generate tests for events emitted in a block (starknet_getEvents)"
   echo "  messages     Generate tests for L1->L2 message status (starknet_getMessagesStatus)"
   echo "  simulate     Generate tests for simulate transactions"
   echo "  storage      Generate tests for storage (starknet_getStorageAt)"
@@ -55,6 +56,10 @@ generate)
   contract)
     shift
     "$script_dir/scripts/generate/contract.sh" "$@"
+    ;;
+  events)
+    shift
+    "$script_dir/scripts/generate/events.sh" "$@"
     ;;
   messages)
     shift

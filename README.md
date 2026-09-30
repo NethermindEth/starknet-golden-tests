@@ -56,6 +56,9 @@ Generate golden test cases from a trusted RPC endpoint:
 # Generate tests for a transaction (by hash)
 ./golden.sh generate transaction [--rpc-url <url>] <transaction_hash>
 
+# Generate getEvents tests derived from a block's events (filters, range, empty result, pagination)
+./golden.sh generate events [--rpc-url <url>] <block_number>
+
 # Generate L1->L2 message status tests (by the L1/Ethereum transaction hash that sent the message)
 ./golden.sh generate messages [--rpc-url <url>] <l1_transaction_hash>
 

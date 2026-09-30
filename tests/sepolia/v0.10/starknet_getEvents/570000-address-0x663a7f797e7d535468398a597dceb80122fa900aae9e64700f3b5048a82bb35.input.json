@@ -1,0 +1,1 @@
+{"id":1,"jsonrpc":"2.0","method":"starknet_getEvents","params":{"filter":{"from_block":{"block_number":570000},"to_block":{"block_number":570000},"address":"0x663a7f797e7d535468398a597dceb80122fa900aae9e64700f3b5048a82bb35","chunk_size":1000}}}
