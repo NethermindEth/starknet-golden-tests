@@ -6,6 +6,7 @@ A golden testing framework for validating Starknet JSON-RPC implementations. Com
 
 - `jq` — JSON processor
 - `curl` — HTTP client
+- Go 1.24 or later, for `corpus-diff`
 - A Starknet RPC endpoint to test against
 
 ## Quick Start
@@ -138,6 +139,87 @@ This command:
 - Skips creating variants when the output matches the resolved output for that version
 
 Variant files allow tests to pass against multiple RPC implementation versions.
+
+## corpus-diff
+
+`corpus-diff` is a Go tool that checks responses from a corpus: a JSON file of
+JSON-RPC requests with a `meta` header. Juno's `corpus-gen` writes corpora, and
+you can also write one by hand. The tool replaces the `jq` comparison of
+`golden.sh test` with order-aware rules.
+
+```bash
+go build -o corpus-diff ./cmd/corpus-diff
+
+# Check the corpus format
+./corpus-diff validate corpora/
+
+# Record the responses of a node
+./corpus-diff record --corpus corpora/sepolia --node "$STARKNET_RPC" --out recorded/sepolia/v0.10
+
+# Compare a node with the records (the first source is the reference)
+./corpus-diff compare --corpus corpora/sepolia --records recorded/sepolia/v0.10 --node "$STARKNET_RPC" --report report/
+
+# Compare two nodes
+./corpus-diff compare --corpus corpora/sepolia --node "$NODE_A" --node "$NODE_B"
+```
+
+Exit codes: 0 = all pass, 1 = a check failed or a request has no record, 2 =
+usage or setup error (for example, the node is on another chain or spec
+version, `--filter` matches no request, or a `--records` path does not exist).
+In directory mode, a corpus without its records file under an existing
+`--records` directory is not a setup error: its requests fail as not recorded.
+
+### Corpus format
+
+```jsonc
+{
+  "meta": {
+    "method": "mixed",                 // one method, or "mixed"
+    "rpcVersion": "0.10.3",            // must match the node on major.minor
+    "chainId": "0x534e5f5345504f4c4941",
+    "count": 2,                        // number of entries in "requests"
+    "batch": 0,                        // 0 = plain requests, N = arrays of N requests
+    "expectErrors": false,             // true: the requests return errors on purpose
+    "labels": { "1": "getBlockWithTxs/100" },  // optional: id -> readable name
+    "equivalent": [[1, 2]]             // optional: ids that must return the same response
+  },
+  "requests": [
+    {"jsonrpc": "2.0", "id": 1, "method": "starknet_getBlockWithTxs", "params": {"block_id": {"block_number": 100}}},
+    {"jsonrpc": "2.0", "id": 2, "method": "starknet_getBlockWithTxs", "params": {"block_id": {"block_hash": "0x1b2a..."}}}
+  ]
+}
+```
+
+A request is identified by its method and canonical params, not by its id. So
+you can add, remove or renumber requests without a change to the other records.
+
+### Records
+
+`record` writes one JSON line for each request, sorted by request key, after a
+header line (chain id, spec version, corpus digest, node version, head). It
+sorts the arrays that the spec defines as sets, so a new recording of the same
+data gives the same lines. If a response has a `status` or `finality_status`
+that can still change (`ACCEPTED_ON_L2`, `PRE_CONFIRMED`, ...), it refuses the
+response, unless you give `--allow-volatile`. Responses without a status (for
+example getStateUpdate, getEvents, getStorageAt) are not checked, so record only
+blocks that are on L1.
+
+### Comparison rules
+
+- Felts and numbers are compared as text: `0x1` and `0x01` are different.
+- Arrays are compared in order, except the arrays that the spec defines as sets
+  or mappings: state diff arrays and `initial_reads`. These are sorted on both
+  sides first.
+- Errors: `code` and `message` must be equal. `data` is compared only with
+  `--strict-error-data`.
+- `starknet_specVersion` is compared on major.minor.
+- The getEvents `continuation_token` is compared only for presence.
+- Requests that depend on the chain head (`latest`, `pre_confirmed`,
+  `l1_accepted`, `blockNumber`, `syncing`, `getStorageProof`, getEvents without
+  `to_block`) are not recorded and are reported as skipped.
+
+In a failure inside a sorted array, the reported index is the index after the
+sort, not the index in the node response.
 
 ## How It Works
 
