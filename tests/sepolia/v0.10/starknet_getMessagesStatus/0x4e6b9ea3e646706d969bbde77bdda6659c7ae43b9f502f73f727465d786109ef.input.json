@@ -1,0 +1,1 @@
+{"id":1,"jsonrpc":"2.0","method":"starknet_getMessagesStatus","params":{"transaction_hash":"0x4e6b9ea3e646706d969bbde77bdda6659c7ae43b9f502f73f727465d786109ef"}}
