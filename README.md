@@ -204,6 +204,39 @@ response, unless you give `--allow-volatile`. Responses without a status (for
 example getStateUpdate, getEvents, getStorageAt) are not checked, so record only
 blocks that are on L1.
 
+### Corpora in this repo
+
+```
+corpora/<network>/v<version>/handpicked.json    requests, one per line, with labels
+recorded/<network>/v<version>/handpicked.jsonl  the expected responses
+```
+
+`go run ./cmd/migrate-tests` makes both from `tests/`. Until `golden.sh test`
+is removed, `tests/` stays the source: add or change a case there, run the
+command, and commit the result. CI fails if `corpora/` or `recorded/` is out of
+date, including when a `tests/<network>/v<version>` folder is removed (the
+command then removes its files). The command also:
+
+- gives each case the label `<method>/<test name>` (the path under the version
+  folder);
+- groups each by-hash case with the by-number case of the same block
+  (`meta.equivalent`), so both must give the same response. It fails if the
+  two outputs in `tests/` differ;
+- replaces `block_id: "latest"` with a fixed block of the network
+  (`defaultPins` in `cmd/migrate-tests`), so the case does not change with the
+  chain head. It fails if any other request still depends on the head
+  (`pre_confirmed`, `l1_accepted`, a nested `latest`), because `compare` would
+  skip it;
+- fails if a folder name does not match its spec version, or an
+  `.output.json` has no input.
+
+To check a node:
+
+```bash
+go run ./cmd/corpus-diff compare --corpus corpora/sepolia/v0.10 \
+  --records recorded/sepolia/v0.10 --node "$STARKNET_RPC"
+```
+
 ### Comparison rules
 
 - Felts and numbers are compared as text: `0x1` and `0x01` are different.
