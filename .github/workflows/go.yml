@@ -17,6 +17,12 @@ jobs:
         with:
           go-version-file: go.mod
       - run: go test -race ./...
+      - name: Check that corpora/ and recorded/ match tests/
+        run: |
+          go run ./cmd/migrate-tests
+          # New, changed and removed files all show in git status.
+          git status --porcelain -- corpora recorded | tee /dev/stderr | (! grep .)
+      - run: go run ./cmd/corpus-diff validate corpora
       - uses: golangci/golangci-lint-action@ba0d7d2ec06a0ea1cb5fa41b2e4a3ab91d21278a # v9.3.0
         with:
           version: v2.15.0

@@ -23,7 +23,7 @@ type Header struct {
 	CorpusDigest string `json:"corpusDigest"`
 	Node         string `json:"node,omitempty"`
 	Head         *Head  `json:"head,omitempty"`
-	RecordedAt   string `json:"recordedAt"`
+	RecordedAt   string `json:"recordedAt,omitempty"`
 }
 
 // Head is the chain head of the node when the recording started.
