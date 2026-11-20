@@ -3,8 +3,10 @@ package main
 import (
 	"cmp"
 	"context"
+	"errors"
 	"fmt"
 	"io"
+	"io/fs"
 	"slices"
 	"strings"
 	"sync"
@@ -30,19 +32,22 @@ type recordConfig struct {
 	node          string
 	out           string
 	allowVolatile bool
+	onlyMissing   bool
 	concurrency   int
 }
 
 func runRecord(ctx context.Context, args []string, stdout, stderr io.Writer) error {
 	var cfg recordConfig
-	fs := newFlagSet("record", stderr)
-	fs.StringVar(&cfg.corpus, "corpus", "", "corpus file, or a directory of corpora (required)")
-	fs.StringVar(&cfg.node, "node", "", "JSON-RPC URL of the node to record (required)")
-	fs.StringVar(&cfg.out, "out", "", "records file, or a directory if --corpus is one (required)")
-	fs.BoolVar(&cfg.allowVolatile, "allow-volatile", false,
+	flags := newFlagSet("record", stderr)
+	flags.StringVar(&cfg.corpus, "corpus", "", "corpus file, or a directory of corpora (required)")
+	flags.StringVar(&cfg.node, "node", "", "JSON-RPC URL of the node to record (required)")
+	flags.StringVar(&cfg.out, "out", "", "records file, or a directory if --corpus is one (required)")
+	flags.BoolVar(&cfg.allowVolatile, "allow-volatile", false,
 		"record responses with a status that can still change (not ACCEPTED_ON_L1)")
-	fs.IntVar(&cfg.concurrency, "concurrency", defaultConcurrency(), "concurrent requests")
-	if err := fs.Parse(args); err != nil {
+	flags.BoolVar(&cfg.onlyMissing, "only-missing", false,
+		"keep the existing records and record only requests without one; drop records of removed requests")
+	flags.IntVar(&cfg.concurrency, "concurrency", defaultConcurrency(), "concurrent requests")
+	if err := flags.Parse(args); err != nil {
 		return err
 	}
 	if cfg.corpus == "" || cfg.node == "" || cfg.out == "" {
@@ -82,6 +87,13 @@ func recordCorpus(
 	if err != nil {
 		return err
 	}
+	kept := make(map[string]store.Record)
+	removed := 0
+	if cfg.onlyMissing {
+		if kept, removed, err = keptRecords(f.recordsPath(cfg.out), c); err != nil {
+			return err
+		}
+	}
 
 	var (
 		mu       sync.Mutex
@@ -91,7 +103,11 @@ func recordCorpus(
 	)
 	forEach(ctx, len(c.Entries), cfg.concurrency, func(i int) {
 		e := c.Entries[i]
-		responses, err := node.fetch(ctx, e)
+		var responses map[int]rpc.Response
+		var err error
+		if needsRecord(e, kept) {
+			responses, err = node.fetch(ctx, e)
+		}
 		mu.Lock()
 		defer mu.Unlock()
 		if err != nil {
@@ -101,6 +117,9 @@ func recordCorpus(
 		for _, r := range e.Requests {
 			if r.HeadDependent() {
 				skipped++
+				continue
+			}
+			if _, ok := kept[r.Key]; ok {
 				continue
 			}
 			resp, ok := responses[r.ID]
@@ -126,6 +145,14 @@ func recordCorpus(
 	if len(problems) > 0 {
 		return fmt.Errorf("%d requests not recorded:\n  %s", len(problems), indent(strings.Join(problems, "\n")))
 	}
+	recorded := len(uniqueRecords(slices.Clone(records)))
+	if cfg.onlyMissing && recorded == 0 && removed == 0 {
+		fmt.Fprintf(stdout, "%s: up to date, %d records kept -> %s\n", f.name, len(kept), f.recordsPath(cfg.out))
+		return nil
+	}
+	for _, rec := range kept {
+		records = append(records, rec)
+	}
 	records = uniqueRecords(records)
 	errorResp := 0
 	for _, r := range records {
@@ -136,9 +163,55 @@ func recordCorpus(
 	if err := store.WriteFile(f.recordsPath(cfg.out), header, records); err != nil {
 		return err
 	}
-	fmt.Fprintf(stdout, "recorded %s: %d responses (%d errors), %d head-dependent skipped -> %s\n",
-		f.name, len(records), errorResp, skipped, f.recordsPath(cfg.out))
+	fmt.Fprintf(stdout, "recorded %s: %d responses (%d new, %d kept, %d removed; %d errors), "+
+		"%d head-dependent skipped -> %s\n",
+		f.name, len(records), recorded, len(kept), removed, errorResp, skipped, f.recordsPath(cfg.out))
 	return nil
+}
+
+// keptRecords reads the existing records of the corpus and keeps those whose
+// request is still in it, with the label from the corpus. It also returns how
+// many records it drops. A missing records file keeps nothing.
+func keptRecords(path string, c *corpus.Corpus) (map[string]store.Record, int, error) {
+	existing, err := store.ReadFile(path)
+	if errors.Is(err, fs.ErrNotExist) {
+		return map[string]store.Record{}, 0, nil
+	}
+	if err != nil {
+		return nil, 0, err
+	}
+	if !strings.EqualFold(existing.Header.ChainID, c.Meta.ChainID) {
+		return nil, 0, fmt.Errorf("%s is for chain %s, but the corpus is for %s",
+			path, existing.Header.ChainID, c.Meta.ChainID)
+	}
+	labels := make(map[string]string)
+	for _, r := range c.Requests() {
+		label, seen := labels[r.Key]
+		if l := c.Label(r.ID); !seen || l < label {
+			labels[r.Key] = l
+		}
+	}
+	kept := make(map[string]store.Record, len(labels))
+	for key, rec := range existing.ByKey {
+		label, ok := labels[key]
+		if !ok {
+			continue
+		}
+		rec.Label = label
+		kept[key] = rec
+	}
+	return kept, len(existing.ByKey) - len(kept), nil
+}
+
+// needsRecord reports whether an entry has a request to record: one that does
+// not depend on the head and has no kept record.
+func needsRecord(e corpus.Entry, kept map[string]store.Record) bool {
+	for _, r := range e.Requests {
+		if _, ok := kept[r.Key]; !ok && !r.HeadDependent() {
+			return true
+		}
+	}
+	return false
 }
 
 func recordHeader(ctx context.Context, c *corpus.Corpus, node *nodeSource) (store.Header, error) {

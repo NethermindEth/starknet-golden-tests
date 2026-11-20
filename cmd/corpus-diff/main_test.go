@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"io/fs"
@@ -14,6 +15,7 @@ import (
 	"slices"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -23,9 +25,9 @@ import (
 	"github.com/NethermindEth/starknet-golden-tests/internal/store"
 )
 
-const fixtureDir = "../../tests/sepolia/v0.10"
+const fixtureCorpus = "../../corpora/sepolia/v0.10/handpicked.json"
 
-// fixture is one golden test case from the tests/ folder.
+// fixture is one request of a corpus in this repo, with its recorded output.
 type fixture struct {
 	label  string
 	method string
@@ -35,36 +37,32 @@ type fixture struct {
 
 func loadFixtures(t *testing.T) []fixture {
 	t.Helper()
-	return loadFixturesFrom(t, fixtureDir)
+	return loadFixturesFrom(t, fixtureCorpus)
 }
 
-func loadFixturesFrom(t *testing.T, dir string) []fixture {
+// loadFixturesFrom reads a corpus and its records file (the same path under
+// recorded/, with a .jsonl extension).
+func loadFixturesFrom(t *testing.T, corpusPath string) []fixture {
 	t.Helper()
-	var out []fixture
-	err := filepath.WalkDir(dir, func(path string, d fs.DirEntry, err error) error {
-		if err != nil || !strings.HasSuffix(path, ".input.json") {
-			return err
-		}
-		input, err := os.ReadFile(path)
-		if err != nil {
-			return err
-		}
-		output, err := os.ReadFile(strings.TrimSuffix(path, ".input.json") + ".output.json")
-		if err != nil {
-			return err
-		}
-		var req struct {
-			Method string          `json:"method"`
-			Params json.RawMessage `json:"params"`
-		}
-		if err := json.Unmarshal(input, &req); err != nil {
-			return err
-		}
-		label, _ := filepath.Rel(dir, strings.TrimSuffix(path, ".input.json"))
-		out = append(out, fixture{label: label, method: req.Method, params: req.Params, output: output})
-		return nil
-	})
+	c, err := corpus.Load(corpusPath)
 	require.NoError(t, err)
+	recordsPath := strings.Replace(strings.TrimSuffix(corpusPath, ".json")+".jsonl", "/corpora/", "/recorded/", 1)
+	recs, err := store.ReadFile(recordsPath)
+	require.NoError(t, err)
+	out := make([]fixture, 0, len(c.Requests()))
+	for _, r := range c.Requests() {
+		rec, ok := recs.ByKey[r.Key]
+		require.True(t, ok, "no record for %s", c.Label(r.ID))
+		resp := map[string]any{"jsonrpc": "2.0", "id": 1}
+		if rec.Response.Error != nil {
+			resp["error"] = rec.Response.Error
+		} else {
+			resp["result"] = rec.Response.Result
+		}
+		output, err := json.Marshal(resp)
+		require.NoError(t, err)
+		out = append(out, fixture{label: c.Label(r.ID), method: r.Method, params: r.Params, output: output})
+	}
 	require.NotEmpty(t, out)
 	return out
 }
@@ -78,6 +76,8 @@ type fakeNode struct {
 	// mu serializes mutate, which the handler calls from many goroutines.
 	mu     sync.Mutex
 	mutate func(method string, result any) any
+	// served counts the corpus requests answered (not the setup calls).
+	served atomic.Int64
 }
 
 func newFakeNode(t *testing.T, fixtures []fixture) *fakeNode {
@@ -136,6 +136,9 @@ func (n *fakeNode) answer(req fakeRequest) json.RawMessage {
 		return reply(map[string]any{"block_number": 9000000, "block_hash": "0x123"})
 	case "juno_version":
 		return reply("v0.0.0-test")
+	}
+	if req.Method != "starknet_specVersion" {
+		n.served.Add(1)
 	}
 	key, err := corpus.Key(req.Method, req.Params)
 	assert.NoError(n.t, err)
@@ -228,7 +231,12 @@ func reverseArrays(v any, names map[string]bool, changed map[string]int) any {
 }
 
 func TestRecordThenCompare(t *testing.T) {
-	fixtures := loadFixtures(t)
+	fixtures := append(loadFixtures(t), fixture{
+		label:  "latest",
+		method: "starknet_getBlockWithTxHashes",
+		params: json.RawMessage(`{"block_id":"latest"}`),
+		output: json.RawMessage(`{"jsonrpc":"2.0","id":1,"result":{"block_number":1}}`),
+	})
 	dir := t.TempDir()
 	corpusPath := writeCorpus(t, dir, fixtures, 0, nil)
 	recordsPath := filepath.Join(dir, "handpicked.jsonl")
@@ -240,8 +248,7 @@ func TestRecordThenCompare(t *testing.T) {
 	url := node.start()
 	code, out = runCLI(t, "record", "--corpus", corpusPath, "--node", url, "--out", recordsPath)
 	require.Equal(t, exitOK, code, out)
-	// The 3 "latest" cases in tests/sepolia/v0.10.
-	require.Contains(t, out, "3 head-dependent skipped")
+	require.Contains(t, out, "1 head-dependent skipped")
 
 	t.Run("same node passes", func(t *testing.T) {
 		code, out := runCLI(t, "compare", "--corpus", corpusPath, "--records", recordsPath, "--node", url)
@@ -432,44 +439,30 @@ func TestValidateReportsProblems(t *testing.T) {
 	assert.Contains(t, out, `meta.labels: no request has id "99"`)
 }
 
-// TestRoundTripAllFixtures records and compares every fixture folder
-// (tests/<network>/v<version>), so the rules see each version's shapes.
+// TestRoundTripAllFixtures records and compares every corpus in the repo, so
+// the rules see each version's shapes.
 func TestRoundTripAllFixtures(t *testing.T) {
-	dirs, err := filepath.Glob("../../tests/*/v*")
+	corpora, err := filepath.Glob("../../corpora/*/v*/handpicked.json")
 	require.NoError(t, err)
-	require.NotEmpty(t, dirs)
-	for _, dir := range dirs {
-		t.Run(dir, func(t *testing.T) {
-			var metadata struct {
-				ChainID string `json:"chain_id"`
-			}
-			data, err := os.ReadFile(filepath.Join(dir, "..", "metadata.json"))
+	require.NotEmpty(t, corpora)
+	for _, path := range corpora {
+		t.Run(path, func(t *testing.T) {
+			c, err := corpus.Load(path)
 			require.NoError(t, err)
-			require.NoError(t, json.Unmarshal(data, &metadata))
-			specFiles, err := filepath.Glob(filepath.Join(dir, "starknet_specVersion", "*.output.json"))
-			require.NoError(t, err)
-			require.Len(t, specFiles, 1)
-			data, err = os.ReadFile(specFiles[0])
-			require.NoError(t, err)
-			var spec struct {
-				Result string `json:"result"`
-			}
-			require.NoError(t, json.Unmarshal(data, &spec))
-
-			fixtures := loadFixturesFrom(t, dir)
+			fixtures := loadFixturesFrom(t, path)
 			tmp := t.TempDir()
 			corpusPath := writeCorpus(t, tmp, fixtures, 0, func(meta map[string]any) {
-				meta["chainId"] = metadata.ChainID
-				meta["rpcVersion"] = spec.Result
+				meta["chainId"] = c.Meta.ChainID
+				meta["rpcVersion"] = c.Meta.RPCVersion
 			})
 			recordsPath := filepath.Join(tmp, "records.jsonl")
 			node := newFakeNode(t, fixtures)
-			node.chainID = metadata.ChainID
+			node.chainID = c.Meta.ChainID
 			code, out := runCLI(t, "record", "--corpus", corpusPath, "--node", node.start(), "--out", recordsPath)
 			require.Equal(t, exitOK, code, out)
 
 			shuffled := newFakeNode(t, fixtures)
-			shuffled.chainID = metadata.ChainID
+			shuffled.chainID = c.Meta.ChainID
 			changed := map[string]int{}
 			shuffled.mutate = func(_ string, result any) any {
 				return reverseArrays(result, map[string]bool{
@@ -655,4 +648,87 @@ func TestRecordsPathErrors(t *testing.T) {
 	code, out = runCLI(t, "compare", "--corpus", corpusPath, "--records", dir, "--node", url)
 	require.Equal(t, exitSetup, code, out)
 	assert.Contains(t, out, "--corpus is a file, so --records "+dir+" must be a file too")
+}
+
+func TestRecordOnlyMissing(t *testing.T) {
+	all := loadFixtures(t)
+	var fixtures []fixture // requests that the fake node counts
+	for _, f := range all {
+		if strings.HasPrefix(f.method, "starknet_getBlock") && len(fixtures) < 5 {
+			fixtures = append(fixtures, f)
+		}
+	}
+	dir := t.TempDir()
+	recordsPath := filepath.Join(dir, "records.jsonl")
+	node := newFakeNode(t, all)
+	url := node.start()
+	record := func(t *testing.T, fixtures []fixture) string {
+		t.Helper()
+		code, out := runCLI(t, "record", "--only-missing", "--corpus", writeCorpus(t, dir, fixtures, 0, nil),
+			"--node", url, "--out", recordsPath)
+		require.Equal(t, exitOK, code, out)
+		return out
+	}
+	// byKey reads the records file as raw lines by request key.
+	byKey := func(t *testing.T) map[string]string {
+		t.Helper()
+		data, err := os.ReadFile(recordsPath)
+		if errors.Is(err, fs.ErrNotExist) {
+			return nil
+		}
+		require.NoError(t, err)
+		out := make(map[string]string)
+		for _, line := range recordLines(t, data) {
+			var rec struct {
+				Key string `json:"key"`
+			}
+			require.NoError(t, json.Unmarshal([]byte(line), &rec))
+			out[rec.Key] = line
+		}
+		return out
+	}
+	tests := []struct {
+		name     string
+		fixtures []fixture
+		served   int64
+		summary  string
+	}{
+		{name: "no records file records all", fixtures: fixtures[:3], served: 3, summary: "3 new, 0 kept, 0 removed"},
+		{name: "a new request records only it", fixtures: fixtures[:4], served: 1, summary: "1 new, 3 kept, 0 removed"},
+		{name: "nothing new leaves the file as it is", fixtures: fixtures[:4], served: 0, summary: "up to date, 4 records kept"},
+		{name: "a removed request drops its record", fixtures: fixtures[1:4], served: 0, summary: "0 new, 3 kept, 1 removed"},
+	}
+	for _, tt := range tests {
+		before := byKey(t)
+		node.served.Store(0)
+		out := record(t, tt.fixtures)
+		assert.Equal(t, tt.served, node.served.Load(), tt.name)
+		assert.Contains(t, out, tt.summary, tt.name)
+		after := byKey(t)
+		assert.Len(t, after, len(tt.fixtures), tt.name)
+		for key, line := range after {
+			if old, ok := before[key]; ok {
+				assert.Equal(t, old, line, "%s: a kept record changed", tt.name)
+			}
+		}
+	}
+}
+
+func TestRecordOnlyMissingRejectsAnotherChain(t *testing.T) {
+	all := loadFixtures(t)
+	fixtures := all[:2]
+	dir := t.TempDir()
+	recordsPath := filepath.Join(dir, "records.jsonl")
+	url := newFakeNode(t, all).start()
+	code, out := runCLI(t, "record", "--corpus", writeCorpus(t, dir, fixtures, 0, nil), "--node", url, "--out", recordsPath)
+	require.Equal(t, exitOK, code, out)
+
+	data, err := os.ReadFile(recordsPath)
+	require.NoError(t, err)
+	require.NoError(t, os.WriteFile(recordsPath,
+		bytes.Replace(data, []byte("0x534e5f5345504f4c4941"), []byte("0x534e5f4d41494e"), 1), 0o644))
+	code, out = runCLI(t, "record", "--only-missing", "--corpus", writeCorpus(t, dir, fixtures, 0, nil),
+		"--node", url, "--out", recordsPath)
+	require.Equal(t, exitSetup, code, out)
+	assert.Contains(t, out, "is for chain 0x534e5f4d41494e")
 }
