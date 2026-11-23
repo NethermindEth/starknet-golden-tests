@@ -1,0 +1,39 @@
+{
+  "meta": {
+    "method": "starknet_getBlockWithReceipts",
+    "rpcVersion": "0.10.3",
+    "chainId": "0x534e5f5345504f4c4941",
+    "seed": 1,
+    "count": 20,
+    "batch": 0,
+    "sampling": {
+      "start": 0,
+      "end": 18414000,
+      "blockIdKind": "hash",
+      "responseFlags": []
+    }
+  }
+,
+  "requests": [
+    {"jsonrpc":"2.0","id":1,"method":"starknet_getBlockWithReceipts","params":{"block_id":{"block_hash":"0x1140005ddfc57b5e1dd975faaedab2ee9de00ac625ece13255bd431f1c6fbe9"}}},
+    {"jsonrpc":"2.0","id":2,"method":"starknet_getBlockWithReceipts","params":{"block_id":{"block_hash":"0x2538ba5ea3ac7dfbe41c945855eb24623ac6eabb49686663e7336fc4ca5b443"}}},
+    {"jsonrpc":"2.0","id":3,"method":"starknet_getBlockWithReceipts","params":{"block_id":{"block_hash":"0x2cd7ed54f772319c7d4eb9d5ee4867361ed4db97de0da8c6d5159dfc2899780"}}},
+    {"jsonrpc":"2.0","id":4,"method":"starknet_getBlockWithReceipts","params":{"block_id":{"block_hash":"0xbfe961d2dcd2e6b644f6ff0029f1cf0275f6fb0e7994b40c3a3837d1ece9d4"}}},
+    {"jsonrpc":"2.0","id":5,"method":"starknet_getBlockWithReceipts","params":{"block_id":{"block_hash":"0x35885b5269786352c0980cd14379f50eb4a9b0c49d9f4addd62b84b6b7239b9"}}},
+    {"jsonrpc":"2.0","id":6,"method":"starknet_getBlockWithReceipts","params":{"block_id":{"block_hash":"0x5035d2a1666b4d3cd99a8026158fee720d08fdf7f3c953d6a4c4f0219bdb6fa"}}},
+    {"jsonrpc":"2.0","id":7,"method":"starknet_getBlockWithReceipts","params":{"block_id":{"block_hash":"0x6e82b2ab4aa7aa562abc540cf2cc64fb37ee7010d059c7c4eeeadb3201f61b0"}}},
+    {"jsonrpc":"2.0","id":8,"method":"starknet_getBlockWithReceipts","params":{"block_id":{"block_hash":"0x1bd06f9a0c37363abd31c45c33e5b0f3c9a367666bdad3f04311faa0e97efcb"}}},
+    {"jsonrpc":"2.0","id":9,"method":"starknet_getBlockWithReceipts","params":{"block_id":{"block_hash":"0x620b1256ee44ff130e48f60ec7a82fdc71136c904504d9659f853a3415b3ff9"}}},
+    {"jsonrpc":"2.0","id":10,"method":"starknet_getBlockWithReceipts","params":{"block_id":{"block_hash":"0x36848a5982879923c084b7dc76f4f00e70281eea55bc442efd49f8afa364c9e"}}},
+    {"jsonrpc":"2.0","id":11,"method":"starknet_getBlockWithReceipts","params":{"block_id":{"block_hash":"0x2c0c26e2e81a0ae50de740489d4bcc97f39085087d35a1b000c8857ac726d5b"}}},
+    {"jsonrpc":"2.0","id":12,"method":"starknet_getBlockWithReceipts","params":{"block_id":{"block_hash":"0x1abfd8c44c8139eab532837cf030992def0181232dc0020f875b0c37a399910"}}},
+    {"jsonrpc":"2.0","id":13,"method":"starknet_getBlockWithReceipts","params":{"block_id":{"block_hash":"0xdcca5c9c1a1232812426ea71506a25fa6b657e66b1a5d7013a896ea1d60501"}}},
+    {"jsonrpc":"2.0","id":14,"method":"starknet_getBlockWithReceipts","params":{"block_id":{"block_hash":"0x5ac8e46370db266c601da7881ee9ea257ba2c58f0a97867106613890ef3aacb"}}},
+    {"jsonrpc":"2.0","id":15,"method":"starknet_getBlockWithReceipts","params":{"block_id":{"block_hash":"0x573f10be70645231b6d13af87a8104e6502f680740d6f2ac2f0e9cdedeacc92"}}},
+    {"jsonrpc":"2.0","id":16,"method":"starknet_getBlockWithReceipts","params":{"block_id":{"block_hash":"0x7e6448c46743e071901d2d1ddcfa68711850a47e6d13e995dc8bdcb9bc46056"}}},
+    {"jsonrpc":"2.0","id":17,"method":"starknet_getBlockWithReceipts","params":{"block_id":{"block_hash":"0x2c76ea3945a0184fb2b4f14d2a66cc1ad24826f24aabe230577f8d3b9651f26"}}},
+    {"jsonrpc":"2.0","id":18,"method":"starknet_getBlockWithReceipts","params":{"block_id":{"block_hash":"0x7d760f025153038d41c42bb51cd1cb5fc2d76c49183468fc8aa6070ceef887"}}},
+    {"jsonrpc":"2.0","id":19,"method":"starknet_getBlockWithReceipts","params":{"block_id":{"block_hash":"0x7f9a507b6eee2d1a487b8f28c6969baa19d78294e7bbeb62e637925f3aa9f99"}}},
+    {"jsonrpc":"2.0","id":20,"method":"starknet_getBlockWithReceipts","params":{"block_id":{"block_hash":"0x7194c600ad3b36739887897a3c34f9689db2ddfc17653737af8252c702ead2f"}}}
+  ]
+}

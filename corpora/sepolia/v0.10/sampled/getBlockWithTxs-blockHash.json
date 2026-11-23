@@ -1,0 +1,39 @@
+{
+  "meta": {
+    "method": "starknet_getBlockWithTxs",
+    "rpcVersion": "0.10.3",
+    "chainId": "0x534e5f5345504f4c4941",
+    "seed": 1,
+    "count": 20,
+    "batch": 0,
+    "sampling": {
+      "start": 0,
+      "end": 18414000,
+      "blockIdKind": "hash",
+      "responseFlags": []
+    }
+  }
+,
+  "requests": [
+    {"jsonrpc":"2.0","id":1,"method":"starknet_getBlockWithTxs","params":{"block_id":{"block_hash":"0x63f6cd766b6d15d0d0ecb2b48ee5e2cd2ae2d6bcc2cd486e875f1053c8b7350"}}},
+    {"jsonrpc":"2.0","id":2,"method":"starknet_getBlockWithTxs","params":{"block_id":{"block_hash":"0x4170665bafdeb12c0843bcbe75990ba14a47c49d665979dd6ccfd8ca13f8348"}}},
+    {"jsonrpc":"2.0","id":3,"method":"starknet_getBlockWithTxs","params":{"block_id":{"block_hash":"0x57598c1218e93ddf5f080f9432ba68fdddc8c66e6ead41e34b1b3200f0c132c"}}},
+    {"jsonrpc":"2.0","id":4,"method":"starknet_getBlockWithTxs","params":{"block_id":{"block_hash":"0x1a226d91168f0a5b9dcd9006df4655847086e5cd1e8e60b70e35c7ac820b19b"}}},
+    {"jsonrpc":"2.0","id":5,"method":"starknet_getBlockWithTxs","params":{"block_id":{"block_hash":"0x9399001e6cbd6ed4a9dfd2a1621dc9cc89bf796c472b18f18e7ca3445f0683"}}},
+    {"jsonrpc":"2.0","id":6,"method":"starknet_getBlockWithTxs","params":{"block_id":{"block_hash":"0x4cf284806488350cf76a31df6bf8bd1445d3de531e01ec50249e2bbe306987d"}}},
+    {"jsonrpc":"2.0","id":7,"method":"starknet_getBlockWithTxs","params":{"block_id":{"block_hash":"0x5904b7041a4db95e1241e0c6861fa3b41a6fa094300ac8597a18955e0c7925c"}}},
+    {"jsonrpc":"2.0","id":8,"method":"starknet_getBlockWithTxs","params":{"block_id":{"block_hash":"0x3af24cad4bb512521e95e499d0c8d02ff3d65427291a0fcfc6354b4781e65b7"}}},
+    {"jsonrpc":"2.0","id":9,"method":"starknet_getBlockWithTxs","params":{"block_id":{"block_hash":"0x153e513c9df724649225627d54f9c95e885bead4bfa5d7ff7eb5fa24f6afdbe"}}},
+    {"jsonrpc":"2.0","id":10,"method":"starknet_getBlockWithTxs","params":{"block_id":{"block_hash":"0x86cf9f658401e4af5e2c989ad0132e110f991462ac0f0538f2321324bf1f7c"}}},
+    {"jsonrpc":"2.0","id":11,"method":"starknet_getBlockWithTxs","params":{"block_id":{"block_hash":"0x449c387343930e78767a86e475fea4aa658ec40c3cafd7c39b09b66b3eaf6a"}}},
+    {"jsonrpc":"2.0","id":12,"method":"starknet_getBlockWithTxs","params":{"block_id":{"block_hash":"0x1c0dfae52eae9471fbfaba45537c9fcf847c43d5a39bd8f50855a735b0cc320"}}},
+    {"jsonrpc":"2.0","id":13,"method":"starknet_getBlockWithTxs","params":{"block_id":{"block_hash":"0x46e621103592730cec6b75235583ba1d223ff155aef6b86a25dbd1de4ae33ed"}}},
+    {"jsonrpc":"2.0","id":14,"method":"starknet_getBlockWithTxs","params":{"block_id":{"block_hash":"0x654fd119686e488eb42c6d667851cde0ef98a7c75d0f9b2867c9c4f8e4cf7c0"}}},
+    {"jsonrpc":"2.0","id":15,"method":"starknet_getBlockWithTxs","params":{"block_id":{"block_hash":"0x2deb5e058b5de1137c1ac9fac7cca57778dde7dd2f52266a5874ecf5d3decf0"}}},
+    {"jsonrpc":"2.0","id":16,"method":"starknet_getBlockWithTxs","params":{"block_id":{"block_hash":"0x48d9ee485e7531f2a67404d6b5fb0188b78397d41dad8c690d6740dd521dbd9"}}},
+    {"jsonrpc":"2.0","id":17,"method":"starknet_getBlockWithTxs","params":{"block_id":{"block_hash":"0x1c2b037257d53317d8b44bc6f80f21a1caa7bca3d95b7ad3d965b0022b006f7"}}},
+    {"jsonrpc":"2.0","id":18,"method":"starknet_getBlockWithTxs","params":{"block_id":{"block_hash":"0x74afe2ed92aa1a2f1a0f31fe1f9e72016e4f115c461279191fbd41d1de05526"}}},
+    {"jsonrpc":"2.0","id":19,"method":"starknet_getBlockWithTxs","params":{"block_id":{"block_hash":"0xb33357f77ce46366a14492d9ca30af048fcb17172dd7a6ad1a87ccf5d6d08b"}}},
+    {"jsonrpc":"2.0","id":20,"method":"starknet_getBlockWithTxs","params":{"block_id":{"block_hash":"0x4c0ef8bdbbbb066b5822179c4a2db19a104bde848b7d7c7dae7424262ebb55"}}}
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "meta": {
+    "method": "starknet_traceTransaction",
+    "rpcVersion": "0.10.3",
+    "chainId": "0x534e5f5345504f4c4941",
+    "seed": 1,
+    "count": 20,
+    "batch": 0,
+    "sampling": {
+      "start": 0,
+      "end": 18414000
+    }
+  }
+,
+  "requests": [
+    {"jsonrpc":"2.0","id":1,"method":"starknet_traceTransaction","params":{"transaction_hash":"0x59ac277242e603e67220c111516190278146ddebbf407e294ef80107c7434be"}},
+    {"jsonrpc":"2.0","id":2,"method":"starknet_traceTransaction","params":{"transaction_hash":"0x2d1f81bf60a424e80eac4c55d5b3a10a1c43dcd48f32dc3865cccf11d2c5b18"}},
+    {"jsonrpc":"2.0","id":3,"method":"starknet_traceTransaction","params":{"transaction_hash":"0xe1f1255c0e644a5f12d372d4b1e72b00e1034988f058d479be54700408bb2d"}},
+    {"jsonrpc":"2.0","id":4,"method":"starknet_traceTransaction","params":{"transaction_hash":"0x49cf096d9cb3e3ed6baa0de83d6e0a6edbdc7d3664a6cf8ba44360d2a300372"}},
+    {"jsonrpc":"2.0","id":5,"method":"starknet_traceTransaction","params":{"transaction_hash":"0x5323151a8bef297288c0d91fdaab9bbbbe957507e8a87b7a252b8386c09e87d"}},
+    {"jsonrpc":"2.0","id":6,"method":"starknet_traceTransaction","params":{"transaction_hash":"0x30d0c4c63e98be4a776c423eee44479917353f77be45fa7093cdb7e0c6feab4"}},
+    {"jsonrpc":"2.0","id":7,"method":"starknet_traceTransaction","params":{"transaction_hash":"0x70359e30e597b92980294b41b15e3d6d7d81f62563783ac415da78b0973f69d"}},
+    {"jsonrpc":"2.0","id":8,"method":"starknet_traceTransaction","params":{"transaction_hash":"0x6f0016bd4cdd3f86c0b88fd5ab245c2bd453340b9a5bec163842b99bdbf88e4"}},
+    {"jsonrpc":"2.0","id":9,"method":"starknet_traceTransaction","params":{"transaction_hash":"0x182b8141fb9993228becaecdd0b6743dddda943354c27f4b97a21ba48bbc82d"}},
+    {"jsonrpc":"2.0","id":10,"method":"starknet_traceTransaction","params":{"transaction_hash":"0x1a46e68a4b2714529ef954eb0f38c69daf4e3e11da486c36aef684749581e90"}},
+    {"jsonrpc":"2.0","id":11,"method":"starknet_traceTransaction","params":{"transaction_hash":"0x40d8d1369f753bad1b553d4bebecbe01003dbc97c1c31cfd68ad2e9751d952c"}},
+    {"jsonrpc":"2.0","id":12,"method":"starknet_traceTransaction","params":{"transaction_hash":"0x30d790d922def58a2560731b137b7e70a156d80a2975fa4a1d071d58aaeba67"}},
+    {"jsonrpc":"2.0","id":13,"method":"starknet_traceTransaction","params":{"transaction_hash":"0x6620d30b72a6da638992b25f23d9629e6c0ef7cd75dc1e0fa0297cc559461b7"}},
+    {"jsonrpc":"2.0","id":14,"method":"starknet_traceTransaction","params":{"transaction_hash":"0x4c5b094988f752138974c65d298815dee8add28c80df8b7792083abfd1e4a73"}},
+    {"jsonrpc":"2.0","id":15,"method":"starknet_traceTransaction","params":{"transaction_hash":"0x59b654250c04a5bf6c2d97c4720dbbc385a7a8d4feed203674d6c0f52134c9c"}},
+    {"jsonrpc":"2.0","id":16,"method":"starknet_traceTransaction","params":{"transaction_hash":"0x3012090dde7749a25fdfb3c674649dbaa7f4196de14f89974e74778d3fe91a7"}},
+    {"jsonrpc":"2.0","id":17,"method":"starknet_traceTransaction","params":{"transaction_hash":"0x14ff99910cac12f84d6bbe2a0a35178c3bc0e0aee4ab3f4f9158ea61c367d73"}},
+    {"jsonrpc":"2.0","id":18,"method":"starknet_traceTransaction","params":{"transaction_hash":"0x652ed61eaccbf25605cb29bd66189708cc4b60d8e627898f6b3df899dc8490a"}},
+    {"jsonrpc":"2.0","id":19,"method":"starknet_traceTransaction","params":{"transaction_hash":"0x550f21ea5d61a32ee7b724247e0a657f69240bcd2abc8dae205c27297c7978f"}},
+    {"jsonrpc":"2.0","id":20,"method":"starknet_traceTransaction","params":{"transaction_hash":"0x4592f3e13d52df15bebb34dab53719dfbe4bdfdaa94108c48e44c376ea6fa13"}}
+  ]
+}

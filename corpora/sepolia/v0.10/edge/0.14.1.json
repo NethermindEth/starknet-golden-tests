@@ -1,0 +1,198 @@
+{
+  "meta": {
+    "method": "mixed",
+    "rpcVersion": "0.10.3",
+    "chainId": "0x534e5f5345504f4c4941",
+    "count": 61,
+    "batch": 0,
+    "labels": {
+      "1": "getBlockTransactionCount-blockHash/2934725",
+      "2": "getBlockTransactionCount-blockNumber/2934725",
+      "3": "getBlockWithReceipts-blockHash/2934725",
+      "4": "getBlockWithReceipts-blockNumber/2934725",
+      "5": "getBlockWithTxHashes-blockHash/2934725",
+      "6": "getBlockWithTxHashes-blockNumber/2934725",
+      "7": "getBlockWithTxs-blockHash/2934725",
+      "8": "getBlockWithTxs-blockNumber/2934725",
+      "9": "getStateUpdate-blockHash/2934725",
+      "10": "getStateUpdate-blockNumber/2934725",
+      "11": "traceBlockTransactions-blockNumber/2934725",
+      "12": "traceBlockTransactions-initialReads/2934725",
+      "13": "getBlockTransactionCount-blockHash/2934726",
+      "14": "getBlockTransactionCount-blockNumber/2934726",
+      "15": "getBlockWithReceipts-blockHash/2934726",
+      "16": "getBlockWithReceipts-blockNumber/2934726",
+      "17": "getBlockWithTxHashes-blockHash/2934726",
+      "18": "getBlockWithTxHashes-blockNumber/2934726",
+      "19": "getBlockWithTxs-blockHash/2934726",
+      "20": "getBlockWithTxs-blockNumber/2934726",
+      "21": "getClassAt/2934726",
+      "22": "getClassHashAt/2934726",
+      "23": "getEvents/2934726",
+      "24": "getNonce/2934726",
+      "25": "getStateUpdate-blockHash/2934726",
+      "26": "getStateUpdate-blockNumber/2934726",
+      "27": "getStorageAt/2934726",
+      "28": "getTransactionByBlockIdAndIndex/2934726",
+      "29": "getTransactionByBlockIdAndIndex/2934726",
+      "30": "getTransactionByHash/2934726",
+      "31": "getTransactionByHash/2934726",
+      "32": "getTransactionReceipt/2934726",
+      "33": "getTransactionReceipt/2934726",
+      "34": "getTransactionStatus/2934726",
+      "35": "getTransactionStatus/2934726",
+      "36": "traceBlockTransactions-blockNumber/2934726",
+      "37": "traceBlockTransactions-initialReads/2934726",
+      "38": "traceTransaction/2934726",
+      "39": "traceTransaction/2934726",
+      "40": "getBlockTransactionCount-blockHash/2934727",
+      "41": "getBlockTransactionCount-blockNumber/2934727",
+      "42": "getBlockWithReceipts-blockHash/2934727",
+      "43": "getBlockWithReceipts-blockNumber/2934727",
+      "44": "getBlockWithTxHashes-blockHash/2934727",
+      "45": "getBlockWithTxHashes-blockNumber/2934727",
+      "46": "getBlockWithTxs-blockHash/2934727",
+      "47": "getBlockWithTxs-blockNumber/2934727",
+      "48": "getClassAt/2934727",
+      "49": "getClassHashAt/2934727",
+      "50": "getEvents/2934727",
+      "51": "getNonce/2934727",
+      "52": "getStateUpdate-blockHash/2934727",
+      "53": "getStateUpdate-blockNumber/2934727",
+      "54": "getStorageAt/2934727",
+      "55": "getTransactionByBlockIdAndIndex/2934727",
+      "56": "getTransactionByHash/2934727",
+      "57": "getTransactionReceipt/2934727",
+      "58": "getTransactionStatus/2934727",
+      "59": "traceBlockTransactions-blockNumber/2934727",
+      "60": "traceBlockTransactions-initialReads/2934727",
+      "61": "traceTransaction/2934727"
+    },
+    "equivalent": [
+      [
+        2,
+        1
+      ],
+      [
+        4,
+        3
+      ],
+      [
+        6,
+        5
+      ],
+      [
+        8,
+        7
+      ],
+      [
+        10,
+        9
+      ],
+      [
+        14,
+        13
+      ],
+      [
+        16,
+        15
+      ],
+      [
+        18,
+        17
+      ],
+      [
+        20,
+        19
+      ],
+      [
+        26,
+        25
+      ],
+      [
+        41,
+        40
+      ],
+      [
+        43,
+        42
+      ],
+      [
+        45,
+        44
+      ],
+      [
+        47,
+        46
+      ],
+      [
+        53,
+        52
+      ]
+    ]
+  }
+,
+  "requests": [
+    {"jsonrpc":"2.0","id":1,"method":"starknet_getBlockTransactionCount","params":{"block_id":{"block_hash":"0x6fa59bc52576db561d4c949b6740d3be9dc0230eede220eebe92d9094b96762"}}},
+    {"jsonrpc":"2.0","id":2,"method":"starknet_getBlockTransactionCount","params":{"block_id":{"block_number":2934725}}},
+    {"jsonrpc":"2.0","id":3,"method":"starknet_getBlockWithReceipts","params":{"block_id":{"block_hash":"0x6fa59bc52576db561d4c949b6740d3be9dc0230eede220eebe92d9094b96762"}}},
+    {"jsonrpc":"2.0","id":4,"method":"starknet_getBlockWithReceipts","params":{"block_id":{"block_number":2934725}}},
+    {"jsonrpc":"2.0","id":5,"method":"starknet_getBlockWithTxHashes","params":{"block_id":{"block_hash":"0x6fa59bc52576db561d4c949b6740d3be9dc0230eede220eebe92d9094b96762"}}},
+    {"jsonrpc":"2.0","id":6,"method":"starknet_getBlockWithTxHashes","params":{"block_id":{"block_number":2934725}}},
+    {"jsonrpc":"2.0","id":7,"method":"starknet_getBlockWithTxs","params":{"block_id":{"block_hash":"0x6fa59bc52576db561d4c949b6740d3be9dc0230eede220eebe92d9094b96762"}}},
+    {"jsonrpc":"2.0","id":8,"method":"starknet_getBlockWithTxs","params":{"block_id":{"block_number":2934725}}},
+    {"jsonrpc":"2.0","id":9,"method":"starknet_getStateUpdate","params":{"block_id":{"block_hash":"0x6fa59bc52576db561d4c949b6740d3be9dc0230eede220eebe92d9094b96762"}}},
+    {"jsonrpc":"2.0","id":10,"method":"starknet_getStateUpdate","params":{"block_id":{"block_number":2934725}}},
+    {"jsonrpc":"2.0","id":11,"method":"starknet_traceBlockTransactions","params":{"block_id":{"block_number":2934725}}},
+    {"jsonrpc":"2.0","id":12,"method":"starknet_traceBlockTransactions","params":{"block_id":{"block_number":2934725},"trace_flags":["RETURN_INITIAL_READS"]}},
+    {"jsonrpc":"2.0","id":13,"method":"starknet_getBlockTransactionCount","params":{"block_id":{"block_hash":"0x926ef481b290f748064bc2e4eac931fd3a736645d7daa7a731297c315bcf04"}}},
+    {"jsonrpc":"2.0","id":14,"method":"starknet_getBlockTransactionCount","params":{"block_id":{"block_number":2934726}}},
+    {"jsonrpc":"2.0","id":15,"method":"starknet_getBlockWithReceipts","params":{"block_id":{"block_hash":"0x926ef481b290f748064bc2e4eac931fd3a736645d7daa7a731297c315bcf04"}}},
+    {"jsonrpc":"2.0","id":16,"method":"starknet_getBlockWithReceipts","params":{"block_id":{"block_number":2934726}}},
+    {"jsonrpc":"2.0","id":17,"method":"starknet_getBlockWithTxHashes","params":{"block_id":{"block_hash":"0x926ef481b290f748064bc2e4eac931fd3a736645d7daa7a731297c315bcf04"}}},
+    {"jsonrpc":"2.0","id":18,"method":"starknet_getBlockWithTxHashes","params":{"block_id":{"block_number":2934726}}},
+    {"jsonrpc":"2.0","id":19,"method":"starknet_getBlockWithTxs","params":{"block_id":{"block_hash":"0x926ef481b290f748064bc2e4eac931fd3a736645d7daa7a731297c315bcf04"}}},
+    {"jsonrpc":"2.0","id":20,"method":"starknet_getBlockWithTxs","params":{"block_id":{"block_number":2934726}}},
+    {"jsonrpc":"2.0","id":21,"method":"starknet_getClassAt","params":{"block_id":{"block_number":2934726},"contract_address":"0x21d980d405158f62464649ce2c8a433e1c61096d7ca045d70a9b70c8923700d"}},
+    {"jsonrpc":"2.0","id":22,"method":"starknet_getClassHashAt","params":{"block_id":{"block_number":2934726},"contract_address":"0x4ac7a6253a8bc069bda7ad6a0aca58bbe51191b2e7e282d17c78d976a7ea035"}},
+    {"jsonrpc":"2.0","id":23,"method":"starknet_getEvents","params":{"filter":{"from_block":{"block_number":2934726},"to_block":{"block_number":2934726},"chunk_size":1000}}},
+    {"jsonrpc":"2.0","id":24,"method":"starknet_getNonce","params":{"block_id":{"block_number":2934726},"contract_address":"0x395a96a5b6343fc0f543692fd36e7034b54c2a276cd1a021e8c0b02aee1f43"}},
+    {"jsonrpc":"2.0","id":25,"method":"starknet_getStateUpdate","params":{"block_id":{"block_hash":"0x926ef481b290f748064bc2e4eac931fd3a736645d7daa7a731297c315bcf04"}}},
+    {"jsonrpc":"2.0","id":26,"method":"starknet_getStateUpdate","params":{"block_id":{"block_number":2934726}}},
+    {"jsonrpc":"2.0","id":27,"method":"starknet_getStorageAt","params":{"contract_address":"0x21d980d405158f62464649ce2c8a433e1c61096d7ca045d70a9b70c8923700d","key":"0x239","block_id":{"block_number":2934726}}},
+    {"jsonrpc":"2.0","id":28,"method":"starknet_getTransactionByBlockIdAndIndex","params":{"block_id":{"block_number":2934726},"index":45}},
+    {"jsonrpc":"2.0","id":29,"method":"starknet_getTransactionByBlockIdAndIndex","params":{"block_id":{"block_number":2934726},"index":44}},
+    {"jsonrpc":"2.0","id":30,"method":"starknet_getTransactionByHash","params":{"transaction_hash":"0x4350080f2e4d2e2f4d2719a50132d850117c2eea76a1c79e04f972040856fb6"}},
+    {"jsonrpc":"2.0","id":31,"method":"starknet_getTransactionByHash","params":{"transaction_hash":"0x5c3a839a9a7ad0f0db1fc68e59fd7ba9be60e07ab1f2281cd071abd11155d1e"}},
+    {"jsonrpc":"2.0","id":32,"method":"starknet_getTransactionReceipt","params":{"transaction_hash":"0x1eda53df9ce215eca3487b4faf17e20c13e94c56d2019e6fbff8af94f21c47d"}},
+    {"jsonrpc":"2.0","id":33,"method":"starknet_getTransactionReceipt","params":{"transaction_hash":"0xceadea164c1c3e18777d7ac66cb1362bb7c289912c59ccd058df3ffd6f7728"}},
+    {"jsonrpc":"2.0","id":34,"method":"starknet_getTransactionStatus","params":{"transaction_hash":"0x25d62ab1caf190b8d17876ea97bd5c8889d82d2dd368101404fc60dafd9cef8"}},
+    {"jsonrpc":"2.0","id":35,"method":"starknet_getTransactionStatus","params":{"transaction_hash":"0x3b7d2336b78c06620300cbfefddb99a4eb31a2ca60cd7243205a16a7ea247a8"}},
+    {"jsonrpc":"2.0","id":36,"method":"starknet_traceBlockTransactions","params":{"block_id":{"block_number":2934726}}},
+    {"jsonrpc":"2.0","id":37,"method":"starknet_traceBlockTransactions","params":{"block_id":{"block_number":2934726},"trace_flags":["RETURN_INITIAL_READS"]}},
+    {"jsonrpc":"2.0","id":38,"method":"starknet_traceTransaction","params":{"transaction_hash":"0x57666b88e22ad594bb76495eeb64262aea8496c04e8aa1ca5836d124503e989"}},
+    {"jsonrpc":"2.0","id":39,"method":"starknet_traceTransaction","params":{"transaction_hash":"0x201d572a2b4eaef663c3074edc99e29fe89be0d42d46bb682befe4db290d752"}},
+    {"jsonrpc":"2.0","id":40,"method":"starknet_getBlockTransactionCount","params":{"block_id":{"block_hash":"0x595aeaf4481b2365e88ae2873ac725fd725ad5bfb0f22455aebb28ce3b44c28"}}},
+    {"jsonrpc":"2.0","id":41,"method":"starknet_getBlockTransactionCount","params":{"block_id":{"block_number":2934727}}},
+    {"jsonrpc":"2.0","id":42,"method":"starknet_getBlockWithReceipts","params":{"block_id":{"block_hash":"0x595aeaf4481b2365e88ae2873ac725fd725ad5bfb0f22455aebb28ce3b44c28"}}},
+    {"jsonrpc":"2.0","id":43,"method":"starknet_getBlockWithReceipts","params":{"block_id":{"block_number":2934727}}},
+    {"jsonrpc":"2.0","id":44,"method":"starknet_getBlockWithTxHashes","params":{"block_id":{"block_hash":"0x595aeaf4481b2365e88ae2873ac725fd725ad5bfb0f22455aebb28ce3b44c28"}}},
+    {"jsonrpc":"2.0","id":45,"method":"starknet_getBlockWithTxHashes","params":{"block_id":{"block_number":2934727}}},
+    {"jsonrpc":"2.0","id":46,"method":"starknet_getBlockWithTxs","params":{"block_id":{"block_hash":"0x595aeaf4481b2365e88ae2873ac725fd725ad5bfb0f22455aebb28ce3b44c28"}}},
+    {"jsonrpc":"2.0","id":47,"method":"starknet_getBlockWithTxs","params":{"block_id":{"block_number":2934727}}},
+    {"jsonrpc":"2.0","id":48,"method":"starknet_getClassAt","params":{"block_id":{"block_number":2934727},"contract_address":"0x45dd5d8fa19ac764bed57de30f7e07fd194b7bcd4d4759d6779c8c288914b2b"}},
+    {"jsonrpc":"2.0","id":49,"method":"starknet_getClassHashAt","params":{"block_id":{"block_number":2934727},"contract_address":"0x45dd5d8fa19ac764bed57de30f7e07fd194b7bcd4d4759d6779c8c288914b2b"}},
+    {"jsonrpc":"2.0","id":50,"method":"starknet_getEvents","params":{"filter":{"from_block":{"block_number":2934727},"to_block":{"block_number":2934727},"chunk_size":1000}}},
+    {"jsonrpc":"2.0","id":51,"method":"starknet_getNonce","params":{"block_id":{"block_number":2934727},"contract_address":"0x1c02691167585fd3318b6fb1c54bc2dd5fbb9a425454dfaa75fecedca17d411"}},
+    {"jsonrpc":"2.0","id":52,"method":"starknet_getStateUpdate","params":{"block_id":{"block_hash":"0x595aeaf4481b2365e88ae2873ac725fd725ad5bfb0f22455aebb28ce3b44c28"}}},
+    {"jsonrpc":"2.0","id":53,"method":"starknet_getStateUpdate","params":{"block_id":{"block_number":2934727}}},
+    {"jsonrpc":"2.0","id":54,"method":"starknet_getStorageAt","params":{"contract_address":"0x45dd5d8fa19ac764bed57de30f7e07fd194b7bcd4d4759d6779c8c288914b2b","key":"0x7e185781531e127d727b59d71213072413a81482c2eff05b25442389678133d","block_id":{"block_number":2934727}}},
+    {"jsonrpc":"2.0","id":55,"method":"starknet_getTransactionByBlockIdAndIndex","params":{"block_id":{"block_number":2934727},"index":0}},
+    {"jsonrpc":"2.0","id":56,"method":"starknet_getTransactionByHash","params":{"transaction_hash":"0x9e88f555bc65e6b178aac53bd6173e410f1c0d8980c0a14d9afcc40125f27e"}},
+    {"jsonrpc":"2.0","id":57,"method":"starknet_getTransactionReceipt","params":{"transaction_hash":"0x9e88f555bc65e6b178aac53bd6173e410f1c0d8980c0a14d9afcc40125f27e"}},
+    {"jsonrpc":"2.0","id":58,"method":"starknet_getTransactionStatus","params":{"transaction_hash":"0x9e88f555bc65e6b178aac53bd6173e410f1c0d8980c0a14d9afcc40125f27e"}},
+    {"jsonrpc":"2.0","id":59,"method":"starknet_traceBlockTransactions","params":{"block_id":{"block_number":2934727}}},
+    {"jsonrpc":"2.0","id":60,"method":"starknet_traceBlockTransactions","params":{"block_id":{"block_number":2934727},"trace_flags":["RETURN_INITIAL_READS"]}},
+    {"jsonrpc":"2.0","id":61,"method":"starknet_traceTransaction","params":{"transaction_hash":"0x9e88f555bc65e6b178aac53bd6173e410f1c0d8980c0a14d9afcc40125f27e"}}
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "meta": {
+    "method": "starknet_getStateUpdate",
+    "rpcVersion": "0.10.3",
+    "chainId": "0x534e5f5345504f4c4941",
+    "seed": 1,
+    "count": 20,
+    "batch": 0,
+    "sampling": {
+      "start": 0,
+      "end": 18414000,
+      "blockIdKind": "hash"
+    }
+  }
+,
+  "requests": [
+    {"jsonrpc":"2.0","id":1,"method":"starknet_getStateUpdate","params":{"block_id":{"block_hash":"0x5d4d05431540061ca394b33c7dc5863fcb0afc565bcb9efa23600085a754a17"}}},
+    {"jsonrpc":"2.0","id":2,"method":"starknet_getStateUpdate","params":{"block_id":{"block_hash":"0x4814c3c601df351450250d1dfbfb652dad4486ff8dfcf9200fbeb79486c37d0"}}},
+    {"jsonrpc":"2.0","id":3,"method":"starknet_getStateUpdate","params":{"block_id":{"block_hash":"0x6aa3d7cece4c118b2ccd32be25975987efa82d18ee1476aceb64dbae3b45bf2"}}},
+    {"jsonrpc":"2.0","id":4,"method":"starknet_getStateUpdate","params":{"block_id":{"block_hash":"0x60b24cf6b72ee617d7e80dc649ee19b5dc1e85dd0a2a690fc2a03a0ecbcdee1"}}},
+    {"jsonrpc":"2.0","id":5,"method":"starknet_getStateUpdate","params":{"block_id":{"block_hash":"0x55065155bb576f60fb21162bbf5d27474d4ce4c79f3f484147d82d346b3f844"}}},
+    {"jsonrpc":"2.0","id":6,"method":"starknet_getStateUpdate","params":{"block_id":{"block_hash":"0x3510f67dbab4f703074005c7aa7526de9179a3c284250517d26924da8656fc3"}}},
+    {"jsonrpc":"2.0","id":7,"method":"starknet_getStateUpdate","params":{"block_id":{"block_hash":"0x7ab540bd8aff5f547d88b10c596cb51bbec15c54209f41745360a665d54fe93"}}},
+    {"jsonrpc":"2.0","id":8,"method":"starknet_getStateUpdate","params":{"block_id":{"block_hash":"0x37bd556025afd472d9262ed08fe69159d102be7fad2b7dc870d316271473ecf"}}},
+    {"jsonrpc":"2.0","id":9,"method":"starknet_getStateUpdate","params":{"block_id":{"block_hash":"0x53cc50dc27d2bc966d146fcf603ad06202407e1d8f3f762a8f27173f792ba66"}}},
+    {"jsonrpc":"2.0","id":10,"method":"starknet_getStateUpdate","params":{"block_id":{"block_hash":"0xce8d1fbf731374558376c73dc4ff8cd9bb152fe423c13b2901854c65382a74"}}},
+    {"jsonrpc":"2.0","id":11,"method":"starknet_getStateUpdate","params":{"block_id":{"block_hash":"0x51c758d15a67c9bc638ec86a839053f056ffa5fc904f534745aadedf44f21c9"}}},
+    {"jsonrpc":"2.0","id":12,"method":"starknet_getStateUpdate","params":{"block_id":{"block_hash":"0x65e369c0c99b1c96f93b64e170743b39508011705fd683e296c98bad629850a"}}},
+    {"jsonrpc":"2.0","id":13,"method":"starknet_getStateUpdate","params":{"block_id":{"block_hash":"0x12b05bf6e3800a939158efe9ec51ddcf5cefc2c21a5ae1c1cbc39dcb05fafa3"}}},
+    {"jsonrpc":"2.0","id":14,"method":"starknet_getStateUpdate","params":{"block_id":{"block_hash":"0x4a56ebf2efd42a13f55753ed34d1784871a8d1bbfe651c48a8f94e0fd7745a0"}}},
+    {"jsonrpc":"2.0","id":15,"method":"starknet_getStateUpdate","params":{"block_id":{"block_hash":"0x3a2eb5dc0bdc6a96b2081f6745552cebde51602206f6af861f5dd393ac4164b"}}},
+    {"jsonrpc":"2.0","id":16,"method":"starknet_getStateUpdate","params":{"block_id":{"block_hash":"0x4446fbdeaabd0e615b5731a06d638bd74c94f106bd5d3190f4d933d4e2354fd"}}},
+    {"jsonrpc":"2.0","id":17,"method":"starknet_getStateUpdate","params":{"block_id":{"block_hash":"0x5dc6c0e68758d32ea53515d36319d89bc427182706c28cca365f3e5a88e0405"}}},
+    {"jsonrpc":"2.0","id":18,"method":"starknet_getStateUpdate","params":{"block_id":{"block_hash":"0x28ef019ada93b1654a21ce79128fe67a74d0df8e2c52475f5b803aa67139faa"}}},
+    {"jsonrpc":"2.0","id":19,"method":"starknet_getStateUpdate","params":{"block_id":{"block_hash":"0x315994351cfc250c4a3f129f87e0c24e9172c6a63d67669ba26ea6f8b4a61ef"}}},
+    {"jsonrpc":"2.0","id":20,"method":"starknet_getStateUpdate","params":{"block_id":{"block_hash":"0x45763588f9b173d166c1ef7cb0996497b275597039445869ba55744041e0028"}}}
+  ]
+}

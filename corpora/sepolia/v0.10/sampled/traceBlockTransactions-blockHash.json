@@ -1,0 +1,39 @@
+{
+  "meta": {
+    "method": "starknet_traceBlockTransactions",
+    "rpcVersion": "0.10.3",
+    "chainId": "0x534e5f5345504f4c4941",
+    "seed": 1,
+    "count": 20,
+    "batch": 0,
+    "sampling": {
+      "start": 0,
+      "end": 18414000,
+      "blockIdKind": "hash",
+      "traceFlags": []
+    }
+  }
+,
+  "requests": [
+    {"jsonrpc":"2.0","id":1,"method":"starknet_traceBlockTransactions","params":{"block_id":{"block_hash":"0x22e2127079baf6740268d325f6a57be9d826cbf236f103c90f968321c0c5f60"}}},
+    {"jsonrpc":"2.0","id":2,"method":"starknet_traceBlockTransactions","params":{"block_id":{"block_hash":"0x72110ca1decccf63ed8325044fb664a52ddced1ab4725ceacdf18bd11ac561"}}},
+    {"jsonrpc":"2.0","id":3,"method":"starknet_traceBlockTransactions","params":{"block_id":{"block_hash":"0x5c27ea93f10658928308c927f283140f85991a850761e3933860caf29fda9b7"}}},
+    {"jsonrpc":"2.0","id":4,"method":"starknet_traceBlockTransactions","params":{"block_id":{"block_hash":"0x5b27b8f15fe3408fc7d6633c895b45171c59b811f3f15d531e22f2f74ec1b9a"}}},
+    {"jsonrpc":"2.0","id":5,"method":"starknet_traceBlockTransactions","params":{"block_id":{"block_hash":"0x42ef829984608f5a91d839c871043e227904c679e0c802149915c537a33c3be"}}},
+    {"jsonrpc":"2.0","id":6,"method":"starknet_traceBlockTransactions","params":{"block_id":{"block_hash":"0x728def3088222e2fa2ec32fb81b5eec84b4bb605e52499ca99409e1e07f6b46"}}},
+    {"jsonrpc":"2.0","id":7,"method":"starknet_traceBlockTransactions","params":{"block_id":{"block_hash":"0x229adfdd7d4ff87eb04cde08c8b7d7bf52e9d34a186c6f56dbeeff4208ec81d"}}},
+    {"jsonrpc":"2.0","id":8,"method":"starknet_traceBlockTransactions","params":{"block_id":{"block_hash":"0x33e73b9a88dc57af3790ec4fd2f7e9909ba0d48f9d92e978d89e8671ec19d5f"}}},
+    {"jsonrpc":"2.0","id":9,"method":"starknet_traceBlockTransactions","params":{"block_id":{"block_hash":"0x7d18531bf895b57b144cd8d8fc54c53b822f24d3f40ef0dceb3290beed0f5e"}}},
+    {"jsonrpc":"2.0","id":10,"method":"starknet_traceBlockTransactions","params":{"block_id":{"block_hash":"0x18622c73829401e4070341b41e1c44e997bb53ad0a3c0896ca91ce184c36e3e"}}},
+    {"jsonrpc":"2.0","id":11,"method":"starknet_traceBlockTransactions","params":{"block_id":{"block_hash":"0x6accb2351b3a5e449e3db1ac598dc86d79780f4900b1ec0baa0c484fcf097f2"}}},
+    {"jsonrpc":"2.0","id":12,"method":"starknet_traceBlockTransactions","params":{"block_id":{"block_hash":"0x38438e8bc2daa1ee342b8c434a29c87556c783fb1748f4cc1c3124f5745e089"}}},
+    {"jsonrpc":"2.0","id":13,"method":"starknet_traceBlockTransactions","params":{"block_id":{"block_hash":"0x721cfd7713304fbceb79ac84b2c8b1a87a75f8a813a5e2358544b5f4f3871b5"}}},
+    {"jsonrpc":"2.0","id":14,"method":"starknet_traceBlockTransactions","params":{"block_id":{"block_hash":"0x3c4e176f2dccc1524baf808f77c2164768add772c6ed8fee626dba0b5537ef2"}}},
+    {"jsonrpc":"2.0","id":15,"method":"starknet_traceBlockTransactions","params":{"block_id":{"block_hash":"0x10ad7b8b76bd1866f1add4f2379160b4f94b91ebebf72621b3c14ffc9aad162"}}},
+    {"jsonrpc":"2.0","id":16,"method":"starknet_traceBlockTransactions","params":{"block_id":{"block_hash":"0x6b53a6941908b64c344514c181c66e90936570b13abf953be8b1d53ee190ac2"}}},
+    {"jsonrpc":"2.0","id":17,"method":"starknet_traceBlockTransactions","params":{"block_id":{"block_hash":"0x1a1b8fe1fb2b92b5697d847ab0e2771ffc165df0ab6a298002dfd1faa807d80"}}},
+    {"jsonrpc":"2.0","id":18,"method":"starknet_traceBlockTransactions","params":{"block_id":{"block_hash":"0x192bb0889445e2f00913a573c8f18fd103d070214be4ccf94d3dd0b3b6df771"}}},
+    {"jsonrpc":"2.0","id":19,"method":"starknet_traceBlockTransactions","params":{"block_id":{"block_hash":"0xb0dca027fbb62a609be3ec12cbae1ceca1174a446ee666682081988142037a"}}},
+    {"jsonrpc":"2.0","id":20,"method":"starknet_traceBlockTransactions","params":{"block_id":{"block_hash":"0x66a7a2690311a3ba94241bffc8200c779e5afc5e3493896189f332c74fc23e1"}}}
+  ]
+}

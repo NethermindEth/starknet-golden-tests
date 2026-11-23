@@ -237,6 +237,31 @@ go run ./cmd/corpus-diff compare --corpus corpora/sepolia/v0.10 \
   --records recorded/sepolia/v0.10 --node "$STARKNET_RPC"
 ```
 
+### Generated corpora
+
+`gen/` makes more corpora with Juno's `corpus-gen`, next to `handpicked.json`:
+
+```
+corpora/<network>/v<version>/sampled/<variant>.json   20 requests for each entry of gen/sampled.json
+corpora/<network>/v<version>/edge/<version>.json      blocks N-1, N, N+1 around each protocol
+                                                      version change (gen/<network>-boundaries.txt)
+```
+
+```bash
+# Find the first block of each protocol version (once per network)
+gen/find-boundaries.sh "$STARKNET_RPC" <last block> > gen/sepolia-boundaries.txt
+
+# Generate the corpora; <block end> must be at or below the L1-accepted head
+gen/gen-corpora.sh <path to corpus-gen> "$STARKNET_RPC" corpora/sepolia/v0.10 <block end> gen/sepolia-boundaries.txt
+
+# Record the responses
+go run ./cmd/corpus-diff record --corpus corpora/sepolia/v0.10/sampled --node "$STARKNET_RPC" --out recorded/sepolia/v0.10/sampled
+go run ./cmd/corpus-diff record --corpus corpora/sepolia/v0.10/edge --node "$STARKNET_RPC" --out recorded/sepolia/v0.10/edge
+```
+
+The same command gives the same corpora (`--seed 1`, and the block range is
+fixed). An edge block without transactions gets only the block methods.
+
 ### Comparison rules
 
 - Felts and numbers are compared as text: `0x1` and `0x01` are different.

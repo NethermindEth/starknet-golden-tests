@@ -1,0 +1,38 @@
+{
+  "meta": {
+    "method": "starknet_getClassHashAt",
+    "rpcVersion": "0.10.3",
+    "chainId": "0x534e5f5345504f4c4941",
+    "seed": 1,
+    "count": 20,
+    "batch": 0,
+    "sampling": {
+      "start": 0,
+      "end": 18414000,
+      "blockIdKind": "number"
+    }
+  }
+,
+  "requests": [
+    {"jsonrpc":"2.0","id":1,"method":"starknet_getClassHashAt","params":{"block_id":{"block_number":11118034},"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"}},
+    {"jsonrpc":"2.0","id":2,"method":"starknet_getClassHashAt","params":{"block_id":{"block_number":16276857},"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"}},
+    {"jsonrpc":"2.0","id":3,"method":"starknet_getClassHashAt","params":{"block_id":{"block_number":11217308},"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"}},
+    {"jsonrpc":"2.0","id":4,"method":"starknet_getClassHashAt","params":{"block_id":{"block_number":12404319},"contract_address":"0x3f32e152b9637c31bfcf73e434f78591067a01ba070505ff6ee195642c9acfb"}},
+    {"jsonrpc":"2.0","id":5,"method":"starknet_getClassHashAt","params":{"block_id":{"block_number":11347054},"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"}},
+    {"jsonrpc":"2.0","id":6,"method":"starknet_getClassHashAt","params":{"block_id":{"block_number":6424088},"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"}},
+    {"jsonrpc":"2.0","id":7,"method":"starknet_getClassHashAt","params":{"block_id":{"block_number":3451150},"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"}},
+    {"jsonrpc":"2.0","id":8,"method":"starknet_getClassHashAt","params":{"block_id":{"block_number":1086630},"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"}},
+    {"jsonrpc":"2.0","id":9,"method":"starknet_getClassHashAt","params":{"block_id":{"block_number":16617946},"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"}},
+    {"jsonrpc":"2.0","id":10,"method":"starknet_getClassHashAt","params":{"block_id":{"block_number":14906084},"contract_address":"0x24abf86859c6b63358cf1bc2e076be3e5c34e1c8e0a642cc8956218d4a6a5b3"}},
+    {"jsonrpc":"2.0","id":11,"method":"starknet_getClassHashAt","params":{"block_id":{"block_number":84509},"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"}},
+    {"jsonrpc":"2.0","id":12,"method":"starknet_getClassHashAt","params":{"block_id":{"block_number":5409292},"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"}},
+    {"jsonrpc":"2.0","id":13,"method":"starknet_getClassHashAt","params":{"block_id":{"block_number":7187878},"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"}},
+    {"jsonrpc":"2.0","id":14,"method":"starknet_getClassHashAt","params":{"block_id":{"block_number":2066781},"contract_address":"0x5e55a248c3347bebcdce32b6095e3787dd01927694e535b17c7ea8e86f98aad"}},
+    {"jsonrpc":"2.0","id":15,"method":"starknet_getClassHashAt","params":{"block_id":{"block_number":6382518},"contract_address":"0x3eaf27245e5a10286542e75c216d17432dd077984c86d37944ba7f5002d10d3"}},
+    {"jsonrpc":"2.0","id":16,"method":"starknet_getClassHashAt","params":{"block_id":{"block_number":17461747},"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"}},
+    {"jsonrpc":"2.0","id":17,"method":"starknet_getClassHashAt","params":{"block_id":{"block_number":2644494},"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"}},
+    {"jsonrpc":"2.0","id":18,"method":"starknet_getClassHashAt","params":{"block_id":{"block_number":13503491},"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"}},
+    {"jsonrpc":"2.0","id":19,"method":"starknet_getClassHashAt","params":{"block_id":{"block_number":15595100},"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"}},
+    {"jsonrpc":"2.0","id":20,"method":"starknet_getClassHashAt","params":{"block_id":{"block_number":2004647},"contract_address":"0x13f0dbfcd60b7ac8e5df7d796b978571af614059c7bf48f9d4db45223fe2ac9"}}
+  ]
+}

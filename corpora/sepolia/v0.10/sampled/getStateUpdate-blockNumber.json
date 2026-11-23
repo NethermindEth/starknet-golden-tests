@@ -1,0 +1,38 @@
+{
+  "meta": {
+    "method": "starknet_getStateUpdate",
+    "rpcVersion": "0.10.3",
+    "chainId": "0x534e5f5345504f4c4941",
+    "seed": 1,
+    "count": 20,
+    "batch": 0,
+    "sampling": {
+      "start": 0,
+      "end": 18414000,
+      "blockIdKind": "number"
+    }
+  }
+,
+  "requests": [
+    {"jsonrpc":"2.0","id":1,"method":"starknet_getStateUpdate","params":{"block_id":{"block_number":3658726}}},
+    {"jsonrpc":"2.0","id":2,"method":"starknet_getStateUpdate","params":{"block_id":{"block_number":18116405}}},
+    {"jsonrpc":"2.0","id":3,"method":"starknet_getStateUpdate","params":{"block_id":{"block_number":16817014}}},
+    {"jsonrpc":"2.0","id":4,"method":"starknet_getStateUpdate","params":{"block_id":{"block_number":12030309}}},
+    {"jsonrpc":"2.0","id":5,"method":"starknet_getStateUpdate","params":{"block_id":{"block_number":17331307}}},
+    {"jsonrpc":"2.0","id":6,"method":"starknet_getStateUpdate","params":{"block_id":{"block_number":4196047}}},
+    {"jsonrpc":"2.0","id":7,"method":"starknet_getStateUpdate","params":{"block_id":{"block_number":1417430}}},
+    {"jsonrpc":"2.0","id":8,"method":"starknet_getStateUpdate","params":{"block_id":{"block_number":5815910}}},
+    {"jsonrpc":"2.0","id":9,"method":"starknet_getStateUpdate","params":{"block_id":{"block_number":6341329}}},
+    {"jsonrpc":"2.0","id":10,"method":"starknet_getStateUpdate","params":{"block_id":{"block_number":9929804}}},
+    {"jsonrpc":"2.0","id":11,"method":"starknet_getStateUpdate","params":{"block_id":{"block_number":9574795}}},
+    {"jsonrpc":"2.0","id":12,"method":"starknet_getStateUpdate","params":{"block_id":{"block_number":8514629}}},
+    {"jsonrpc":"2.0","id":13,"method":"starknet_getStateUpdate","params":{"block_id":{"block_number":5725005}}},
+    {"jsonrpc":"2.0","id":14,"method":"starknet_getStateUpdate","params":{"block_id":{"block_number":1340147}}},
+    {"jsonrpc":"2.0","id":15,"method":"starknet_getStateUpdate","params":{"block_id":{"block_number":1086566}}},
+    {"jsonrpc":"2.0","id":16,"method":"starknet_getStateUpdate","params":{"block_id":{"block_number":17002129}}},
+    {"jsonrpc":"2.0","id":17,"method":"starknet_getStateUpdate","params":{"block_id":{"block_number":6851220}}},
+    {"jsonrpc":"2.0","id":18,"method":"starknet_getStateUpdate","params":{"block_id":{"block_number":5412986}}},
+    {"jsonrpc":"2.0","id":19,"method":"starknet_getStateUpdate","params":{"block_id":{"block_number":5120242}}},
+    {"jsonrpc":"2.0","id":20,"method":"starknet_getStateUpdate","params":{"block_id":{"block_number":8044378}}}
+  ]
+}

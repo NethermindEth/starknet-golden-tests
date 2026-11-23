@@ -1,0 +1,38 @@
+{
+  "meta": {
+    "method": "starknet_getNonce",
+    "rpcVersion": "0.10.3",
+    "chainId": "0x534e5f5345504f4c4941",
+    "seed": 1,
+    "count": 20,
+    "batch": 0,
+    "sampling": {
+      "start": 0,
+      "end": 18414000,
+      "blockIdKind": "number"
+    }
+  }
+,
+  "requests": [
+    {"jsonrpc":"2.0","id":1,"method":"starknet_getNonce","params":{"block_id":{"block_number":6596974},"contract_address":"0x4f4e29add19afa12c868ba1f4439099f225403ff9a71fe667eebb50e13518d3"}},
+    {"jsonrpc":"2.0","id":2,"method":"starknet_getNonce","params":{"block_id":{"block_number":1064744},"contract_address":"0x7c1cbbafca15fec62f943de72793ddd40c0ae92884354e301cdd610f7c90106"}},
+    {"jsonrpc":"2.0","id":3,"method":"starknet_getNonce","params":{"block_id":{"block_number":7574858},"contract_address":"0x5677b3b308df6821be9a3c10423db8d9f7ff4d5bef09e32d973c8c89bf5683b"}},
+    {"jsonrpc":"2.0","id":4,"method":"starknet_getNonce","params":{"block_id":{"block_number":13852395},"contract_address":"0x56951c41bb842ff3e7f4d8ce134393cb0ec4494069543b6e52bd8b1f795e2b2"}},
+    {"jsonrpc":"2.0","id":5,"method":"starknet_getNonce","params":{"block_id":{"block_number":11717361},"contract_address":"0x15569a4dae53e13da0b0f9332d88539c96db79858b14fb15e571a9f46b6c1be"}},
+    {"jsonrpc":"2.0","id":6,"method":"starknet_getNonce","params":{"block_id":{"block_number":12878117},"contract_address":"0x15569a4dae53e13da0b0f9332d88539c96db79858b14fb15e571a9f46b6c1be"}},
+    {"jsonrpc":"2.0","id":7,"method":"starknet_getNonce","params":{"block_id":{"block_number":14599846},"contract_address":"0x15569a4dae53e13da0b0f9332d88539c96db79858b14fb15e571a9f46b6c1be"}},
+    {"jsonrpc":"2.0","id":8,"method":"starknet_getNonce","params":{"block_id":{"block_number":12751796},"contract_address":"0x15569a4dae53e13da0b0f9332d88539c96db79858b14fb15e571a9f46b6c1be"}},
+    {"jsonrpc":"2.0","id":9,"method":"starknet_getNonce","params":{"block_id":{"block_number":1648144},"contract_address":"0x395a96a5b6343fc0f543692fd36e7034b54c2a276cd1a021e8c0b02aee1f43"}},
+    {"jsonrpc":"2.0","id":10,"method":"starknet_getNonce","params":{"block_id":{"block_number":1485953},"contract_address":"0x19ec96d4aea6fdc6f0b5f393fec3f186aefa8f0b8356f43d07b921ff48aa5da"}},
+    {"jsonrpc":"2.0","id":11,"method":"starknet_getNonce","params":{"block_id":{"block_number":14389281},"contract_address":"0x15569a4dae53e13da0b0f9332d88539c96db79858b14fb15e571a9f46b6c1be"}},
+    {"jsonrpc":"2.0","id":12,"method":"starknet_getNonce","params":{"block_id":{"block_number":14001261},"contract_address":"0x15569a4dae53e13da0b0f9332d88539c96db79858b14fb15e571a9f46b6c1be"}},
+    {"jsonrpc":"2.0","id":13,"method":"starknet_getNonce","params":{"block_id":{"block_number":12271589},"contract_address":"0x15569a4dae53e13da0b0f9332d88539c96db79858b14fb15e571a9f46b6c1be"}},
+    {"jsonrpc":"2.0","id":14,"method":"starknet_getNonce","params":{"block_id":{"block_number":4222113},"contract_address":"0x4f4e29add19afa12c868ba1f4439099f225403ff9a71fe667eebb50e13518d3"}},
+    {"jsonrpc":"2.0","id":15,"method":"starknet_getNonce","params":{"block_id":{"block_number":16372159},"contract_address":"0x77dfdc45ba4695eac4c961f3d9bf820ed7e925a44d9963de7b7a0daf8768af0"}},
+    {"jsonrpc":"2.0","id":16,"method":"starknet_getNonce","params":{"block_id":{"block_number":16508584},"contract_address":"0x5499b2112812a5437837750d27131f2de280531fb066a290269f77922fc3f97"}},
+    {"jsonrpc":"2.0","id":17,"method":"starknet_getNonce","params":{"block_id":{"block_number":142422},"contract_address":"0x4c1d9da136846ab084ae18cf6ce7a652df7793b666a16ce46b1bf5850cc739d"}},
+    {"jsonrpc":"2.0","id":18,"method":"starknet_getNonce","params":{"block_id":{"block_number":16240518},"contract_address":"0x77dfdc45ba4695eac4c961f3d9bf820ed7e925a44d9963de7b7a0daf8768af0"}},
+    {"jsonrpc":"2.0","id":19,"method":"starknet_getNonce","params":{"block_id":{"block_number":10770643},"contract_address":"0x27125dc293a66e3df8784c51ed07c7011cf02f5fe53de3163ae78cbab7e80f5"}},
+    {"jsonrpc":"2.0","id":20,"method":"starknet_getNonce","params":{"block_id":{"block_number":12676363},"contract_address":"0xb971116a8a4194ad780c11c8d614bb1723de92386cf44bcc43f7bdf7837df2"}}
+  ]
+}
