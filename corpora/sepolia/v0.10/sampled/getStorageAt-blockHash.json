@@ -1,0 +1,39 @@
+{
+  "meta": {
+    "method": "starknet_getStorageAt",
+    "rpcVersion": "0.10.3",
+    "chainId": "0x534e5f5345504f4c4941",
+    "seed": 1,
+    "count": 20,
+    "batch": 0,
+    "sampling": {
+      "start": 0,
+      "end": 18414000,
+      "blockIdKind": "hash",
+      "responseFlags": []
+    }
+  }
+,
+  "requests": [
+    {"jsonrpc":"2.0","id":1,"method":"starknet_getStorageAt","params":{"contract_address":"0x7a6f440b8632053d221c4bfa7fe9d7896a51f9752981934d8e1fe7c106e910b","key":"0x2c1","block_id":{"block_hash":"0x4fd4c301996433e3ce97a163b4d54effe89631eb3c8ed9b0566e73946c5cf86"}}},
+    {"jsonrpc":"2.0","id":2,"method":"starknet_getStorageAt","params":{"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d","key":"0x5496768776e3db30053404f18067d81a6e06f5a2b0de326e21298fd9d569a9a","block_id":{"block_hash":"0x7a15a90f99223fff531475d7a46c0d50ff3b3f840a5e2c5482d3a8f051d4424"}}},
+    {"jsonrpc":"2.0","id":3,"method":"starknet_getStorageAt","params":{"contract_address":"0x72b327056dec85cf0660e10a54c44840e2b305f187fc2771e8f1887aad081ba","key":"0x563531fc354289c4ab499f94eb1174347fce281ee9304182be7bdce639c869f","block_id":{"block_hash":"0xfb01d577fb08bf8e93be607c6af668391e3abdd3e8fd3bf7d1d4408d93fea2"}}},
+    {"jsonrpc":"2.0","id":4,"method":"starknet_getStorageAt","params":{"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d","key":"0x5496768776e3db30053404f18067d81a6e06f5a2b0de326e21298fd9d569a9a","block_id":{"block_hash":"0x4c72445a01f5563275be58fea06ade5b6c224fb9c1379b373a7b4f4f6a09cb0"}}},
+    {"jsonrpc":"2.0","id":5,"method":"starknet_getStorageAt","params":{"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d","key":"0x5496768776e3db30053404f18067d81a6e06f5a2b0de326e21298fd9d569a9a","block_id":{"block_hash":"0x7c40867f8b280831f7b7d3f131e7d633b5799ff84f9a61b23dd807d2abd19ab"}}},
+    {"jsonrpc":"2.0","id":6,"method":"starknet_getStorageAt","params":{"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d","key":"0x2bf66714d8a42f25ed98f02c97df2084175912864a2ae3d67a9ab1723e735f","block_id":{"block_hash":"0x5a892c43a6f2b487c7d11e350ff0d044e5adaf02d732a58ab3fc6a3c6ee2c9d"}}},
+    {"jsonrpc":"2.0","id":7,"method":"starknet_getStorageAt","params":{"contract_address":"0x30a26db8c8e2ca8c5bac843188bd538ace0f09176a519cecf5beb2475204fad","key":"0x2a","block_id":{"block_hash":"0x22fa2dfcfb183ca5ae30aadd41ce643de9e1891e6a0a681543adae2c3165486"}}},
+    {"jsonrpc":"2.0","id":8,"method":"starknet_getStorageAt","params":{"contract_address":"0x3745ab04a431fc02871a139be6b93d9260b0ff3e779ad9c8b377183b23109f1","key":"0x7aa5246bc0f8f15f28b58628bf95533ba7092d6fa88535d7db0a4c69fc0ad1","block_id":{"block_hash":"0x7900ef24893c13f934510e964e93711764f3c1aa4fc707d51b9e3b377925333"}}},
+    {"jsonrpc":"2.0","id":9,"method":"starknet_getStorageAt","params":{"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d","key":"0x5496768776e3db30053404f18067d81a6e06f5a2b0de326e21298fd9d569a9a","block_id":{"block_hash":"0x12bf68da6fc70413a95177b396635a13455ee1169f447280ad4cfda0bc7123"}}},
+    {"jsonrpc":"2.0","id":10,"method":"starknet_getStorageAt","params":{"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d","key":"0x62847af51aade16d66260cbfe0f43ab7b22d7e144dd4d8801328111990b8d3b","block_id":{"block_hash":"0xaef193d2434f66043ea79e4fdbd11f54e54c1bd14a555d44f477aa549f4b8"}}},
+    {"jsonrpc":"2.0","id":11,"method":"starknet_getStorageAt","params":{"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d","key":"0x5496768776e3db30053404f18067d81a6e06f5a2b0de326e21298fd9d569a9a","block_id":{"block_hash":"0x532540fc3d2cab27c65e19a5c4d2f2f4435bac04d3528092f42881cc8aac996"}}},
+    {"jsonrpc":"2.0","id":12,"method":"starknet_getStorageAt","params":{"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d","key":"0x2bf66714d8a42f25ed98f02c97df2084175912864a2ae3d67a9ab1723e735f","block_id":{"block_hash":"0x2ebe01df95d9b55dd7cb8d61cb1626e08ec6835c812ae37a4bb0171a98c26a5"}}},
+    {"jsonrpc":"2.0","id":13,"method":"starknet_getStorageAt","params":{"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d","key":"0x5496768776e3db30053404f18067d81a6e06f5a2b0de326e21298fd9d569a9a","block_id":{"block_hash":"0x2874b4565b587f35af362e58a1eeb00c0c3e244a7c7ef4175fb77f82e9ffd50"}}},
+    {"jsonrpc":"2.0","id":14,"method":"starknet_getStorageAt","params":{"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d","key":"0x5496768776e3db30053404f18067d81a6e06f5a2b0de326e21298fd9d569a9a","block_id":{"block_hash":"0x5892d11ff4474a0bbf6f73ec5affcc78e80555bc5c0112af24d49ed33d9d961"}}},
+    {"jsonrpc":"2.0","id":15,"method":"starknet_getStorageAt","params":{"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d","key":"0x5496768776e3db30053404f18067d81a6e06f5a2b0de326e21298fd9d569a9a","block_id":{"block_hash":"0x75b30da18b76be282dc5827bd1eb768875b8aeb9369a37a1099cf03fdf689c"}}},
+    {"jsonrpc":"2.0","id":16,"method":"starknet_getStorageAt","params":{"contract_address":"0x30a26db8c8e2ca8c5bac843188bd538ace0f09176a519cecf5beb2475204fad","key":"0x53","block_id":{"block_hash":"0xddf53f0bfeb4c0848e7f09b6ee4b4b29f784480969fa7f51d16b4da09f0bc9"}}},
+    {"jsonrpc":"2.0","id":17,"method":"starknet_getStorageAt","params":{"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d","key":"0x5496768776e3db30053404f18067d81a6e06f5a2b0de326e21298fd9d569a9a","block_id":{"block_hash":"0x1b9fde59b400720d9e69c4954b9b1d1a09c19f4262cdebd567a6d48c4355ca8"}}},
+    {"jsonrpc":"2.0","id":18,"method":"starknet_getStorageAt","params":{"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d","key":"0x5496768776e3db30053404f18067d81a6e06f5a2b0de326e21298fd9d569a9a","block_id":{"block_hash":"0x2417056ec27364e0feb8e41f6f8541e19da9e20a17d801a32e615cbf5d2d689"}}},
+    {"jsonrpc":"2.0","id":19,"method":"starknet_getStorageAt","params":{"contract_address":"0x36031daa264c24520b11d93af622c848b2499b66b41d611bac95e13cfca131a","key":"0x361d2ae204a03efb523e98befcbdf0481dab2d576a2434f74777def21a4784b","block_id":{"block_hash":"0x7b68fb2fce97baa5c894a8e78155cd5bb5bd8d8d5253e5d69abdb8d572ec207"}}},
+    {"jsonrpc":"2.0","id":20,"method":"starknet_getStorageAt","params":{"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d","key":"0x224dc7a603d836b0dad21760b97ddcd04ad40c456b178cd785ecde5e0cca8fa","block_id":{"block_hash":"0x5d067a1f21a7edcc0b0c5f583e6741ce88db8bca11d027de52f1039bfc79c"}}}
+  ]
+}

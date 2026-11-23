@@ -1,0 +1,39 @@
+{
+  "meta": {
+    "method": "starknet_getTransactionByBlockIdAndIndex",
+    "rpcVersion": "0.10.3",
+    "chainId": "0x534e5f5345504f4c4941",
+    "seed": 1,
+    "count": 20,
+    "batch": 0,
+    "sampling": {
+      "start": 0,
+      "end": 18414000,
+      "blockIdKind": "hash",
+      "responseFlags": []
+    }
+  }
+,
+  "requests": [
+    {"jsonrpc":"2.0","id":1,"method":"starknet_getTransactionByBlockIdAndIndex","params":{"block_id":{"block_hash":"0x1b2744daed0ef1eb7a64a26563b2614af675df6a9ce1633b2ffb34343261aeb"},"index":0}},
+    {"jsonrpc":"2.0","id":2,"method":"starknet_getTransactionByBlockIdAndIndex","params":{"block_id":{"block_hash":"0x4622e8545ddefedba2d1e8c63214761e6a2d7c575f4b190a02498583ff7b332"},"index":0}},
+    {"jsonrpc":"2.0","id":3,"method":"starknet_getTransactionByBlockIdAndIndex","params":{"block_id":{"block_hash":"0x4cbf8aff0f179e493f7acf87306fce4dc07c0d2b32b82d94b946faa81043358"},"index":1}},
+    {"jsonrpc":"2.0","id":4,"method":"starknet_getTransactionByBlockIdAndIndex","params":{"block_id":{"block_hash":"0x76b4fe3a54abd17e0b2bc715acd0096aef455943e4de99b82d8cc8b18b2a290"},"index":0}},
+    {"jsonrpc":"2.0","id":5,"method":"starknet_getTransactionByBlockIdAndIndex","params":{"block_id":{"block_hash":"0x12a30b82ee8aac3358be08d53a1ab249685801a7bc313fc2526520512836f83"},"index":0}},
+    {"jsonrpc":"2.0","id":6,"method":"starknet_getTransactionByBlockIdAndIndex","params":{"block_id":{"block_hash":"0x423ae4422066f2739904e30a59196a8dfbe1ba1a7a1029ee1607ceb8aa0d616"},"index":3}},
+    {"jsonrpc":"2.0","id":7,"method":"starknet_getTransactionByBlockIdAndIndex","params":{"block_id":{"block_hash":"0x72a6f734e3238e12b8a830ac2dbc298c24b64f346a9f631c1e318ea2ee95a79"},"index":0}},
+    {"jsonrpc":"2.0","id":8,"method":"starknet_getTransactionByBlockIdAndIndex","params":{"block_id":{"block_hash":"0x4b6a9c59a49f5ad565ae0564790f4e544ae086d26d81d052cf165cc4d376b4a"},"index":3}},
+    {"jsonrpc":"2.0","id":9,"method":"starknet_getTransactionByBlockIdAndIndex","params":{"block_id":{"block_hash":"0x5e12c757f3f2465d5a33cde4ef23e4c3eccf985660c62414807a6f1a2248e80"},"index":0}},
+    {"jsonrpc":"2.0","id":10,"method":"starknet_getTransactionByBlockIdAndIndex","params":{"block_id":{"block_hash":"0x6851d48c96e34bf12914f53b8e96cc84cac5c3cd92dab1fb47c6516435bb5ab"},"index":1}},
+    {"jsonrpc":"2.0","id":11,"method":"starknet_getTransactionByBlockIdAndIndex","params":{"block_id":{"block_hash":"0x240185a7f8be4fe7eb7d648a8c87aec86eb26c821fcca93b0795d405efcadf7"},"index":1}},
+    {"jsonrpc":"2.0","id":12,"method":"starknet_getTransactionByBlockIdAndIndex","params":{"block_id":{"block_hash":"0x685d250a9608c763aaf25116b14fde7c9710c99414188b6f1462d9d15ffc33b"},"index":0}},
+    {"jsonrpc":"2.0","id":13,"method":"starknet_getTransactionByBlockIdAndIndex","params":{"block_id":{"block_hash":"0x593b1e2a003cbfe046d45dbb7176240bbb68150f70c3d564d343fff9c5e7ad7"},"index":3}},
+    {"jsonrpc":"2.0","id":14,"method":"starknet_getTransactionByBlockIdAndIndex","params":{"block_id":{"block_hash":"0x1cf0535332e6758c10e43c583110d063bc400e38126955c33e619777ed59489"},"index":1}},
+    {"jsonrpc":"2.0","id":15,"method":"starknet_getTransactionByBlockIdAndIndex","params":{"block_id":{"block_hash":"0x5767af7eb602d782ad823fb2c9e5ffba9c8f38c94cd2ee74553b313df808152"},"index":0}},
+    {"jsonrpc":"2.0","id":16,"method":"starknet_getTransactionByBlockIdAndIndex","params":{"block_id":{"block_hash":"0x2b4e96b9c375c6dc7bca4c5e46eff44475365bc6da04dd0dc1584e0b44165f2"},"index":0}},
+    {"jsonrpc":"2.0","id":17,"method":"starknet_getTransactionByBlockIdAndIndex","params":{"block_id":{"block_hash":"0x11a5e49ccb2f3afc680c9e2e3e214e3d0e883731554317d7aafd277e8445f84"},"index":1}},
+    {"jsonrpc":"2.0","id":18,"method":"starknet_getTransactionByBlockIdAndIndex","params":{"block_id":{"block_hash":"0x57d83e4e43462fda69ef3d7b47e93a247bf61f33298132c83a58320bb2e3e5a"},"index":0}},
+    {"jsonrpc":"2.0","id":19,"method":"starknet_getTransactionByBlockIdAndIndex","params":{"block_id":{"block_hash":"0x347c5d1030e3cedf32af32bb9db36f0537e0a418680a251ef4370f910d77b96"},"index":1}},
+    {"jsonrpc":"2.0","id":20,"method":"starknet_getTransactionByBlockIdAndIndex","params":{"block_id":{"block_hash":"0x4c5d77c061646c696a411175608fb54ac9472d64f5eb6295e388de20b6dfadb"},"index":0}}
+  ]
+}

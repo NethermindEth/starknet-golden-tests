@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "method": "starknet_getStorageAt",
+    "rpcVersion": "0.10.3",
+    "chainId": "0x534e5f5345504f4c4941",
+    "seed": 1,
+    "count": 20,
+    "batch": 0,
+    "sampling": {
+      "start": 0,
+      "end": 18414000,
+      "blockIdKind": "number",
+      "responseFlags": [
+        "INCLUDE_LAST_UPDATE_BLOCK"
+      ]
+    }
+  }
+,
+  "requests": [
+    {"jsonrpc":"2.0","id":1,"method":"starknet_getStorageAt","params":{"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d","key":"0x2bf66714d8a42f25ed98f02c97df2084175912864a2ae3d67a9ab1723e735f","block_id":{"block_number":6141078},"response_flags":["INCLUDE_LAST_UPDATE_BLOCK"]}},
+    {"jsonrpc":"2.0","id":2,"method":"starknet_getStorageAt","params":{"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d","key":"0x71785dd5ec97d2dcdd1f66f02b6c7e35d668bd969037693cc6f5345ecd467ee","block_id":{"block_number":7143705},"response_flags":["INCLUDE_LAST_UPDATE_BLOCK"]}},
+    {"jsonrpc":"2.0","id":3,"method":"starknet_getStorageAt","params":{"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d","key":"0x5496768776e3db30053404f18067d81a6e06f5a2b0de326e21298fd9d569a9a","block_id":{"block_number":14009597},"response_flags":["INCLUDE_LAST_UPDATE_BLOCK"]}},
+    {"jsonrpc":"2.0","id":4,"method":"starknet_getStorageAt","params":{"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d","key":"0x5496768776e3db30053404f18067d81a6e06f5a2b0de326e21298fd9d569a9a","block_id":{"block_number":15127101},"response_flags":["INCLUDE_LAST_UPDATE_BLOCK"]}},
+    {"jsonrpc":"2.0","id":5,"method":"starknet_getStorageAt","params":{"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d","key":"0x5906818c3dbf002df7c4e3fa8cef5c7835f58dd45a12a8ebc71c0e30471a054","block_id":{"block_number":12321961},"response_flags":["INCLUDE_LAST_UPDATE_BLOCK"]}},
+    {"jsonrpc":"2.0","id":6,"method":"starknet_getStorageAt","params":{"contract_address":"0x1b832829c70f1d8decc02b61bd7b025a4976bbb948ebacc2e4d98662560dd4e","key":"0x5902483e5b058adbf06ae8b461c4959d9db56e0f92c6a7a7419cdf91024f1ee","block_id":{"block_number":12474607},"response_flags":["INCLUDE_LAST_UPDATE_BLOCK"]}},
+    {"jsonrpc":"2.0","id":7,"method":"starknet_getStorageAt","params":{"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d","key":"0x71785dd5ec97d2dcdd1f66f02b6c7e35d668bd969037693cc6f5345ecd467ee","block_id":{"block_number":7347904},"response_flags":["INCLUDE_LAST_UPDATE_BLOCK"]}},
+    {"jsonrpc":"2.0","id":8,"method":"starknet_getStorageAt","params":{"contract_address":"0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7","key":"0x29291f3ba610defabe44b3e6293940bab16d582a147cfec2ff42d9df6cfdd3c","block_id":{"block_number":346019},"response_flags":["INCLUDE_LAST_UPDATE_BLOCK"]}},
+    {"jsonrpc":"2.0","id":9,"method":"starknet_getStorageAt","params":{"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d","key":"0x5496768776e3db30053404f18067d81a6e06f5a2b0de326e21298fd9d569a9a","block_id":{"block_number":13102075},"response_flags":["INCLUDE_LAST_UPDATE_BLOCK"]}},
+    {"jsonrpc":"2.0","id":10,"method":"starknet_getStorageAt","params":{"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d","key":"0x5496768776e3db30053404f18067d81a6e06f5a2b0de326e21298fd9d569a9a","block_id":{"block_number":4284164},"response_flags":["INCLUDE_LAST_UPDATE_BLOCK"]}},
+    {"jsonrpc":"2.0","id":11,"method":"starknet_getStorageAt","params":{"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d","key":"0x2bf66714d8a42f25ed98f02c97df2084175912864a2ae3d67a9ab1723e735f","block_id":{"block_number":6286809},"response_flags":["INCLUDE_LAST_UPDATE_BLOCK"]}},
+    {"jsonrpc":"2.0","id":12,"method":"starknet_getStorageAt","params":{"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d","key":"0x1bc06e01c8edbc022b2a63178e2e2f2bc1bc498a6b2fa743a0e99ec2be6ac16","block_id":{"block_number":2437167},"response_flags":["INCLUDE_LAST_UPDATE_BLOCK"]}},
+    {"jsonrpc":"2.0","id":13,"method":"starknet_getStorageAt","params":{"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d","key":"0x5496768776e3db30053404f18067d81a6e06f5a2b0de326e21298fd9d569a9a","block_id":{"block_number":18098039},"response_flags":["INCLUDE_LAST_UPDATE_BLOCK"]}},
+    {"jsonrpc":"2.0","id":14,"method":"starknet_getStorageAt","params":{"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d","key":"0x6dc07747d8024a3de46c35e000bd9667ec08322de2d217ef41288d293609690","block_id":{"block_number":1928543},"response_flags":["INCLUDE_LAST_UPDATE_BLOCK"]}},
+    {"jsonrpc":"2.0","id":15,"method":"starknet_getStorageAt","params":{"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d","key":"0x47146b3357200298e01a27f2994f8b4ab20c6df9b07a31923bf8769cb3e6449","block_id":{"block_number":9763403},"response_flags":["INCLUDE_LAST_UPDATE_BLOCK"]}},
+    {"jsonrpc":"2.0","id":16,"method":"starknet_getStorageAt","params":{"contract_address":"0x36031daa264c24520b11d93af622c848b2499b66b41d611bac95e13cfca131a","key":"0x636b00a271ec8f6965e3ca86897dd23058573410602fee2d0f7478c13ff99b5","block_id":{"block_number":540903},"response_flags":["INCLUDE_LAST_UPDATE_BLOCK"]}},
+    {"jsonrpc":"2.0","id":17,"method":"starknet_getStorageAt","params":{"contract_address":"0x5961799fa2bc431ac781bdf1a0096161ec1e0025afb0cf8abc5169d57f32f9d","key":"0x3b28019ccfdbd30ffc65951d94bb85c9e2b8434111a000b5afd533ce65f57a4","block_id":{"block_number":6332498},"response_flags":["INCLUDE_LAST_UPDATE_BLOCK"]}},
+    {"jsonrpc":"2.0","id":18,"method":"starknet_getStorageAt","params":{"contract_address":"0x2ebbebb8ceb2e07f30a5088f5849afd4f908f04f3f9c97c694e5d83d2a7cc61","key":"0x206a9cfb3d896fb03428a7fae8533631e9b6f062c60d57149e0c9a961b4b1cf","block_id":{"block_number":5622338},"response_flags":["INCLUDE_LAST_UPDATE_BLOCK"]}},
+    {"jsonrpc":"2.0","id":19,"method":"starknet_getStorageAt","params":{"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d","key":"0x224dc7a603d836b0dad21760b97ddcd04ad40c456b178cd785ecde5e0cca8fa","block_id":{"block_number":15945668},"response_flags":["INCLUDE_LAST_UPDATE_BLOCK"]}},
+    {"jsonrpc":"2.0","id":20,"method":"starknet_getStorageAt","params":{"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d","key":"0x2bf66714d8a42f25ed98f02c97df2084175912864a2ae3d67a9ab1723e735f","block_id":{"block_number":6635796},"response_flags":["INCLUDE_LAST_UPDATE_BLOCK"]}}
+  ]
+}

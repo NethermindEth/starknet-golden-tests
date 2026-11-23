@@ -1,0 +1,38 @@
+{
+  "meta": {
+    "method": "starknet_getClassAt",
+    "rpcVersion": "0.10.3",
+    "chainId": "0x534e5f5345504f4c4941",
+    "seed": 1,
+    "count": 20,
+    "batch": 0,
+    "sampling": {
+      "start": 0,
+      "end": 18414000,
+      "blockIdKind": "number"
+    }
+  }
+,
+  "requests": [
+    {"jsonrpc":"2.0","id":1,"method":"starknet_getClassAt","params":{"block_id":{"block_number":11083159},"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"}},
+    {"jsonrpc":"2.0","id":2,"method":"starknet_getClassAt","params":{"block_id":{"block_number":4592364},"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"}},
+    {"jsonrpc":"2.0","id":3,"method":"starknet_getClassAt","params":{"block_id":{"block_number":15880983},"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"}},
+    {"jsonrpc":"2.0","id":4,"method":"starknet_getClassAt","params":{"block_id":{"block_number":3993791},"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"}},
+    {"jsonrpc":"2.0","id":5,"method":"starknet_getClassAt","params":{"block_id":{"block_number":7498030},"contract_address":"0x40e87b7fab5199ed3597b28b21f07e941d309bae7d465ada74e1b97e3d31f9a"}},
+    {"jsonrpc":"2.0","id":6,"method":"starknet_getClassAt","params":{"block_id":{"block_number":13768365},"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"}},
+    {"jsonrpc":"2.0","id":7,"method":"starknet_getClassAt","params":{"block_id":{"block_number":11689842},"contract_address":"0x132303a40ae2f271f4e1b707596a63f6f2921c4d400b38822548ed1bb0cbe0"}},
+    {"jsonrpc":"2.0","id":8,"method":"starknet_getClassAt","params":{"block_id":{"block_number":3333417},"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"}},
+    {"jsonrpc":"2.0","id":9,"method":"starknet_getClassAt","params":{"block_id":{"block_number":10633748},"contract_address":"0x359dfc73ed005375fe8dbd4bad3a6575b4cde035f29b18860c9deb9a307f54b"}},
+    {"jsonrpc":"2.0","id":10,"method":"starknet_getClassAt","params":{"block_id":{"block_number":626713},"contract_address":"0x3745ab04a431fc02871a139be6b93d9260b0ff3e779ad9c8b377183b23109f1"}},
+    {"jsonrpc":"2.0","id":11,"method":"starknet_getClassAt","params":{"block_id":{"block_number":7849038},"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"}},
+    {"jsonrpc":"2.0","id":12,"method":"starknet_getClassAt","params":{"block_id":{"block_number":16240600},"contract_address":"0x3745ab04a431fc02871a139be6b93d9260b0ff3e779ad9c8b377183b23109f1"}},
+    {"jsonrpc":"2.0","id":13,"method":"starknet_getClassAt","params":{"block_id":{"block_number":16627039},"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"}},
+    {"jsonrpc":"2.0","id":14,"method":"starknet_getClassAt","params":{"block_id":{"block_number":14039765},"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"}},
+    {"jsonrpc":"2.0","id":15,"method":"starknet_getClassAt","params":{"block_id":{"block_number":17120172},"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"}},
+    {"jsonrpc":"2.0","id":16,"method":"starknet_getClassAt","params":{"block_id":{"block_number":10057933},"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"}},
+    {"jsonrpc":"2.0","id":17,"method":"starknet_getClassAt","params":{"block_id":{"block_number":1135583},"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"}},
+    {"jsonrpc":"2.0","id":18,"method":"starknet_getClassAt","params":{"block_id":{"block_number":17279336},"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"}},
+    {"jsonrpc":"2.0","id":19,"method":"starknet_getClassAt","params":{"block_id":{"block_number":5903587},"contract_address":"0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d"}},
+    {"jsonrpc":"2.0","id":20,"method":"starknet_getClassAt","params":{"block_id":{"block_number":13981588},"contract_address":"0x3745ab04a431fc02871a139be6b93d9260b0ff3e779ad9c8b377183b23109f1"}}
+  ]
+}

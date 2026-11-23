@@ -1,0 +1,37 @@
+{
+  "meta": {
+    "method": "starknet_getCompiledCasm",
+    "rpcVersion": "0.10.3",
+    "chainId": "0x534e5f5345504f4c4941",
+    "seed": 1,
+    "count": 20,
+    "batch": 0,
+    "sampling": {
+      "start": 0,
+      "end": 18414000
+    }
+  }
+,
+  "requests": [
+    {"jsonrpc":"2.0","id":1,"method":"starknet_getCompiledCasm","params":{"class_hash":"0x2c54954f9d126e741de59d7791e24831e4181c8909c98aaaf7a73165e4dd9fe"}},
+    {"jsonrpc":"2.0","id":2,"method":"starknet_getCompiledCasm","params":{"class_hash":"0x2e77ee61d4df3d988ee1f42ea5442e913862cc82c2584d212ecda76666498fc"}},
+    {"jsonrpc":"2.0","id":3,"method":"starknet_getCompiledCasm","params":{"class_hash":"0x173b0607daaec6f41b2daf8ad9894125af2c0df232944d1d81115373f128ad2"}},
+    {"jsonrpc":"2.0","id":4,"method":"starknet_getCompiledCasm","params":{"class_hash":"0x743c83c41ce99ad470aa308823f417b2141e02e04571f5c0004e743556e7faf"}},
+    {"jsonrpc":"2.0","id":5,"method":"starknet_getCompiledCasm","params":{"class_hash":"0x9524a94b41c4440a16fd96d7c1ef6ad6f44c1c013e96662734502cd4ee9b1f"}},
+    {"jsonrpc":"2.0","id":6,"method":"starknet_getCompiledCasm","params":{"class_hash":"0x9524a94b41c4440a16fd96d7c1ef6ad6f44c1c013e96662734502cd4ee9b1f"}},
+    {"jsonrpc":"2.0","id":7,"method":"starknet_getCompiledCasm","params":{"class_hash":"0x173b0607daaec6f41b2daf8ad9894125af2c0df232944d1d81115373f128ad2"}},
+    {"jsonrpc":"2.0","id":8,"method":"starknet_getCompiledCasm","params":{"class_hash":"0x2e77ee61d4df3d988ee1f42ea5442e913862cc82c2584d212ecda76666498fc"}},
+    {"jsonrpc":"2.0","id":9,"method":"starknet_getCompiledCasm","params":{"class_hash":"0xe824b9f2aa225812cf230d276784b99f182ec95066d84be90cd1682e4ad069"}},
+    {"jsonrpc":"2.0","id":10,"method":"starknet_getCompiledCasm","params":{"class_hash":"0x5a93367d9e4fd00d9b17575cc52f70f8b48c3926da015cc7e87a3994f1c63a7"}},
+    {"jsonrpc":"2.0","id":11,"method":"starknet_getCompiledCasm","params":{"class_hash":"0x9524a94b41c4440a16fd96d7c1ef6ad6f44c1c013e96662734502cd4ee9b1f"}},
+    {"jsonrpc":"2.0","id":12,"method":"starknet_getCompiledCasm","params":{"class_hash":"0xe824b9f2aa225812cf230d276784b99f182ec95066d84be90cd1682e4ad069"}},
+    {"jsonrpc":"2.0","id":13,"method":"starknet_getCompiledCasm","params":{"class_hash":"0x2e77ee61d4df3d988ee1f42ea5442e913862cc82c2584d212ecda76666498fc"}},
+    {"jsonrpc":"2.0","id":14,"method":"starknet_getCompiledCasm","params":{"class_hash":"0x1808d400eb2aad8e0f9ee2512086317c0584b7a0ade40d739771763cf2fe9da"}},
+    {"jsonrpc":"2.0","id":15,"method":"starknet_getCompiledCasm","params":{"class_hash":"0x2e77ee61d4df3d988ee1f42ea5442e913862cc82c2584d212ecda76666498fc"}},
+    {"jsonrpc":"2.0","id":16,"method":"starknet_getCompiledCasm","params":{"class_hash":"0x2e77ee61d4df3d988ee1f42ea5442e913862cc82c2584d212ecda76666498fc"}},
+    {"jsonrpc":"2.0","id":17,"method":"starknet_getCompiledCasm","params":{"class_hash":"0x2e77ee61d4df3d988ee1f42ea5442e913862cc82c2584d212ecda76666498fc"}},
+    {"jsonrpc":"2.0","id":18,"method":"starknet_getCompiledCasm","params":{"class_hash":"0x9524a94b41c4440a16fd96d7c1ef6ad6f44c1c013e96662734502cd4ee9b1f"}},
+    {"jsonrpc":"2.0","id":19,"method":"starknet_getCompiledCasm","params":{"class_hash":"0x9524a94b41c4440a16fd96d7c1ef6ad6f44c1c013e96662734502cd4ee9b1f"}},
+    {"jsonrpc":"2.0","id":20,"method":"starknet_getCompiledCasm","params":{"class_hash":"0x2e77ee61d4df3d988ee1f42ea5442e913862cc82c2584d212ecda76666498fc"}}
+  ]
+}

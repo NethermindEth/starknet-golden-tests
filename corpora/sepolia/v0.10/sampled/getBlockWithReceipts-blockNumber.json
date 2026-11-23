@@ -1,0 +1,39 @@
+{
+  "meta": {
+    "method": "starknet_getBlockWithReceipts",
+    "rpcVersion": "0.10.3",
+    "chainId": "0x534e5f5345504f4c4941",
+    "seed": 1,
+    "count": 20,
+    "batch": 0,
+    "sampling": {
+      "start": 0,
+      "end": 18414000,
+      "blockIdKind": "number",
+      "responseFlags": []
+    }
+  }
+,
+  "requests": [
+    {"jsonrpc":"2.0","id":1,"method":"starknet_getBlockWithReceipts","params":{"block_id":{"block_number":2296940}}},
+    {"jsonrpc":"2.0","id":2,"method":"starknet_getBlockWithReceipts","params":{"block_id":{"block_number":16998373}}},
+    {"jsonrpc":"2.0","id":3,"method":"starknet_getBlockWithReceipts","params":{"block_id":{"block_number":7037845}}},
+    {"jsonrpc":"2.0","id":4,"method":"starknet_getBlockWithReceipts","params":{"block_id":{"block_number":18327458}}},
+    {"jsonrpc":"2.0","id":5,"method":"starknet_getBlockWithReceipts","params":{"block_id":{"block_number":2322477}}},
+    {"jsonrpc":"2.0","id":6,"method":"starknet_getBlockWithReceipts","params":{"block_id":{"block_number":14253541}}},
+    {"jsonrpc":"2.0","id":7,"method":"starknet_getBlockWithReceipts","params":{"block_id":{"block_number":5715560}}},
+    {"jsonrpc":"2.0","id":8,"method":"starknet_getBlockWithReceipts","params":{"block_id":{"block_number":16163170}}},
+    {"jsonrpc":"2.0","id":9,"method":"starknet_getBlockWithReceipts","params":{"block_id":{"block_number":8092757}}},
+    {"jsonrpc":"2.0","id":10,"method":"starknet_getBlockWithReceipts","params":{"block_id":{"block_number":4691600}}},
+    {"jsonrpc":"2.0","id":11,"method":"starknet_getBlockWithReceipts","params":{"block_id":{"block_number":16467212}}},
+    {"jsonrpc":"2.0","id":12,"method":"starknet_getBlockWithReceipts","params":{"block_id":{"block_number":18124019}}},
+    {"jsonrpc":"2.0","id":13,"method":"starknet_getBlockWithReceipts","params":{"block_id":{"block_number":1523175}}},
+    {"jsonrpc":"2.0","id":14,"method":"starknet_getBlockWithReceipts","params":{"block_id":{"block_number":10432044}}},
+    {"jsonrpc":"2.0","id":15,"method":"starknet_getBlockWithReceipts","params":{"block_id":{"block_number":6170446}}},
+    {"jsonrpc":"2.0","id":16,"method":"starknet_getBlockWithReceipts","params":{"block_id":{"block_number":7594112}}},
+    {"jsonrpc":"2.0","id":17,"method":"starknet_getBlockWithReceipts","params":{"block_id":{"block_number":12785743}}},
+    {"jsonrpc":"2.0","id":18,"method":"starknet_getBlockWithReceipts","params":{"block_id":{"block_number":14369761}}},
+    {"jsonrpc":"2.0","id":19,"method":"starknet_getBlockWithReceipts","params":{"block_id":{"block_number":10845767}}},
+    {"jsonrpc":"2.0","id":20,"method":"starknet_getBlockWithReceipts","params":{"block_id":{"block_number":16938934}}}
+  ]
+}
